@@ -1,5 +1,5 @@
 name: todo_manager
-description: A new Flutter project.
+description: Simple and minimalist To-Do Manager.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -31,15 +31,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+ 
   cupertino_icons: ^1.0.2
+  provider: ^6.0.4
+  go_router: ^5.1.1
+  path_provider: ^2.0.11
+  hive: ^2.2.3
+  hive_generator: ^2.0.0  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.3.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
