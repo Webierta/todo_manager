@@ -1,2 +1,2 @@
-# todo_manager
+# To-Do Manager
 Simple and minimalist To-Do Manager
