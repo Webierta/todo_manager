@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'models/item.dart';
+import 'models/tag.dart';
 import 'models/todo.dart';
 import 'models/todo_provider.dart';
 import 'pages/home.dart';
@@ -18,7 +19,8 @@ void main() async {
   Hive
     ..init(directory.path)
     ..registerAdapter(TodoAdapter())
-    ..registerAdapter(ItemAdapter());
+    ..registerAdapter(ItemAdapter())
+    ..registerAdapter(TagAdapter());
   await Hive.openBox<Todo>('todos');
   //await Hive.deleteFromDisk();
   runApp(

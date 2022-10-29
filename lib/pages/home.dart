@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../models/item.dart';
+import '../models/tag.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
 import '../widgets/drawer_app.dart';
@@ -21,6 +22,7 @@ class _HomeState extends State<Home> {
   String? errorDuple;
   TextEditingController textFieldEditController = TextEditingController();
   bool filterPriority = false;
+  Tag? filterTag;
   Todo? todoSelect;
   Todo? todoEdit;
   ScrollController scrollController = ScrollController();
@@ -52,17 +54,18 @@ class _HomeState extends State<Home> {
     });
   }
 
-  Widget? header(BuildContext context, List<Todo> todos, Todo? todo) {
-    if (!textFieldAddVisible && todoEdit == null) return null;
+  Widget? header(BuildContext context, List<Todo> todos) {
+    //if (!textFieldAddVisible && todoEdit == null) return null;
+    if (!textFieldAddVisible) return null;
 
     TextEditingController controller = textFieldAddController;
     String labelText = 'New Task';
     IconData iconData = Icons.add;
-    if (todo != null) {
+    /* if (todo != null) {
       controller = textFieldEditController;
       labelText = 'New Name for ${todo.name}';
       iconData = Icons.published_with_changes;
-    }
+    } */
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: TextField(
@@ -81,11 +84,7 @@ class _HomeState extends State<Home> {
                     if (todos.any((todo) => todo.name == controller.text)) {
                       setState(() => errorDuple = 'Task duple');
                     } else {
-                      if (todo == null) {
-                        addTodo(context, textFieldAddController.text, todos.length);
-                      } else {
-                        renameTodo(context, todo, textFieldEditController.text);
-                      }
+                      addTodo(context, textFieldAddController.text, todos.length);
                     }
                   },
             icon: Icon(iconData),
@@ -101,11 +100,14 @@ class _HomeState extends State<Home> {
     if (filterPriority) {
       todos = todos.where((todo) => todo.priority == true).toList();
     }
+    if (filterTag != null) {
+      todos = todos.where((todo) => todo.tag == filterTag).toList();
+    }
 
     return Scaffold(
       drawer: const DrawerApp(),
       appBar: AppBar(
-        title: const Text('To-Do'),
+        title: filterTag == null ? const Text('To-Do') : Text('To-Do: ${filterTag!.name}'),
         actions: [
           Center(
             child: Padding(
@@ -117,11 +119,31 @@ class _HomeState extends State<Home> {
             onPressed: () {
               setState(() {
                 resetTextField();
-                filterPriority = !filterPriority;
+                setState(() => filterPriority = !filterPriority);
               });
             },
             icon: Icon(Icons.stars, color: filterPriority ? Colors.amber : null),
           ),
+          if (filterTag == null)
+            PopupMenuButton<Tag>(
+              child: const Icon(Icons.label_outline),
+              onCanceled: () => resetTextField(),
+              onSelected: (Tag tag) {
+                resetTextField();
+                setState(() => filterTag = tag);
+              },
+              itemBuilder: (BuildContext context) => Tag.values
+                  .map((tag) => PopupMenuItem<Tag>(
+                        value: tag,
+                        child: Text(tag.name),
+                      ))
+                  .toList(),
+            )
+          else
+            IconButton(
+              onPressed: () => setState(() => filterTag = null),
+              icon: const Icon(Icons.label_off_outlined),
+            ),
           PopupMenuButton<Menu>(
             onCanceled: () => resetTextField(),
             onSelected: (Menu item) {
@@ -146,7 +168,8 @@ class _HomeState extends State<Home> {
         shrinkWrap: true,
         scrollController: scrollController,
         padding: const EdgeInsets.only(bottom: 80),
-        header: header(context, todos, todoEdit),
+        //header: header(context, todos, todoEdit),
+        header: header(context, todos),
         footer: todos.length > 10
             ? IconButton(
                 onPressed: () {
@@ -216,20 +239,28 @@ class _HomeState extends State<Home> {
                         //minVerticalPadding: 10,
                         contentPadding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
                         title: Text(todo.name, overflow: TextOverflow.ellipsis),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Icon(Icons.label_outline),
-                              Text('Trabajo'),
-                              Spacer(),
-                              Text('22/ 08/22'),
-                              Spacer(),
-                            ],
-                          ),
+                        subtitle: Wrap(
+                          spacing: 0,
+                          alignment: WrapAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 140,
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: InputChip(
+                                  avatar: const Icon(Icons.label_outline),
+                                  label: Text(todo.tag.name),
+                                ),
+                              ),
+                            ),
+                            const InputChip(label: Text('22/08/22')),
+                            //const SizedBox(width: 10),
+                            //const FractionallySizedBox(widthFactor: 0.1),
+                          ],
                         ),
                         leading: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             iconStatus(todo.ratioItemsDone),
                             Text('$itemsDone/${items.length}')
@@ -264,6 +295,35 @@ class _HomeState extends State<Home> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          if (todoEdit?.name == todo.name)
+                            Flexible(
+                              child: TextField(
+                                autofocus: true,
+                                onChanged: (value) => setState(() => errorDuple = null),
+                                controller: textFieldEditController,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  filled: true,
+                                  fillColor: Colors.teal[50],
+                                  labelText: 'New Name for ${todo.name}',
+                                  errorText: errorDuple,
+                                  suffixIcon: IconButton(
+                                    onPressed: textFieldEditController.text.isEmpty
+                                        ? null
+                                        : () {
+                                            if (todos.any((todo) =>
+                                                todo.name == textFieldEditController.text)) {
+                                              setState(() => errorDuple = 'Task duple');
+                                            } else {
+                                              renameTodo(
+                                                  context, todo, textFieldEditController.text);
+                                            }
+                                          },
+                                    icon: const Icon(Icons.published_with_changes),
+                                  ),
+                                ),
+                              ),
+                            ),
                           IconButton(
                             onPressed: () {
                               ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
@@ -277,7 +337,18 @@ class _HomeState extends State<Home> {
                             },
                             icon: const Icon(Icons.edit),
                           ),
-                          IconButton(onPressed: () {}, icon: const Icon(Icons.label_outline)),
+                          PopupMenuButton<Tag>(
+                            child: const Icon(Icons.label_outline),
+                            //onCanceled: () => resetTextField(),
+                            onSelected: (Tag tag) =>
+                                context.read<TodoProvider>().updateTag(todo, tag),
+                            itemBuilder: (BuildContext context) => Tag.values
+                                .map((tag) => PopupMenuItem<Tag>(
+                                      value: tag,
+                                      child: Text(tag.name),
+                                    ))
+                                .toList(),
+                          ),
                           IconButton(onPressed: () {}, icon: const Icon(Icons.today)),
                           IconButton(
                             onPressed: () async {
@@ -300,6 +371,9 @@ class _HomeState extends State<Home> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+          //scrollController.jumpTo(0);
+          scrollController.animateTo(0,
+              duration: const Duration(milliseconds: 500), curve: Curves.ease);
           resetTextField(visible: !textFieldAddVisible);
         },
         mini: true,

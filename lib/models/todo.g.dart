@@ -19,19 +19,23 @@ class TodoAdapter extends TypeAdapter<Todo> {
     return Todo(
       name: fields[0] as String,
       priority: fields[1] == null ? false : fields[1] as bool,
-    )..items = fields[2] == null ? [] : (fields[2] as List).cast<Item>();
+    )
+      ..items = fields[2] == null ? [] : (fields[2] as List).cast<Item>()
+      ..tag = fields[3] == null ? Tag.personal : fields[3] as Tag;
   }
 
   @override
   void write(BinaryWriter writer, Todo obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.priority)
       ..writeByte(2)
-      ..write(obj.items);
+      ..write(obj.items)
+      ..writeByte(3)
+      ..write(obj.tag);
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 
 import 'item.dart';
+import 'tag.dart';
 
 part 'todo.g.dart';
 
@@ -16,6 +17,9 @@ class Todo {
 
   @HiveField(2, defaultValue: [])
   List<Item> items = [];
+
+  @HiveField(3, defaultValue: Tag.personal)
+  Tag tag = Tag.personal;
 
   Todo({required this.name, this.priority = false});
 

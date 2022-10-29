@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import 'item.dart';
+import 'tag.dart';
 import 'todo.dart';
 
 class TodoProvider with ChangeNotifier {
@@ -47,6 +48,18 @@ class TodoProvider with ChangeNotifier {
     todosBox.toMap().forEach((key, value) {
       if (value.name == todo.name) {
         todo.priority = priority;
+        todosBox.put(key, todo);
+      }
+    });
+    refreshTodosBox();
+    notifyListeners();
+  }
+
+  updateTag(Todo todo, Tag tag) {
+    var todosBox = Hive.box<Todo>('todos');
+    todosBox.toMap().forEach((key, value) {
+      if (value.name == todo.name) {
+        todo.tag = tag;
         todosBox.put(key, todo);
       }
     });
