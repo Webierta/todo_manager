@@ -21,7 +21,6 @@ class _TodoPageState extends State<TodoPage> {
   String? errorDuple;
   final keyAnimated = GlobalKey<AnimatedListState>();
   Item? itemSelect;
-
   ScrollController scrollController = ScrollController();
 
   @override
@@ -33,6 +32,7 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   resetTextFieldAddItem({bool visible = false}) {
+    ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
     setState(() {
       textFieldAddItemController.clear();
       textFieldAddItemVisible = visible;
@@ -68,7 +68,6 @@ class _TodoPageState extends State<TodoPage> {
           PopupMenuButton<MenuItem>(
             onCanceled: () => resetTextFieldAddItem(),
             onSelected: (MenuItem item) {
-              ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
               resetTextFieldAddItem();
               if (item == MenuItem.checkAll) {
                 setState(() => context.read<TodoProvider>().checkAll(todo, true));
@@ -89,9 +88,8 @@ class _TodoPageState extends State<TodoPage> {
       ),
       body: Column(
         children: [
-          Visibility(
-            visible: textFieldAddItemVisible,
-            child: Padding(
+          if (textFieldAddItemVisible)
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
               child: TextField(
                 autofocus: true,
@@ -120,7 +118,6 @@ class _TodoPageState extends State<TodoPage> {
                 ),
               ),
             ),
-          ),
           //if (items.isEmpty) const Text('Tarea sin ítems'),
           Expanded(
             child: AnimatedList(
@@ -159,27 +156,26 @@ class _TodoPageState extends State<TodoPage> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Visibility(
-                            visible: itemSelect?.name == item.name,
-                            child: IconButton(
+                          if (itemSelect?.name == item.name)
+                            IconButton(
                               onPressed: () => removeItem(context, todo, item),
                               icon: const Icon(Icons.delete),
                             ),
-                          ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child:
-                                Icon(item.done ? Icons.check_box : Icons.check_box_outline_blank),
+                            child: item.done
+                                ? const Icon(Icons.check_box)
+                                : const Icon(Icons.check_box_outline_blank),
                           ),
                           IconButton(
                             onPressed: textFieldAddItemVisible
                                 ? null
                                 : () {
-                                    ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                                     if (itemSelect == null || itemSelect?.name != item.name) {
                                       resetTextFieldAddItem();
                                       setState(() => itemSelect = item);
                                     } else {
+                                      ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                                       setState(() => itemSelect = null);
                                     }
                                   },
@@ -196,10 +192,8 @@ class _TodoPageState extends State<TodoPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-          resetTextFieldAddItem(visible: !textFieldAddItemVisible);
-        },
+        onPressed: () => resetTextFieldAddItem(visible: !textFieldAddItemVisible),
+        mini: true,
         backgroundColor: textFieldAddItemVisible ? Colors.red : Colors.teal,
         child: textFieldAddItemVisible ? const Icon(Icons.close) : const Icon(Icons.add),
       ),

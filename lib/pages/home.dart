@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
+import '../widgets/drawer_app.dart';
 
 enum Menu { sortAZ, sortDone, deleteAll }
 
@@ -41,6 +42,7 @@ class _HomeState extends State<Home> {
   }
 
   resetTextField({bool visible = false}) {
+    ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
     setState(() {
       textFieldAddController.clear();
       textFieldAddVisible = visible;
@@ -52,6 +54,7 @@ class _HomeState extends State<Home> {
 
   Widget? header(BuildContext context, List<Todo> todos, Todo? todo) {
     if (!textFieldAddVisible && todoEdit == null) return null;
+
     TextEditingController controller = textFieldAddController;
     String labelText = 'New Task';
     IconData iconData = Icons.add;
@@ -100,9 +103,9 @@ class _HomeState extends State<Home> {
     }
 
     return Scaffold(
-      //drawer: MyDrawer(),
+      drawer: const DrawerApp(),
       appBar: AppBar(
-        title: const Text('To-Do Manager'),
+        title: const Text('To-Do'),
         actions: [
           Center(
             child: Padding(
@@ -113,7 +116,6 @@ class _HomeState extends State<Home> {
           IconButton(
             onPressed: () {
               setState(() {
-                ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                 resetTextField();
                 filterPriority = !filterPriority;
               });
@@ -121,19 +123,15 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.stars, color: filterPriority ? Colors.amber : null),
           ),
           PopupMenuButton<Menu>(
-            onCanceled: () {
-              resetTextField();
-              ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-            },
+            onCanceled: () => resetTextField(),
             onSelected: (Menu item) {
               resetTextField();
-              ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
               if (item == Menu.sortAZ) {
                 context.read<TodoProvider>().sortAZ();
               } else if (item == Menu.sortDone) {
                 context.read<TodoProvider>().sortDone();
               } else if (item == Menu.deleteAll) {
-                deleteAll(context);
+                BannerConfirmDelete(context: context).showBanner();
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
@@ -179,83 +177,119 @@ class _HomeState extends State<Home> {
           List<Item> items = todo.items;
           int itemsDone = items.where((item) => item.done == true).length;
           todo.ratioItemsDone = items.isEmpty ? 0 : items.length / itemsDone;
-          return Container(
+          return SingleChildScrollView(
             key: UniqueKey(),
-            decoration: const BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.grey, width: 0.3),
+            child: Container(
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
               ),
-            ),
-            child: ListTile(
-              enabled: !textFieldAddVisible,
-              onTap: () {
-                ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                setState(() => todoEdit = null);
-                context.go('/todo_page', extra: todo);
-              },
-              selected: todoSelect?.name == todo.name,
-              selectedTileColor: Colors.teal[50],
-              title: Text(todo.name),
-              subtitle: Text('$itemsDone/${items.length}'),
-              leading: iconStatus(todo.ratioItemsDone),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Visibility(
-                    visible: todoSelect?.name == todo.name,
-                    child: IconButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                        if (todoEdit == null || todoEdit!.name != todo.name) {
-                          setState(() => todoEdit = todo);
-                        } else {
+              child: ExpansionPanelList(
+                elevation: 0,
+                expandedHeaderPadding: const EdgeInsets.all(0),
+                expansionCallback: (int index, bool isExpanded) {
+                  if (!textFieldAddVisible) {
+                    if (todoSelect == null || todoSelect?.name != todo.name) {
+                      resetTextField();
+                      setState(() => todoSelect = todo);
+                    } else {
+                      resetTextField();
+                    }
+                  }
+                },
+                children: <ExpansionPanel>[
+                  ExpansionPanel(
+                    isExpanded: todo.name == todoSelect?.name,
+                    backgroundColor:
+                        todoSelect?.name == todo.name ? Colors.teal[50] : Colors.transparent,
+                    headerBuilder: (BuildContext context, bool isExpanded) {
+                      return ListTile(
+                        enabled: !textFieldAddVisible,
+                        onTap: () {
+                          ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                           setState(() => todoEdit = null);
-                        }
-                        textFieldEditController.clear();
-                        setState(() => errorDuple = null);
-                      },
-                      icon: const Icon(Icons.edit),
-                    ),
-                  ),
-                  Visibility(
-                    visible: todoSelect?.name == todo.name,
-                    child: IconButton(
-                      onPressed: () {
-                        resetTextField();
-                        removeTodo(context, todo);
-                      },
-                      icon: const Icon(Icons.delete),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: textFieldAddVisible
-                        ? null
-                        : () => context.read<TodoProvider>().updatePrirority(todo, !todo.priority),
-                    icon: Icon(
-                      Icons.star,
-                      color: todo.priority ? Colors.amber : Colors.grey,
-                    ),
-                  ),
-                  if (!filterPriority && !textFieldAddVisible)
-                    ReorderableDragStartListener(
-                      index: index,
-                      enabled: !filterPriority && !textFieldAddVisible,
-                      child: const Icon(Icons.unfold_more),
-                    ),
-                  IconButton(
-                    onPressed: textFieldAddVisible
-                        ? null
-                        : () {
-                            ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                            setState(() => todoEdit = null);
-                            if (todoSelect == null || todoSelect?.name != todo.name) {
+                          context.go('/todo_page', extra: todo);
+                        },
+                        selected: todoSelect?.name == todo.name,
+                        selectedTileColor: Colors.teal[50],
+                        focusColor: Colors.teal[50],
+                        horizontalTitleGap: 10,
+                        //minVerticalPadding: 10,
+                        contentPadding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
+                        title: Text(todo.name, overflow: TextOverflow.ellipsis),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Icon(Icons.label_outline),
+                              Text('Trabajo'),
+                              Spacer(),
+                              Text('22/ 08/22'),
+                              Spacer(),
+                            ],
+                          ),
+                        ),
+                        leading: Column(
+                          children: [
+                            iconStatus(todo.ratioItemsDone),
+                            Text('$itemsDone/${items.length}')
+                          ],
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: textFieldAddVisible
+                                  ? null
+                                  : () => context
+                                      .read<TodoProvider>()
+                                      .updatePrirority(todo, !todo.priority),
+                              icon: Icon(
+                                Icons.star,
+                                color: todo.priority ? Colors.amber : Colors.grey,
+                              ),
+                            ),
+                            if (!filterPriority && !textFieldAddVisible)
+                              ReorderableDragStartListener(
+                                index: index,
+                                enabled: !filterPriority && !textFieldAddVisible,
+                                child: const Icon(Icons.unfold_more),
+                              ),
+                          ],
+                        ),
+                      );
+                    },
+                    body: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+                              if (todoEdit == null || todoEdit!.name != todo.name) {
+                                setState(() => todoEdit = todo);
+                              } else {
+                                setState(() => todoEdit = null);
+                              }
+                              textFieldEditController.clear();
+                              setState(() => errorDuple = null);
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                          IconButton(onPressed: () {}, icon: const Icon(Icons.label_outline)),
+                          IconButton(onPressed: () {}, icon: const Icon(Icons.today)),
+                          IconButton(
+                            onPressed: () async {
                               resetTextField();
+                              BannerConfirmDelete(context: context, todo: todo).showBanner();
                               setState(() => todoSelect = todo);
-                            } else {
-                              setState(() => todoSelect = null);
-                            }
-                          },
-                    icon: const Icon(Icons.more_vert),
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -268,6 +302,7 @@ class _HomeState extends State<Home> {
           ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
           resetTextField(visible: !textFieldAddVisible);
         },
+        mini: true,
         backgroundColor: textFieldAddVisible ? Colors.red : Colors.teal,
         child: textFieldAddVisible ? const Icon(Icons.close) : const Icon(Icons.add),
       ),
@@ -315,26 +350,34 @@ class _HomeState extends State<Home> {
       todoEdit = null;
     });
   }
+}
 
-  removeTodo(BuildContext context, Todo todo) {
-    context.read<TodoProvider>().remove(todo);
-  }
+class BannerConfirmDelete {
+  final BuildContext context;
+  final Todo? todo;
+  const BannerConfirmDelete({required this.context, this.todo});
 
-  deleteAll(BuildContext context) {
+  showBanner() {
+    String content = todo != null ? '¿Eliminar esta tarea?' : '¿Eliminar todas las Tareas?';
     ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
         padding: const EdgeInsets.all(20),
-        content: const Text('¿Eliminar todas las Tareas?'),
+        content: Text(content),
         leading: const Icon(Icons.delete_forever),
         actions: <Widget>[
           TextButton(
-            onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+            },
             child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () {
               ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-              context.read<TodoProvider>().removeAll();
+              todo != null
+                  ? context.read<TodoProvider>().remove(todo!)
+                  : context.read<TodoProvider>().removeAll();
+              context.go('/');
             },
             child: const Text('Ok'),
           ),
