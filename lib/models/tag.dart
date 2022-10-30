@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'tag.g.dart';
@@ -68,9 +69,9 @@ enum Tag {
   pet,
 }
 
-/* extension TagExtension on Tag {
+extension TagExtension on Tag {
   //String get name => describeEnum(this);
-  String get name => this.name;
+  //String get name => this.name;
   /* String get name {
     switch (this) {
       case Tag.personal:
@@ -79,6 +80,18 @@ enum Tag {
         return 'Work';
       default:
         return 'Personal';
-    }
+    }    
   } */
-} */
+  Color get color {
+    switch (this) {
+      case Tag.personal:
+        return Colors.red;
+      case Tag.work:
+        return Colors.green;
+      case Tag.shopping:
+        return Colors.amber;
+      default:
+        return Colors.blue;
+    }
+  }
+}

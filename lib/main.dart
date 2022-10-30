@@ -12,6 +12,7 @@ import 'models/todo.dart';
 import 'models/todo_provider.dart';
 import 'pages/home.dart';
 import 'pages/todo_page.dart';
+import 'theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,10 +42,11 @@ class ToDoManager extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'To-Do Manager',
-        theme: ThemeData(
+        theme: AppTheme.lightTheme,
+        /* theme: ThemeData(
           useMaterial3: true,
           primarySwatch: Colors.teal,
-        ),
+        ), */
         routerConfig: _router,
       );
 
