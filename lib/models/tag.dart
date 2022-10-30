@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+import '../theme/app_color.dart';
+
 part 'tag.g.dart';
 
 @HiveType(typeId: 2)
@@ -82,16 +84,65 @@ extension TagExtension on Tag {
         return 'Personal';
     }    
   } */
+
+  /* get sorted {
+    var x = Tag.values.sort(((a, b) => a.name.compareTo(b.name)));
+    return x;
+  } */
+
   Color get color {
-    switch (this) {
+    for (var i = 0; i < Tag.values.length; i++) {
+      if (this == Tag.values[i]) {
+        return AppColor.tagColors[i];
+      }
+    }
+    return Colors.blue;
+
+    /* switch (this) {
       case Tag.personal:
         return Colors.red;
       case Tag.work:
-        return Colors.green;
+        return Colors.blue;
       case Tag.shopping:
         return Colors.amber;
+      case Tag.idea:
+        return Colors.yellowAccent;
+      case Tag.project:
+        return Colors.indigo;
+      case Tag.meeting:
+        return Colors.purple;
+      case Tag.event:
+        return Colors.green;
+      case Tag.anniversary:
+        return Colors.amber;
+      case Tag.family:
+        return Colors.red;
+      case Tag.friends:
+        return Colors.green;
+      case Tag.social:
+        return Colors.amber;
+      case Tag.house:
+        return Colors.red;
+      case Tag.community:
+        return Colors.green;
+      case Tag.business:
+        return Colors.amber;
+      case Tag.party:
+        return Colors.red;
+      case Tag.holidays:
+        return Colors.green;
+      case Tag.finance:
+        return Colors.amber;
+      case Tag.health:
+        return Colors.green;
+      case Tag.sport:
+        return Colors.amber;
+      case Tag.nature:
+        return Colors.red;
+      case Tag.pet:
+        return Colors.green;
       default:
         return Colors.blue;
-    }
+    } */
   }
 }

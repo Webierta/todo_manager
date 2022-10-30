@@ -43,10 +43,6 @@ class ToDoManager extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'To-Do Manager',
         theme: AppTheme.lightTheme,
-        /* theme: ThemeData(
-          useMaterial3: true,
-          primarySwatch: Colors.teal,
-        ), */
         routerConfig: _router,
       );
 

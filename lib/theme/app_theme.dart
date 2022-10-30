@@ -12,14 +12,33 @@ class AppTheme {
 
   static ThemeData? lightTheme = ThemeData(
     useMaterial3: true,
-    //scaffoldBackgroundColor: AppColors.screenBackground,
+    brightness: Brightness.light,
     primaryColor: Colors.teal,
-    //colorScheme: const ColorScheme.light(secondary: Colors.white),
-    //dividerColor: Colors.transparent,
-    //expansionTileTheme: ExpansionTileThemeData(),
-    //cardColor: Colors.white,
-    /* floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: AppColors.blue,
-    ), */
+    primarySwatch: Colors.teal,
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: Colors.teal[50],
+    ),
+    listTileTheme: ListTileThemeData(
+      selectedTileColor: Colors.teal[50],
+    ),
+    expansionTileTheme: ExpansionTileThemeData(
+      textColor: Colors.teal,
+      backgroundColor: Colors.teal[50],
+      collapsedBackgroundColor: Colors.transparent,
+    ),
+    chipTheme: const ChipThemeData(
+      labelStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w700,
+        color: Color(0xFF212121),
+      ),
+    ),
+    typography: Typography(
+      white: const TextTheme(
+        headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+        labelSmall: TextStyle(fontSize: 11),
+      ),
+    ),
   );
 }

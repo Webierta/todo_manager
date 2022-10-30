@@ -98,8 +98,8 @@ class _TodoPageState extends State<TodoPage> {
                 },
                 controller: textFieldAddItemController,
                 decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.teal[50],
+                  //filled: true,
+                  //fillColor: Colors.teal[50],
                   labelText: 'New Item',
                   errorText: errorDuple,
                   suffixIcon: IconButton(
@@ -151,7 +151,7 @@ class _TodoPageState extends State<TodoPage> {
                       enabled: !textFieldAddItemVisible,
                       onTap: () => toggleItem(context, todo, item),
                       selected: itemSelect?.name == item.name,
-                      selectedTileColor: Colors.teal[50],
+                      //selectedTileColor: Colors.teal[50],
                       title: Text(item.name),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -194,7 +194,7 @@ class _TodoPageState extends State<TodoPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => resetTextFieldAddItem(visible: !textFieldAddItemVisible),
         mini: true,
-        backgroundColor: textFieldAddItemVisible ? Colors.red : Colors.teal,
+        backgroundColor: textFieldAddItemVisible ? Colors.red : null,
         child: textFieldAddItemVisible ? const Icon(Icons.close) : const Icon(Icons.add),
       ),
     );
