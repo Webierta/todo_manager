@@ -490,8 +490,11 @@ class BannerConfirmDelete {
   }
 } */
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/item.dart';
@@ -501,7 +504,7 @@ import '../models/todo_provider.dart';
 import '../theme/app_color.dart';
 import '../widgets/app_drawer.dart';
 
-enum Menu { sortAZ, sortDone, deleteAll }
+enum Menu { sortAZ, sortDone, sortDate, deleteAll }
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -654,6 +657,8 @@ class _HomeState extends State<Home> {
                 context.read<TodoProvider>().sortAZ();
               } else if (item == Menu.sortDone) {
                 context.read<TodoProvider>().sortDone();
+              } else if (item == Menu.sortDate) {
+                context.read<TodoProvider>().sortDate();
               } else if (item == Menu.deleteAll) {
                 BannerConfirmDelete(context: context).showBanner();
               }
@@ -661,6 +666,8 @@ class _HomeState extends State<Home> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
               const PopupMenuItem<Menu>(value: Menu.sortAZ, child: Text('Odenar A-Z')),
               const PopupMenuItem<Menu>(value: Menu.sortDone, child: Text('Ordenar Pendiente')),
+              const PopupMenuItem<Menu>(value: Menu.sortDate, child: Text('Ordenar Date')),
+              const PopupMenuDivider(),
               const PopupMenuItem<Menu>(value: Menu.deleteAll, child: Text('Eliminar Todo')),
             ],
           ),
@@ -760,7 +767,15 @@ class _HomeState extends State<Home> {
                           child: Row(
                             children: [
                               if (items.isNotEmpty) ...[
-                                Text('$itemsDone/${items.length}'),
+                                Text(
+                                  '$itemsDone/${items.length}',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    fontFeatures: [
+                                      FontFeature.enable('frac'),
+                                    ],
+                                  ),
+                                ),
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10),
@@ -852,7 +867,12 @@ class _HomeState extends State<Home> {
                                       .toList();
                                 },
                               ),
-                              IconButton(onPressed: () {}, icon: const Icon(Icons.today)),
+                              IconButton(
+                                onPressed: () async {
+                                  await selectDate(context, todo);
+                                },
+                                icon: const Icon(Icons.today),
+                              ),
                               IconButton(
                                 onPressed: () async {
                                   resetTextField();
@@ -879,13 +899,15 @@ class _HomeState extends State<Home> {
                                 label: Text(todo.tag.name),
                               ),
                             ),
-                            const SizedBox(
-                              width: 120,
-                              child: InputChip(
-                                avatar: Icon(Icons.today),
-                                label: Text('22/08//22'),
+                            if (todo.date != null)
+                              SizedBox(
+                                width: 120,
+                                child: InputChip(
+                                  avatar: const Icon(Icons.today),
+                                  //label: Text(DateFormat.yMd().format(todo.date!)),
+                                  label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
@@ -975,6 +997,17 @@ class _HomeState extends State<Home> {
       //todoNameEdit = '';
       todoEdit = null;
     });
+  }
+
+  selectDate(BuildContext context, Todo todo) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year + 10),
+    );
+    if (!mounted) return;
+    context.read<TodoProvider>().updateDate(todo, picked);
   }
 }
 

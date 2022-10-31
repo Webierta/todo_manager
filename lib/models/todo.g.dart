@@ -21,13 +21,14 @@ class TodoAdapter extends TypeAdapter<Todo> {
       priority: fields[1] == null ? false : fields[1] as bool,
     )
       ..items = fields[2] == null ? [] : (fields[2] as List).cast<Item>()
-      ..tag = fields[3] == null ? Tag.personal : fields[3] as Tag;
+      ..tag = fields[3] == null ? Tag.personal : fields[3] as Tag
+      ..date = fields[4] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, Todo obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class TodoAdapter extends TypeAdapter<Todo> {
       ..writeByte(2)
       ..write(obj.items)
       ..writeByte(3)
-      ..write(obj.tag);
+      ..write(obj.tag)
+      ..writeByte(4)
+      ..write(obj.date);
   }
 
   @override

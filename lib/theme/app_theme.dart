@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class AppTheme {
@@ -29,15 +31,20 @@ class AppTheme {
     ),
     chipTheme: const ChipThemeData(
       labelStyle: TextStyle(
+        //fontFamily: 'RobotoMono',
+        fontFeatures: [
+          FontFeature.tabularFigures(),
+        ],
         fontSize: 12,
         fontWeight: FontWeight.w700,
         color: Color(0xFF212121),
       ),
     ),
     typography: Typography(
+      // FontFeature.enable('frac')
       white: const TextTheme(
         headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-        labelSmall: TextStyle(fontSize: 11),
+        //labelSmall: TextStyle(fontSize: 11),
       ),
     ),
   );

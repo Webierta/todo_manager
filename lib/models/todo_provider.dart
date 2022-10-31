@@ -67,6 +67,18 @@ class TodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  updateDate(Todo todo, DateTime? date) {
+    var todosBox = Hive.box<Todo>('todos');
+    todosBox.toMap().forEach((key, value) {
+      if (value.name == todo.name) {
+        todo.date = date;
+        todosBox.put(key, todo);
+      }
+    });
+    refreshTodosBox();
+    notifyListeners();
+  }
+
   rename(Todo todo, String newName) {
     var todosBox = Hive.box<Todo>('todos');
     todosBox.toMap().forEach((key, value) {
@@ -129,6 +141,30 @@ class TodoProvider with ChangeNotifier {
       var keys = todosBox.toMap().keys.toList();
       for (var i = 0; i < keys.length; i++) {
         todosBox.put(keys[i], _todos[i]);
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    refreshTodosBox();
+    notifyListeners();
+  }
+
+  sortDate() {
+    var todosBox = Hive.box<Todo>('todos');
+    //_todos.sort((a, b) => b.date?.millisecondsSinceEpoch ?? 0.compareTo(a.date?.millisecondsSinceEpoch ?? 0));
+    List<Todo> todosSortDate = _todos.where((todo) => todo.date != null).toList();
+    todosSortDate.sort(((a, b) => a.date!.compareTo(b.date!)));
+    List<Todo> todosNullDate = _todos.where((todo) => todo.date == null).toList();
+    todosSortDate.addAll(todosNullDate);
+    try {
+      /* int i = 0;
+      todosBox.toMap().keys.forEach((key) {
+        todosBox.put(key, _todos[i]);
+        i++;
+      }); */
+      var keys = todosBox.toMap().keys.toList();
+      for (var i = 0; i < keys.length; i++) {
+        todosBox.put(keys[i], todosSortDate[i]);
       }
     } catch (e) {
       log(e.toString());
