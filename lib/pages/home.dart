@@ -490,8 +490,6 @@ class BannerConfirmDelete {
   }
 } */
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -603,24 +601,19 @@ class _HomeState extends State<Home> {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(
-        title: filterTag == null ? const Text('To-Do') : Text('To-Do: ${filterTag!.name}'),
+        title: filterTag == null ? const Text('To-Do') : Text(filterTag!.name),
         actions: [
           Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: Text('${countRatioItemsDone(todos)}/${todos.length}'),
-            ),
+            child: Text('${countRatioItemsDone(todos)}/${todos.length}'),
           ),
           IconButton(
             onPressed: () {
-              setState(() {
-                resetTextField();
-                setState(() => filterPriority = !filterPriority);
-              });
+              resetTextField();
+              setState(() => filterPriority = !filterPriority);
             },
             icon: Icon(Icons.stars, color: filterPriority ? Colors.amber : null),
           ),
-          if (filterTag == null)
+          if (filterTag == null) ...[
             PopupMenuButton<Tag>(
               child: const Icon(Icons.label_outline),
               onCanceled: () => resetTextField(),
@@ -643,12 +636,13 @@ class _HomeState extends State<Home> {
                         ))
                     .toList();
               },
-            )
-          else
+            ),
+          ] else ...[
             IconButton(
               onPressed: () => setState(() => filterTag = null),
               icon: const Icon(Icons.label_off_outlined),
             ),
+          ],
           PopupMenuButton<Menu>(
             onCanceled: () => resetTextField(),
             onSelected: (Menu item) {
@@ -710,28 +704,68 @@ class _HomeState extends State<Home> {
           int itemsDone = items.where((item) => item.done == true).length;
           todo.ratioItemsDone = items.isEmpty ? 0 : items.length / itemsDone;
           return Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8),
             decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
             ),
             key: UniqueKey(),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Container(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    /*  if (todo.date != null)
+                      InputChip(
+                        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                        avatar: const Icon(Icons.today),
+                        //label: Text(DateFormat.yMd().format(todo.date!)),
+                        label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
+                      ),
+                    const Spacer(), */
+                    IconButton(
+                      onPressed: textFieldAddVisible
+                          ? null
+                          : () =>
+                              context.read<TodoProvider>().updatePrirority(todo, !todo.priority),
+                      icon: Icon(
+                        Icons.star,
+                        color: todo.priority ? Colors.amber : Colors.grey,
+                      ),
+                    ),
+                    if (!filterPriority && !textFieldAddVisible && filterTag == null) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(right: 4),
+                        child: ReorderableDragStartListener(
+                          index: index,
+                          enabled: !filterPriority && !textFieldAddVisible,
+                          child: const Icon(Icons.unfold_more),
+                        ),
+                      )
+                    ],
+                  ],
+                ),
+                ExpansionTile(
+                  initiallyExpanded: todoSelect == todo && !textFieldAddVisible,
+                  tilePadding: const EdgeInsets.only(left: 8, right: 4),
+                  //backgroundColor: Colors.teal[50],
+                  onExpansionChanged: ((value) {
+                    //setState(() => textFieldAddVisible = false);
+                    if (todoSelect == null || todoSelect?.name != todo.name) {
+                      resetTextField();
+                      setState(() => todoSelect = todo);
+                    } else {
+                      resetTextField();
+                    }
+                  }),
+                  leading: Container(
                     width: 40,
                     height: 40,
                     decoration: const BoxDecoration(
                       color: Colors.teal,
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 10,
-                          offset: Offset(2, 2),
-                        )
+                        BoxShadow(color: Colors.black38, blurRadius: 10, offset: Offset(0, 2))
                       ],
                     ),
                     child: IconButton(
@@ -744,198 +778,135 @@ class _HomeState extends State<Home> {
                       color: Colors.white,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  subtitle: Row(
                     children: [
-                      ExpansionTile(
-                        initiallyExpanded: todoSelect == todo && !textFieldAddVisible,
-                        tilePadding: const EdgeInsets.only(left: 16, right: 8),
-                        //backgroundColor: Colors.teal[50],
-                        onExpansionChanged: ((value) {
-                          //setState(() => textFieldAddVisible = false);
-                          if (todoSelect == null || todoSelect?.name != todo.name) {
-                            resetTextField();
-                            setState(() => todoSelect = todo);
-                          } else {
-                            resetTextField();
-                          }
-                        }),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Row(
-                            children: [
-                              if (items.isNotEmpty) ...[
-                                Text(
-                                  '$itemsDone/${items.length}',
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontFeatures: [
-                                      FontFeature.enable('frac'),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: LinearProgressIndicator(
-                                      value: itemsDone / items.length,
-                                      //minHeight: 1,
-                                    ),
-                                  ),
-                                )
-                              ] else ...[
-                                const Text('Empty task')
-                              ],
-                            ],
+                      if (items.isNotEmpty) ...[
+                        Text('$itemsDone/${items.length}'),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: LinearProgressIndicator(value: itemsDone / items.length),
                           ),
-                        ),
-                        title: todoEdit?.name == todo.name && todoSelect?.name == todo.name
-                            ? TextField(
-                                autofocus: true,
-                                onChanged: (value) => setState(() => errorDuple = null),
-                                controller: textFieldEditController,
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  //filled: true,
-                                  //fillColor: Colors.teal[50],
-                                  labelText: 'New Name for ${todo.name}',
-                                  errorText: errorDuple,
-                                  suffixIcon: IconButton(
-                                    onPressed: textFieldEditController.text.isEmpty
-                                        ? null
-                                        : () {
-                                            if (todos.any((todo) =>
-                                                todo.name == textFieldEditController.text)) {
-                                              setState(() => errorDuple = 'Task duple');
-                                            } else {
-                                              renameTodo(
-                                                  context, todo, textFieldEditController.text);
-                                            }
-                                          },
-                                    icon: const Icon(Icons.published_with_changes),
-                                  ),
-                                ),
-                              )
-                            : Text(
-                                todo.name,
-                                style: Theme.of(context).typography.white.headlineSmall,
-                              ),
-                        //textColor: Theme.of(context).expansionTileTheme.textColor,
-                        //textColor: Colors.red,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                                  if (todoEdit == null || todoEdit!.name != todo.name) {
-                                    setState(() => todoEdit = todo);
-                                  } else {
-                                    setState(() => todoEdit = null);
-                                  }
-                                  textFieldEditController.clear();
-                                  setState(() => errorDuple = null);
-                                },
-                                icon: const Icon(Icons.edit),
-                              ),
-                              PopupMenuButton<Tag>(
-                                child: const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: Icon(Icons.label_outline),
-                                ),
-                                //onCanceled: () => resetTextField(),
-                                onSelected: (Tag tag) =>
-                                    context.read<TodoProvider>().updateTag(todo, tag),
-                                itemBuilder: (BuildContext context) {
-                                  List<Tag> tags = [...Tag.values];
-                                  tags.sort(((a, b) => a.name.compareTo(b.name)));
-                                  return tags
-                                      .map((tag) => PopupMenuItem<Tag>(
-                                            value: tag,
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.label,
-                                                    color: AppColor
-                                                        .tagColors[Tag.values.indexOf(tag)]),
-                                                Text(tag.name),
-                                              ],
-                                            ),
-                                          ))
-                                      .toList();
-                                },
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  await selectDate(context, todo);
-                                },
-                                icon: const Icon(Icons.today),
-                              ),
-                              IconButton(
-                                onPressed: () async {
-                                  resetTextField();
-                                  BannerConfirmDelete(context: context, todo: todo).showBanner();
-                                  setState(() => todoSelect = todo);
-                                },
-                                icon: const Icon(Icons.delete),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Wrap(
-                          alignment: WrapAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              //padding: const EdgeInsets.only(left: 16),
-                              width: 140,
-                              alignment: Alignment.centerLeft,
-                              child: InputChip(
-                                avatar: Icon(Icons.label, color: todo.tag.color),
-                                label: Text(todo.tag.name),
-                              ),
+                        )
+                      ] else ...[
+                        const Text('Empty task')
+                      ],
+                    ],
+                  ),
+                  title: todoEdit?.name == todo.name && todoSelect?.name == todo.name
+                      ? TextField(
+                          autofocus: true,
+                          onChanged: (value) => setState(() => errorDuple = null),
+                          controller: textFieldEditController,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            //filled: true,
+                            //fillColor: Colors.teal[50],
+                            labelText: 'New Name for ${todo.name}',
+                            errorText: errorDuple,
+                            suffixIcon: IconButton(
+                              onPressed: textFieldEditController.text.isEmpty
+                                  ? null
+                                  : () {
+                                      if (todos.any(
+                                          (todo) => todo.name == textFieldEditController.text)) {
+                                        setState(() => errorDuple = 'Task duple');
+                                      } else {
+                                        renameTodo(context, todo, textFieldEditController.text);
+                                      }
+                                    },
+                              icon: const Icon(Icons.published_with_changes),
                             ),
-                            if (todo.date != null)
-                              SizedBox(
-                                width: 120,
-                                child: InputChip(
-                                  avatar: const Icon(Icons.today),
-                                  //label: Text(DateFormat.yMd().format(todo.date!)),
-                                  label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
-                                ),
-                              ),
-                          ],
+                          ),
+                        )
+                      : Text(
+                          todo.name,
+                          style: Theme.of(context).typography.white.headlineSmall,
                         ),
-                      ),
-                    ],
-                  ),
+                  //textColor: Theme.of(context).expansionTileTheme.textColor,
+                  //textColor: Colors.red,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+                            if (todoEdit == null || todoEdit!.name != todo.name) {
+                              setState(() => todoEdit = todo);
+                            } else {
+                              setState(() => todoEdit = null);
+                            }
+                            textFieldEditController.clear();
+                            setState(() => errorDuple = null);
+                          },
+                          icon: const Icon(Icons.edit),
+                        ),
+                        PopupMenuButton<Tag>(
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Icon(Icons.label_outline),
+                          ),
+                          //onCanceled: () => resetTextField(),
+                          onSelected: (Tag tag) =>
+                              context.read<TodoProvider>().updateTag(todo, tag),
+                          itemBuilder: (BuildContext context) {
+                            List<Tag> tags = [...Tag.values];
+                            tags.sort(((a, b) => a.name.compareTo(b.name)));
+                            return tags
+                                .map((tag) => PopupMenuItem<Tag>(
+                                      value: tag,
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.label,
+                                              color: AppColor.tagColors[Tag.values.indexOf(tag)]),
+                                          Text(tag.name),
+                                        ],
+                                      ),
+                                    ))
+                                .toList();
+                          },
+                        ),
+                        IconButton(
+                          onPressed: () async => await selectDate(context, todo),
+                          icon: const Icon(Icons.today),
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            resetTextField();
+                            BannerConfirmDelete(context: context, todo: todo).showBanner();
+                            setState(() => todoSelect = todo);
+                          },
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 10),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: textFieldAddVisible
-                            ? null
-                            : () =>
-                                context.read<TodoProvider>().updatePrirority(todo, !todo.priority),
-                        icon: Icon(
-                          Icons.star,
-                          color: todo.priority ? Colors.amber : Colors.grey,
-                        ),
-                      ),
-                      if (!filterPriority && !textFieldAddVisible)
-                        ReorderableDragStartListener(
-                          index: index,
-                          enabled: !filterPriority && !textFieldAddVisible,
-                          child: const Icon(Icons.unfold_more),
-                        ),
-                    ],
+                /* Align(
+                  alignment: Alignment.topRight,
+                  child: InputChip(
+                    visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                    avatar: Icon(Icons.label, color: todo.tag.color),
+                    label: Text(todo.tag.name),
                   ),
+                ), */
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  children: [
+                    InputChip(
+                      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                      avatar: Icon(Icons.label, color: todo.tag.color),
+                      label: Text(todo.tag.name),
+                    ),
+                    if (todo.date != null)
+                      InputChip(
+                        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                        avatar: const Icon(Icons.today),
+                        //label: Text(DateFormat.yMd().format(todo.date!)),
+                        label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
+                      ),
+                  ],
                 ),
               ],
             ),

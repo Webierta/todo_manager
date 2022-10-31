@@ -152,7 +152,15 @@ class _TodoPageState extends State<TodoPage> {
                       onTap: () => toggleItem(context, todo, item),
                       selected: itemSelect?.name == item.name,
                       //selectedTileColor: Colors.teal[50],
-                      title: Text(item.name),
+                      textColor: item.done ? Colors.grey : Colors.black,
+                      title: Text(
+                        item.name,
+                        style: TextStyle(
+                            fontStyle: item.done ? FontStyle.italic : null,
+                            decoration:
+                                item.done ? TextDecoration.lineThrough : TextDecoration.none,
+                            decorationColor: Colors.red),
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
