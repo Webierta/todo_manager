@@ -1,0 +1,54 @@
+{   
+    "idioma": "Language",
+    "version": "Version",
+    "sortAZ": "Sort A-Z",
+    "sortDone": "Sort by not Done",
+    "sortDate": "Sort by Date",
+    "deleteAll": "Delete All",
+    "newTask": "New Task",
+    "repeTask" : "Repeated Task",
+    "emptyTask" : "Empty Task",
+    "newName": "New name for",
+    "deleteTask": "Delete this task?",
+    "deleteAllTasks" : "Delete all Tasks?",
+    "cancel": "Cancel",
+    "confirm": "Confirm",    
+    "onDate": "{date}",
+    "@onDate": {
+        "placeholders": {
+            "date": {
+                "type": "DateTime",
+                "format": "yMMMd"
+            }
+        }
+    },
+    "checkAll": "Mark all",
+    "uncheckAll": "Uncheck all",
+    "deleteItems": "Delete items",
+    "repeItem": "Repeated Item",
+    "newItem": "New Item",
+    "deleteAllItems": "Delete all items?",
+
+    "personal" : "personal",  
+    "work": "work",
+    "shopping": "shopping",
+    "idea": "idea", 
+    "project": "project",
+    "meeting": "meeting", 
+    "event": "event",
+    "anniversary": "anniversary", 
+    "family": "family",  
+    "friends": "friends", 
+    "social": "social",  
+    "house": "house", 
+    "community": "community",  
+    "business": "business",  
+    "party": "party",  
+    "holidays": "holidays",  
+    "finance": "finance", 
+    "health": "health",  
+    "sport": "sport",  
+    "nature": "nature", 
+    "pet": "pet"
+
+}

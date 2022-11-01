@@ -1,0 +1,53 @@
+{   
+    "idioma": "Idioma",
+    "version": "Versión",
+    "sortAZ": "Ordenar A-Z",
+    "sortDone": "Ordenar por Pendiente",
+    "sortDate": "Ordenar por Fecha",
+    "deleteAll": "Eliminar Todo",
+    "newTask": "Nueva Tarea",
+    "repeTask" : "Tarea Repetida",
+    "emptyTask" : "Tarea Vacía",
+    "newName": "Nuevo nombre para",
+    "deleteTask": "¿Eliminar esta tarea?",
+    "deleteAllTasks" : "¿Eliminar todas las tareas?",
+    "cancel": "Cancelar",
+    "confirm": "Aceptar",
+    "onDate": "{date}",
+    "@onDate": { 
+        "placeholders": {
+            "date": {
+                "type": "DateTime",
+                "format": "yMMMd"
+            }
+        }
+    },
+    "checkAll": "Marcar Todo",
+    "uncheckAll": "Desmarcar Todo",
+    "deleteItems": "Eliminar ítems",
+    "repeItem": "Ítem Repetido",
+    "newItem": "Nuevo Ítem",
+    "deleteAllItems": "¿Eliminar todos los ítems?",
+
+    "personal" : "personal",  
+    "work": "trabajo",
+    "shopping": "compras",
+    "idea": "idea", 
+    "project": "proyecto",
+    "meeting": "reunión", 
+    "event": "evento",
+    "anniversary": "aniversario", 
+    "family": "familia",  
+    "friends": "amigos", 
+    "social": "social",  
+    "house": "casa", 
+    "community": "comunidad",  
+    "business": "negocio",  
+    "party": "fiesta",  
+    "holidays": "vacaciones",  
+    "finance": "finanzas", 
+    "health": "salud",  
+    "sport": "deporte",  
+    "nature": "naturaleza", 
+    "pet": "mascota"
+}

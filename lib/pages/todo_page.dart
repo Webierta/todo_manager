@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -43,6 +44,7 @@ class _TodoPageState extends State<TodoPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations appLang = AppLocalizations.of(context)!;
     List<Todo> todos = context.watch<TodoProvider>().todos;
     Todo todo = todos.firstWhere((to) => to.name == widget.todo.name);
     List<Item> items = todo.items;
@@ -78,10 +80,9 @@ class _TodoPageState extends State<TodoPage> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
-              const PopupMenuItem<MenuItem>(value: MenuItem.checkAll, child: Text('Check All')),
-              const PopupMenuItem<MenuItem>(value: MenuItem.uncheckAll, child: Text('Uncheck All')),
-              const PopupMenuItem<MenuItem>(
-                  value: MenuItem.deleteAll, child: Text('Eliminar Ítems')),
+              PopupMenuItem<MenuItem>(value: MenuItem.checkAll, child: Text(appLang.checkAll)),
+              PopupMenuItem<MenuItem>(value: MenuItem.uncheckAll, child: Text(appLang.uncheckAll)),
+              PopupMenuItem<MenuItem>(value: MenuItem.deleteAll, child: Text(appLang.deleteItems)),
             ],
           ),
         ],
@@ -108,7 +109,7 @@ class _TodoPageState extends State<TodoPage> {
                         : () {
                             if (todo.items
                                 .any((item) => item.name == textFieldAddItemController.text)) {
-                              setState(() => errorDuple = 'Item duple');
+                              setState(() => errorDuple = appLang.repeItem);
                             } else {
                               addItem(context, todo, textFieldAddItemController.text);
                             }
@@ -264,14 +265,15 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   deleteAll(BuildContext context, Todo todo) {
+    AppLocalizations appLang = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
-        content: const Text('¿Eliminar todas los Ítems?'),
+        content: Text(appLang.deleteAllItems),
         leading: const Icon(Icons.delete_forever),
         actions: <Widget>[
           TextButton(
             onPressed: () => ScaffoldMessenger.of(context).hideCurrentMaterialBanner(),
-            child: const Text('Cancel'),
+            child: Text(appLang.cancel),
           ),
           TextButton(
             onPressed: () async {
@@ -283,7 +285,7 @@ class _TodoPageState extends State<TodoPage> {
                 removeItem(context, todo, todo.items[i]);
               }
             },
-            child: const Text('Ok'),
+            child: Text(appLang.confirm),
           ),
         ],
       ),

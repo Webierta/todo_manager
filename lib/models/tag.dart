@@ -93,6 +93,7 @@ extension TagExtension on Tag {
   Color get color {
     for (var i = 0; i < Tag.values.length; i++) {
       if (this == Tag.values[i]) {
+        assert(AppColor.tagColors.length >= Tag.values.length);
         return AppColor.tagColors[i];
       }
     }
