@@ -72,24 +72,6 @@ enum Tag {
 }
 
 extension TagExtension on Tag {
-  //String get name => describeEnum(this);
-  //String get name => this.name;
-  /* String get name {
-    switch (this) {
-      case Tag.personal:
-        return 'Personal';
-      case Tag.work:
-        return 'Work';
-      default:
-        return 'Personal';
-    }    
-  } */
-
-  /* get sorted {
-    var x = Tag.values.sort(((a, b) => a.name.compareTo(b.name)));
-    return x;
-  } */
-
   Color get color {
     for (var i = 0; i < Tag.values.length; i++) {
       if (this == Tag.values[i]) {
@@ -98,52 +80,5 @@ extension TagExtension on Tag {
       }
     }
     return Colors.blue;
-
-    /* switch (this) {
-      case Tag.personal:
-        return Colors.red;
-      case Tag.work:
-        return Colors.blue;
-      case Tag.shopping:
-        return Colors.amber;
-      case Tag.idea:
-        return Colors.yellowAccent;
-      case Tag.project:
-        return Colors.indigo;
-      case Tag.meeting:
-        return Colors.purple;
-      case Tag.event:
-        return Colors.green;
-      case Tag.anniversary:
-        return Colors.amber;
-      case Tag.family:
-        return Colors.red;
-      case Tag.friends:
-        return Colors.green;
-      case Tag.social:
-        return Colors.amber;
-      case Tag.house:
-        return Colors.red;
-      case Tag.community:
-        return Colors.green;
-      case Tag.business:
-        return Colors.amber;
-      case Tag.party:
-        return Colors.red;
-      case Tag.holidays:
-        return Colors.green;
-      case Tag.finance:
-        return Colors.amber;
-      case Tag.health:
-        return Colors.green;
-      case Tag.sport:
-        return Colors.amber;
-      case Tag.nature:
-        return Colors.red;
-      case Tag.pet:
-        return Colors.green;
-      default:
-        return Colors.blue;
-    } */
   }
 }

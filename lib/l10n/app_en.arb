@@ -12,7 +12,8 @@
     "deleteTask": "Delete this task?",
     "deleteAllTasks" : "Delete all Tasks?",
     "cancel": "Cancel",
-    "confirm": "Confirm",    
+    "confirm": "Confirm",   
+
     "onDate": "{date}",
     "@onDate": {
         "placeholders": {
@@ -29,26 +30,17 @@
     "newItem": "New Item",
     "deleteAllItems": "Delete all items?",
 
-    "personal" : "personal",  
-    "work": "work",
-    "shopping": "shopping",
-    "idea": "idea", 
-    "project": "project",
-    "meeting": "meeting", 
-    "event": "event",
-    "anniversary": "anniversary", 
-    "family": "family",  
-    "friends": "friends", 
-    "social": "social",  
-    "house": "house", 
-    "community": "community",  
-    "business": "business",  
-    "party": "party",  
-    "holidays": "holidays",  
-    "finance": "finance", 
-    "health": "health",  
-    "sport": "sport",  
-    "nature": "nature", 
-    "pet": "pet"
+    "tag": "{name, select, personal{personal} work{work} shopping{shopping} idea{idea} project{project} meeting{meeting} event{event} anniversary{anniversary} family{family} friends{friends} social{social} house{house} community{community} business{business} party{party} holidays{holidays} finance{finance} health{health} sport{sport} nature{nature} pet{pet} other{personal}}",
+    "@tag": {   
+    "placeholders": {
+        "name": {}
+        }
+    },
 
+    "nothingTodo": "Nothing\nTo Do",
+
+    "info": "Info",
+    "about": "About",
+    "support": "Support",
+    "exit": "Exit"
 }

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
+import '../widgets/nothing_bear.dart';
 
 enum MenuItem { checkAll, uncheckAll, deleteAll }
 
@@ -82,124 +83,123 @@ class _TodoPageState extends State<TodoPage> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
               PopupMenuItem<MenuItem>(value: MenuItem.checkAll, child: Text(appLang.checkAll)),
               PopupMenuItem<MenuItem>(value: MenuItem.uncheckAll, child: Text(appLang.uncheckAll)),
+              const PopupMenuDivider(),
               PopupMenuItem<MenuItem>(value: MenuItem.deleteAll, child: Text(appLang.deleteItems)),
             ],
           ),
         ],
       ),
-      body: Column(
-        children: [
-          if (textFieldAddItemVisible)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: TextField(
-                autofocus: true,
-                onChanged: (value) {
-                  setState(() => errorDuple = null);
-                },
-                controller: textFieldAddItemController,
-                decoration: InputDecoration(
-                  //filled: true,
-                  //fillColor: Colors.teal[50],
-                  labelText: 'New Item',
-                  errorText: errorDuple,
-                  suffixIcon: IconButton(
-                    onPressed: textFieldAddItemController.text.isEmpty
-                        ? null
-                        : () {
-                            if (todo.items
-                                .any((item) => item.name == textFieldAddItemController.text)) {
-                              setState(() => errorDuple = appLang.repeItem);
-                            } else {
-                              addItem(context, todo, textFieldAddItemController.text);
-                            }
-                          },
-                    icon: const Icon(Icons.add),
+      body: items.isEmpty && !textFieldAddItemVisible
+          ? const NothingBear()
+          : Column(
+              children: [
+                if (textFieldAddItemVisible)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                    child: TextField(
+                      autofocus: true,
+                      onChanged: (value) => setState(() => errorDuple = null),
+                      controller: textFieldAddItemController,
+                      decoration: InputDecoration(
+                        labelText: appLang.newItem,
+                        errorText: errorDuple,
+                        suffixIcon: IconButton(
+                          onPressed: textFieldAddItemController.text.isEmpty
+                              ? null
+                              : () {
+                                  if (todo.items.any(
+                                      (item) => item.name == textFieldAddItemController.text)) {
+                                    setState(() => errorDuple = appLang.repeItem);
+                                  } else {
+                                    addItem(context, todo, textFieldAddItemController.text);
+                                  }
+                                },
+                          icon: const Icon(Icons.add),
+                        ),
+                      ),
+                    ),
+                  ),
+                Expanded(
+                  child: AnimatedList(
+                    key: keyAnimated,
+                    controller: scrollController,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(bottom: 80),
+                    initialItemCount: items.length,
+                    itemBuilder: (BuildContext context, int index, animation) {
+                      if (items.isEmpty) return const Text('');
+                      var item = items[index];
+                      return SlideTransition(
+                        position: animation.drive(
+                            Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0))
+                                .chain(CurveTween(curve: Curves.ease))),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 1000),
+                          curve: Curves.easeInOut,
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          decoration: BoxDecoration(
+                            color: itemSelect?.name == item.name
+                                ? null
+                                : item.done
+                                    ? Colors.black12
+                                    : null,
+                            border: const Border(
+                              bottom: BorderSide(color: Colors.grey, width: 0.3),
+                            ),
+                          ),
+                          child: ListTile(
+                            enabled: !textFieldAddItemVisible,
+                            onTap: () => toggleItem(context, todo, item),
+                            selected: itemSelect?.name == item.name,
+                            //selectedTileColor: Colors.teal[50],
+                            textColor: item.done ? Colors.grey : Colors.black,
+                            title: Text(
+                              item.name,
+                              style: TextStyle(
+                                  fontStyle: item.done ? FontStyle.italic : null,
+                                  decoration:
+                                      item.done ? TextDecoration.lineThrough : TextDecoration.none,
+                                  decorationColor: Colors.red),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (itemSelect?.name == item.name)
+                                  IconButton(
+                                    onPressed: () => removeItem(context, todo, item),
+                                    icon: const Icon(Icons.delete),
+                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: item.done
+                                      ? const Icon(Icons.check_box)
+                                      : const Icon(Icons.check_box_outline_blank),
+                                ),
+                                IconButton(
+                                  onPressed: textFieldAddItemVisible
+                                      ? null
+                                      : () {
+                                          if (itemSelect == null || itemSelect?.name != item.name) {
+                                            resetTextFieldAddItem();
+                                            setState(() => itemSelect = item);
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .removeCurrentMaterialBanner();
+                                            setState(() => itemSelect = null);
+                                          }
+                                        },
+                                  icon: const Icon(Icons.more_vert),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              ),
+              ],
             ),
-          //if (items.isEmpty) const Text('Tarea sin ítems'),
-          Expanded(
-            child: AnimatedList(
-              key: keyAnimated,
-              controller: scrollController,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(bottom: 80),
-              initialItemCount: items.length,
-              itemBuilder: (BuildContext context, int index, animation) {
-                if (items.isEmpty) return const Text('');
-                var item = items[index];
-                return SlideTransition(
-                  position: animation.drive(
-                      Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0))
-                          .chain(CurveTween(curve: Curves.ease))),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 1000),
-                    curve: Curves.easeInOut,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: itemSelect?.name == item.name
-                          ? null
-                          : item.done
-                              ? Colors.black12
-                              : null,
-                      border: const Border(
-                        bottom: BorderSide(color: Colors.grey, width: 0.3),
-                      ),
-                    ),
-                    child: ListTile(
-                      enabled: !textFieldAddItemVisible,
-                      onTap: () => toggleItem(context, todo, item),
-                      selected: itemSelect?.name == item.name,
-                      //selectedTileColor: Colors.teal[50],
-                      textColor: item.done ? Colors.grey : Colors.black,
-                      title: Text(
-                        item.name,
-                        style: TextStyle(
-                            fontStyle: item.done ? FontStyle.italic : null,
-                            decoration:
-                                item.done ? TextDecoration.lineThrough : TextDecoration.none,
-                            decorationColor: Colors.red),
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (itemSelect?.name == item.name)
-                            IconButton(
-                              onPressed: () => removeItem(context, todo, item),
-                              icon: const Icon(Icons.delete),
-                            ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: item.done
-                                ? const Icon(Icons.check_box)
-                                : const Icon(Icons.check_box_outline_blank),
-                          ),
-                          IconButton(
-                            onPressed: textFieldAddItemVisible
-                                ? null
-                                : () {
-                                    if (itemSelect == null || itemSelect?.name != item.name) {
-                                      resetTextFieldAddItem();
-                                      setState(() => itemSelect = item);
-                                    } else {
-                                      ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                                      setState(() => itemSelect = null);
-                                    }
-                                  },
-                            icon: const Icon(Icons.more_vert),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => resetTextFieldAddItem(visible: !textFieldAddItemVisible),
         mini: true,
@@ -219,20 +219,21 @@ class _TodoPageState extends State<TodoPage> {
       indice = 0;
     }
     int position = todo.items.length - todo.items.where((it) => it.done == true).length;
-
     //scrollController.jumpTo(position.toDouble() * 60);
-    // crollController.position.maxScrollExtent  // minScrollExtent // scrollController.initialScrollOffset,
-    scrollController
-        .animateTo(
-          //indice * 50.toDouble(),
-          position.toDouble() * 50,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease,
-        )
-        .whenComplete(() => keyAnimated.currentState?.insertItem(
-              indice,
-              duration: const Duration(milliseconds: 500),
-            ));
+    // crollController.position.maxScrollExtent
+    // minScrollExtent // scrollController.initialScrollOffset,
+    if (scrollController.hasClients) {
+      scrollController
+          .animateTo(
+            position.toDouble() * 50,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+          )
+          .whenComplete(() => keyAnimated.currentState?.insertItem(
+                indice,
+                duration: const Duration(milliseconds: 500),
+              ));
+    }
     //keyAnimated.currentState?.insertItem(indice, duration: const Duration(milliseconds: 500));
   }
 
@@ -261,7 +262,9 @@ class _TodoPageState extends State<TodoPage> {
         ),
       );
     }, duration: const Duration(milliseconds: 500));
-    context.read<TodoProvider>().removeItem(todo, item);
+    Future.delayed(const Duration(milliseconds: 500), () {
+      context.read<TodoProvider>().removeItem(todo, item);
+    });
   }
 
   deleteAll(BuildContext context, Todo todo) {

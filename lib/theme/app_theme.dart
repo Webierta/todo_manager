@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:todo_manager/theme/app_color.dart';
 
 class AppTheme {
   AppTheme();
@@ -15,36 +16,31 @@ class AppTheme {
   static ThemeData? lightTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.light,
-    primaryColor: Colors.teal,
-    primarySwatch: Colors.teal,
-    inputDecorationTheme: InputDecorationTheme(
+    primaryColor: AppColor.primaryColor,
+    primarySwatch: AppColor.primarySwatch,
+    inputDecorationTheme: const InputDecorationTheme(
       filled: true,
-      fillColor: Colors.teal[50],
+      fillColor: AppColor.primary50,
     ),
-    listTileTheme: ListTileThemeData(
-      selectedTileColor: Colors.teal[50],
+    listTileTheme: const ListTileThemeData(
+      selectedTileColor: AppColor.primary50,
     ),
-    expansionTileTheme: ExpansionTileThemeData(
-      textColor: Colors.teal,
-      backgroundColor: Colors.teal[50],
+    expansionTileTheme: const ExpansionTileThemeData(
+      textColor: AppColor.primaryColor,
+      backgroundColor: AppColor.primary50,
       collapsedBackgroundColor: Colors.transparent,
     ),
     chipTheme: const ChipThemeData(
       labelStyle: TextStyle(
-        //fontFamily: 'RobotoMono',
-        fontFeatures: [
-          FontFeature.tabularFigures(),
-        ],
+        fontFeatures: [FontFeature.tabularFigures()],
         fontSize: 12,
         fontWeight: FontWeight.w700,
         color: Color(0xFF212121),
       ),
     ),
     typography: Typography(
-      // FontFeature.enable('frac')
       white: const TextTheme(
         headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
-        //labelSmall: TextStyle(fontSize: 11),
       ),
     ),
   );

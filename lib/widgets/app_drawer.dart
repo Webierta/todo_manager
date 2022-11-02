@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -23,16 +24,6 @@ class AppDrawer extends StatelessWidget {
                     children: const [],
                   ),
                 ),
-                // Page Info
-                //ListTile(),
-                // const Divider(),
-                // Page About
-                //ListTile(),
-                // const Divider(),
-                // Page Support
-                // ListTile(),
-                // const Divider(),
-                // Idioma
                 ListTile(
                   leading: const Icon(Icons.language),
                   minLeadingWidth: 20,
@@ -42,13 +33,6 @@ class AppDrawer extends StatelessWidget {
                       value: context.watch<AppLocale>().locale.languageCode,
                       onChanged: (String? value) =>
                           context.read<AppLocale>().changeLocale(Locale(value!)),
-                      /* items: ['en', 'es'].map((lang) {
-                        String flag = lang == 'es' ? '🇪🇸' : '🇬🇧';
-                        return DropdownMenuItem<String>(
-                          value: lang,
-                          child: Text(flag),
-                        );
-                      }).toList(), */
                       items: LanguageData.langs
                           .map((lang) => DropdownMenuItem<String>(
                                 value: lang.languageCode,
@@ -60,9 +44,28 @@ class AppDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                // const Divider(),
-                // Theme
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.info_outline),
+                  title: Text(appLang.info),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.code),
+                  title: Text(appLang.about),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.local_cafe_outlined),
+                  title: Text(appLang.support),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.exit_to_app),
+                  title: Text(appLang.exit),
+                  onTap: () async {
+                    Navigator.of(context).pop();
+                    SystemNavigator.pop();
+                  },
+                ),
               ],
             ),
           ),

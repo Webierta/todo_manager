@@ -13,6 +13,7 @@
     "deleteAllTasks" : "¿Eliminar todas las tareas?",
     "cancel": "Cancelar",
     "confirm": "Aceptar",
+
     "onDate": "{date}",
     "@onDate": { 
         "placeholders": {
@@ -28,26 +29,18 @@
     "repeItem": "Ítem Repetido",
     "newItem": "Nuevo Ítem",
     "deleteAllItems": "¿Eliminar todos los ítems?",
+   
+    "tag": "{name, select, personal{personal} work{trabajo} shopping{compras} idea{idea} project{proyecto} meeting{reunión} event{evento} anniversary{aniversario} family{familia} friends{amigos} social{social} house{casa} community{comunidad} business{negocio} party{fiesta} holidays{vacaciones} finance{finanzas} health{salud} sport{deporte} nature{naturaleza} pet{mascota} other{personal}}",
+    "@tag": {   
+    "placeholders": {
+        "name": {}
+        }
+    },
 
-    "personal" : "personal",  
-    "work": "trabajo",
-    "shopping": "compras",
-    "idea": "idea", 
-    "project": "proyecto",
-    "meeting": "reunión", 
-    "event": "evento",
-    "anniversary": "aniversario", 
-    "family": "familia",  
-    "friends": "amigos", 
-    "social": "social",  
-    "house": "casa", 
-    "community": "comunidad",  
-    "business": "negocio",  
-    "party": "fiesta",  
-    "holidays": "vacaciones",  
-    "finance": "finanzas", 
-    "health": "salud",  
-    "sport": "deporte",  
-    "nature": "naturaleza", 
-    "pet": "mascota"
+    "nothingTodo": "Nada\npor hacer",
+
+    "info": "Info",
+    "about": "Acerca de",
+    "support": "Colaborar",
+    "exit": "Salir"
 }
