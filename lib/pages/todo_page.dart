@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/item.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
+import '../router/routes_const.dart';
 import '../widgets/nothing_bear.dart';
 
 enum MenuItem { checkAll, uncheckAll, deleteAll }
@@ -50,24 +51,38 @@ class _TodoPageState extends State<TodoPage> {
     Todo todo = todos.firstWhere((to) => to.name == widget.todo.name);
     List<Item> items = todo.items;
     int itemsDone = items.where((item) => item.done == true).length;
+    todo.ratioItemsDone = items.isEmpty ? 0 : itemsDone / items.length;
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
             ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-            context.go('/');
+            context.go(homePage);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: Text(todo.name),
         actions: [
-          Center(
+          /* Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 12),
               child: Text('$itemsDone/${items.length}'),
             ),
+          ), */
+          /* Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: Text(todo.displayRatioPercentage()),
+            ),
+          ), */
+          InputChip(
+            labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+            label: Text('$itemsDone/${items.length}'),
           ),
+          InputChip(
+              labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+              label: Text(todo.displayRatioPercentage())),
           PopupMenuButton<MenuItem>(
             onCanceled: () => resetTextFieldAddItem(),
             onSelected: (MenuItem item) {

@@ -27,4 +27,9 @@ class Todo {
   Todo({required this.name, this.priority = false});
 
   double ratioItemsDone = 0;
+
+  String displayRatioPercentage() {
+    RegExp regex = RegExp(r'([.]*0+)(?!.*\d)');
+    return '${(ratioItemsDone * 100).toStringAsFixed(2).replaceAll(regex, '')}%';
+  }
 }

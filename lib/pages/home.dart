@@ -7,6 +7,7 @@ import '../models/item.dart';
 import '../models/tag.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
+import '../router/routes_const.dart';
 import '../theme/app_color.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/nothing_bear.dart';
@@ -103,8 +104,12 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: filterTag == null ? const Text('To-Do') : Text(filterTag!.name),
         actions: [
-          Center(
+          /* Center(
             child: Text('${countRatioItemsDone(todos)}/${todos.length}'),
+          ), */
+          InputChip(
+            labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+            label: Text('${countRatioItemsDone(todos)}/${todos.length}'),
           ),
           IconButton(
             onPressed: () {
@@ -205,7 +210,8 @@ class _HomeState extends State<Home> {
                 var todo = todos[index];
                 List<Item> items = todo.items;
                 int itemsDone = items.where((item) => item.done == true).length;
-                todo.ratioItemsDone = items.isEmpty ? 0 : items.length / itemsDone;
+                //todo.ratioItemsDone = items.isEmpty ? 0 : items.length / itemsDone;
+                todo.ratioItemsDone = items.isEmpty ? 0 : itemsDone / items.length;
                 return Container(
                   padding: const EdgeInsets.all(8),
                   decoration: const BoxDecoration(
@@ -267,7 +273,7 @@ class _HomeState extends State<Home> {
                             onPressed: () {
                               ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                               setState(() => todoEdit = null);
-                              context.go('/todo_page', extra: todo);
+                              context.go(todoPage, extra: todo);
                             },
                             icon: iconStatus(todo.ratioItemsDone),
                             color: Colors.white,
@@ -279,10 +285,13 @@ class _HomeState extends State<Home> {
                               Text('$itemsDone/${items.length}'),
                               Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left: 10),
+                                  padding: const EdgeInsets.symmetric(horizontal: 8),
                                   child: LinearProgressIndicator(value: itemsDone / items.length),
                                 ),
-                              )
+                              ),
+                              //Text('${(itemsDone / items.length) * 100}%'),
+                              //Text('${(todo.ratioItemsDone * 100).toStringAsFixed(2).replaceAll(RegExp(r'([.]*00)(?!.*\d)'), '')}%'),
+                              Text(todo.displayRatioPercentage()),
                             ] else ...[
                               Text(appLang.emptyTask)
                             ],
@@ -418,12 +427,23 @@ class _HomeState extends State<Home> {
     );
   }
 
-  int countRatioItemsDone(List<Todo> todos) {
+  /* int countRatioItemsDone(List<Todo> todos) {
     int count = 0;
     for (var todo in todos) {
       List<Item> items = todo.items;
       int itemsDone = items.where((item) => item.done == true).length;
       todo.ratioItemsDone = items.isEmpty ? 0 : items.length / itemsDone;
+      if (todo.ratioItemsDone == 1) count++;
+    }
+    return count;
+  } */
+
+  int countRatioItemsDone(List<Todo> todos) {
+    int count = 0;
+    for (var todo in todos) {
+      List<Item> items = todo.items;
+      int itemsDone = items.where((item) => item.done == true).length;
+      todo.ratioItemsDone = items.isEmpty ? 0 : itemsDone / items.length;
       if (todo.ratioItemsDone == 1) count++;
     }
     return count;
@@ -452,6 +472,9 @@ class _HomeState extends State<Home> {
     context.read<TodoProvider>().add(newTodo);
     if (filterTag != null) {
       context.read<TodoProvider>().updateTag(newTodo, filterTag!);
+    }
+    if (filterPriority) {
+      context.read<TodoProvider>().updatePrirority(newTodo, filterPriority);
     }
     resetTextField();
   }

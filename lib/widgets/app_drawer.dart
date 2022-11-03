@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/app_locale.dart';
 import '../l10n/language_data.dart';
+import '../router/routes_const.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -26,7 +28,6 @@ class AppDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(Icons.language),
-                  minLeadingWidth: 20,
                   title: Text(appLang.idioma),
                   trailing: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
@@ -46,12 +47,28 @@ class AppDrawer extends StatelessWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  leading: const Icon(Icons.home),
+                  title: Text(appLang.home),
+                  onTap: (() {
+                    Navigator.of(context).pop();
+                    context.go(homePage);
+                  }),
+                ),
+                ListTile(
                   leading: const Icon(Icons.info_outline),
                   title: Text(appLang.info),
+                  onTap: (() {
+                    Navigator.of(context).pop();
+                    context.go(infoPage);
+                  }),
                 ),
                 ListTile(
                   leading: const Icon(Icons.code),
                   title: Text(appLang.about),
+                  onTap: (() {
+                    Navigator.of(context).pop();
+                    context.go(aboutPage);
+                  }),
                 ),
                 ListTile(
                   leading: const Icon(Icons.local_cafe_outlined),

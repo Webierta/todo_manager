@@ -37,10 +37,14 @@
         }
     },
 
-    "nothingTodo": "Nothing\nTo Do",
-
+    "nothingTodo": "Nothing To Do",
+    
+    "home": "Home",
     "info": "Info",
     "about": "About",
     "support": "Support",
-    "exit": "Exit"
+    "exit": "Exit",
+    "pageNull": "Page Not Found",
+
+    "mdInfo": "*ToDo Manager* is a simple and minimalist application to manage tasks efficiently.\n\nEach task can be classified and filtered according to different criteria:\n- **Favorite**: Featured or urgent tasks. When tasks are filtered by favorites, new tasks are marked with this property.\n- **Label**: Task subject (default: personal). When tasks are filtered by a tag, then new tasks inherit that tag.\n- **Date**: Due date to complete the task (default no date).\n\nTasks can be edited at any time to rename or change their favorite status, tag, or due date.\n\nTasks can be sorted by different criteria:\n- By name (A-Z).\n- By completed status.\n- By date.\n- Manually by dragging and dropping each task .\n\nEach task is made up of a list of items or subtasks to complete. Pending items can be sorted manually, though they always appear above completed items.\n"
 }

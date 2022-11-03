@@ -37,10 +37,14 @@
         }
     },
 
-    "nothingTodo": "Nada\npor hacer",
+    "nothingTodo": "Nada que hacer",
 
+    "home": "Incio",
     "info": "Info",
     "about": "Acerca de",
     "support": "Colaborar",
-    "exit": "Salir"
+    "exit": "Salir",
+    "pageNull": "Página no encontrada",
+
+    "mdInfo": "*ToDo Manager* es una aplicación simple y minimalista para gestionar tareas de forma eficiente.\n\nCada tarea puede clasificarse y filtrarse según distintos criterios:\n- **Favorito**: Tareas destacadas o urgentes. Cuando las tareas se filtran por favoritas, las nuevas tareas se marcan con esta propiedad.\n- **Etiqueta**: Temática de la tarea (por defecto: personal). Cuando las tareas se filtran por una etiqueta, entonces las nuevas tareas heredan esa etiqueta.\n- **Fecha**: Fecha límite para completar la tarea (por defecto sin fecha).\n\nLas tareas pueden editarse en cualquier momento para renombrarlas o cambiar su estado de favorito, su etiqueta o la fecha límite.\n\nLas tareas pueden ordenarse por distintos criterios:\n- Por nombre (A-Z).\n- Por estado completado.\n- Por fecha.\n- Manualmente, arratrando y soltando cada tarea.\n\nCada tarea se compone de una lista de ítems o subtareas para completar. Los ítems pendientes pueden ordenarse manualmente, aunque siempre aparecen sobre los completados.\n"
 }

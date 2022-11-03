@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +11,7 @@ import 'models/item.dart';
 import 'models/tag.dart';
 import 'models/todo.dart';
 import 'models/todo_provider.dart';
-import 'pages/home.dart';
-import 'pages/todo_page.dart';
+import 'router/app_router.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -70,24 +68,7 @@ class _ToDoManagerState extends State<ToDoManager> {
         return supportedLocales.first;
       },
       theme: AppTheme.lightTheme,
-      routerConfig: _router,
+      routerConfig: AppRouter().router,
     );
   }
-
-  final GoRouter _router = GoRouter(
-    routes: <GoRoute>[
-      GoRoute(
-        path: '/',
-        builder: (BuildContext context, GoRouterState state) {
-          return const Home();
-        },
-      ),
-      GoRoute(
-        path: '/todo_page',
-        builder: (BuildContext context, GoRouterState state) {
-          return TodoPage(todo: state.extra as Todo);
-        },
-      ),
-    ],
-  );
 }
