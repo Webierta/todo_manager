@@ -10,9 +10,9 @@ import 'error_screen.dart';
 import 'routes_const.dart';
 
 class AppRouter {
-  get router => _router;
+  static get router => _router;
 
-  final GoRouter _router = GoRouter(
+  static final GoRouter _router = GoRouter(
     routes: <GoRoute>[
       GoRoute(
         path: homePage,

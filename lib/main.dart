@@ -68,7 +68,7 @@ class _ToDoManagerState extends State<ToDoManager> {
         return supportedLocales.first;
       },
       theme: AppTheme.lightTheme,
-      routerConfig: AppRouter().router,
+      routerConfig: AppRouter.router,
     );
   }
 }

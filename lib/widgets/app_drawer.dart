@@ -32,8 +32,9 @@ class AppDrawer extends StatelessWidget {
                   trailing: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: context.watch<AppLocale>().locale.languageCode,
-                      onChanged: (String? value) =>
-                          context.read<AppLocale>().changeLocale(Locale(value!)),
+                      onChanged: (String? value) {
+                        context.read<AppLocale>().changeLocale(Locale(value!));
+                      },
                       items: LanguageData.langs
                           .map((lang) => DropdownMenuItem<String>(
                                 value: lang.languageCode,
@@ -73,6 +74,9 @@ class AppDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.local_cafe_outlined),
                   title: Text(appLang.support),
+                  onTap: (() {
+                    Navigator.of(context).pop();
+                  }),
                 ),
                 const Divider(),
                 ListTile(
