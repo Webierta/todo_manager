@@ -9,7 +9,7 @@ import '../models/todo_provider.dart';
 import '../router/routes_const.dart';
 import '../widgets/nothing_bear.dart';
 
-enum MenuItem { checkAll, uncheckAll, deleteAll }
+enum MenuItem { checkAll, uncheckAll, sortAZ, sortPriority, deleteAll }
 
 class TodoPage extends StatefulWidget {
   final Todo todo;
@@ -24,6 +24,7 @@ class _TodoPageState extends State<TodoPage> {
   String? errorDuple;
   final keyAnimated = GlobalKey<AnimatedListState>();
   Item? itemSelect;
+  Item? itemEdit;
   ScrollController scrollController = ScrollController();
 
   @override
@@ -64,18 +65,6 @@ class _TodoPageState extends State<TodoPage> {
         ),
         title: Text(todo.name),
         actions: [
-          /* Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: Text('$itemsDone/${items.length}'),
-            ),
-          ), */
-          /* Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12),
-              child: Text(todo.displayRatioPercentage()),
-            ),
-          ), */
           InputChip(
             labelPadding: const EdgeInsets.symmetric(horizontal: 0),
             label: Text('$itemsDone/${items.length}'),
@@ -91,11 +80,19 @@ class _TodoPageState extends State<TodoPage> {
                 setState(() => context.read<TodoProvider>().checkAll(todo, true));
               } else if (item == MenuItem.uncheckAll) {
                 setState(() => context.read<TodoProvider>().checkAll(todo, false));
+              } else if (item == MenuItem.sortAZ) {
+                setState(() => context.read<TodoProvider>().sortItemsAZ(todo));
+              } else if (item == MenuItem.sortPriority) {
+                setState(() => context.read<TodoProvider>().sortItemsPriority(todo));
               } else if (item == MenuItem.deleteAll) {
                 deleteAll(context, todo);
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
+              const PopupMenuItem<MenuItem>(value: MenuItem.sortAZ, child: Text('Sort AZ')),
+              const PopupMenuItem<MenuItem>(
+                  value: MenuItem.sortPriority, child: Text('Sort by Priority')),
+              const PopupMenuDivider(),
               PopupMenuItem<MenuItem>(value: MenuItem.checkAll, child: Text(appLang.checkAll)),
               PopupMenuItem<MenuItem>(value: MenuItem.uncheckAll, child: Text(appLang.uncheckAll)),
               const PopupMenuDivider(),
@@ -165,9 +162,14 @@ class _TodoPageState extends State<TodoPage> {
                           child: ListTile(
                             enabled: !textFieldAddItemVisible,
                             onTap: () => toggleItem(context, todo, item),
+                            onLongPress: (() => setPriorityItem(context, todo, item)),
                             selected: itemSelect?.name == item.name,
                             //selectedTileColor: Colors.teal[50],
                             textColor: item.done ? Colors.grey : Colors.black,
+                            minLeadingWidth: 0,
+                            leading: item.priority
+                                ? const Icon(Icons.priority_high, color: Colors.red)
+                                : null,
                             title: Text(
                               item.name,
                               style: TextStyle(
@@ -179,11 +181,18 @@ class _TodoPageState extends State<TodoPage> {
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (itemSelect?.name == item.name)
+                                if (itemSelect?.name == item.name &&
+                                    itemEdit?.name == item.name) ...[
+                                  /* IconButton(
+                                    onPressed: null,
+                                    //onPressed: () => removeItem(context, todo, item),
+                                    icon: const Icon(Icons.edit),
+                                  ), */
                                   IconButton(
                                     onPressed: () => removeItem(context, todo, item),
                                     icon: const Icon(Icons.delete),
                                   ),
+                                ],
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: item.done
@@ -196,11 +205,17 @@ class _TodoPageState extends State<TodoPage> {
                                       : () {
                                           if (itemSelect == null || itemSelect?.name != item.name) {
                                             resetTextFieldAddItem();
-                                            setState(() => itemSelect = item);
+                                            setState(() {
+                                              itemSelect = item;
+                                              itemEdit = item;
+                                            });
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .removeCurrentMaterialBanner();
-                                            setState(() => itemSelect = null);
+                                            setState(() {
+                                              itemSelect = null;
+                                              itemEdit = null;
+                                            });
                                           }
                                         },
                                   icon: const Icon(Icons.more_vert),
@@ -261,6 +276,12 @@ class _TodoPageState extends State<TodoPage> {
       context.read<TodoProvider>().sortItems(todo);
     });
     Future.delayed(const Duration(milliseconds: 1000), (() => setState(() => itemSelect = null)));
+  }
+
+  setPriorityItem(BuildContext context, Todo todo, Item item) {
+    ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+    //setState(() => itemSelect = item);
+    context.read<TodoProvider>().setPriorityItem(todo, item);
   }
 
   removeItem(BuildContext context, Todo todo, Item item) {

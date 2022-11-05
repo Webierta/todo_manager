@@ -10,5 +10,8 @@ class Item {
   @HiveField(1, defaultValue: false)
   bool done;
 
-  Item({required this.name, this.done = false});
+  @HiveField(2, defaultValue: false)
+  bool priority;
+
+  Item({required this.name, this.done = false, this.priority = false});
 }

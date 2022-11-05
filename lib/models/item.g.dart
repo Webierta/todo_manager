@@ -19,17 +19,20 @@ class ItemAdapter extends TypeAdapter<Item> {
     return Item(
       name: fields[0] as String,
       done: fields[1] == null ? false : fields[1] as bool,
+      priority: fields[2] == null ? false : fields[2] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Item obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.done);
+      ..write(obj.done)
+      ..writeByte(2)
+      ..write(obj.priority);
   }
 
   @override

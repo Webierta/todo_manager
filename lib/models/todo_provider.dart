@@ -185,6 +185,18 @@ class TodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  /* renameItem(Todo todo, Item item, String newName) {
+    var todosBox = Hive.box<Todo>('todos');
+    todosBox.toMap().forEach((key, value) {
+      if (value.name == todo.name) {
+        Item itemToggle = todo.items.firstWhere((it) => it.name == item.name);
+        //itemToggle.name = newName;
+      }
+    });
+    refreshTodosBox();
+    notifyListeners();
+  } */
+
   removeItem(Todo todo, Item item) {
     var todosBox = Hive.box<Todo>('todos');
     todosBox.toMap().forEach((key, value) {
@@ -223,6 +235,20 @@ class TodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  setPriorityItem(Todo todo, Item item) {
+    var todosBox = Hive.box<Todo>('todos');
+    todosBox.toMap().forEach((key, value) {
+      if (value.name == todo.name) {
+        Item itemToggle = todo.items.firstWhere((it) => it.name == item.name);
+        itemToggle.priority = !itemToggle.priority;
+        //int indexItem = todo.items.indexWhere((it) => it.name == item.name);
+        //todo.items[indexItem].done = !todo.items[indexItem].done;
+      }
+    });
+    refreshTodosBox();
+    notifyListeners();
+  }
+
   checkAll(Todo todo, bool done) {
     var todosBox = Hive.box<Todo>('todos');
     todosBox.toMap().forEach((key, value) {
@@ -247,5 +273,31 @@ class TodoProvider with ChangeNotifier {
     });
     refreshTodosBox();
     notifyListeners();
+  }
+
+  sortItemsAZ(Todo todo) {
+    var todosBox = Hive.box<Todo>('todos');
+    todo.items.sort((a, b) => a.name.compareTo(b.name));
+    todosBox.toMap().forEach((key, value) {
+      if (value.name == todo.name) {
+        todosBox.put(key, todo);
+      }
+    });
+    sortItems(todo);
+    //refreshTodosBox();
+    //notifyListeners();
+  }
+
+  sortItemsPriority(Todo todo) {
+    var todosBox = Hive.box<Todo>('todos');
+    todo.items.sort((a, b) => b.priority.toString().compareTo(a.priority.toString()));
+    todosBox.toMap().forEach((key, value) {
+      if (value.name == todo.name) {
+        todosBox.put(key, todo);
+      }
+    });
+    sortItems(todo);
+    //refreshTodosBox();
+    //notifyListeners();
   }
 }

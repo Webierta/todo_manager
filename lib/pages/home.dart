@@ -334,11 +334,13 @@ class _HomeState extends State<Home> {
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                                   if (todoEdit == null || todoEdit!.name != todo.name) {
+                                    textFieldEditController.text = todo.name;
                                     setState(() => todoEdit = todo);
                                   } else {
+                                    textFieldEditController.clear();
                                     setState(() => todoEdit = null);
                                   }
-                                  textFieldEditController.clear();
+                                  //textFieldEditController.clear();
                                   setState(() => errorDuple = null);
                                 },
                                 icon: const Icon(Icons.edit),
