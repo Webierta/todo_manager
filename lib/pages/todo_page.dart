@@ -102,7 +102,7 @@ class _TodoPageState extends State<TodoPage> {
         ],
       ),
       body: items.isEmpty && !textFieldAddItemVisible
-          ? const NothingBear()
+          ? const NothingBear(isPageTask: false)
           : Column(
               children: [
                 if (textFieldAddItemVisible)
@@ -171,6 +171,7 @@ class _TodoPageState extends State<TodoPage> {
                                 ? const Icon(Icons.priority_high, color: Colors.red)
                                 : null,
                             title: Text(
+                              //item.priority ? '❗${item.name}' : item.name,
                               item.name,
                               style: TextStyle(
                                   fontStyle: item.done ? FontStyle.italic : null,

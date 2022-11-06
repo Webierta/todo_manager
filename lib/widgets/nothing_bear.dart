@@ -2,11 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NothingBear extends StatelessWidget {
-  const NothingBear({super.key});
+  final bool isPageTask;
+  const NothingBear({super.key, this.isPageTask = true});
 
   @override
   Widget build(BuildContext context) {
     AppLocalizations appLang = AppLocalizations.of(context)!;
+
+    String imageName = 'assets/nothing_bear.png';
+    String text = appLang.nothingTodo;
+    if (!isPageTask) {
+      imageName = 'assets/empty_items.png';
+      text = 'Time to Start';
+    }
+
     /* return Padding(
       padding: const EdgeInsets.symmetric(vertical: 14),
       child: Container(
@@ -38,7 +47,8 @@ class NothingBear extends StatelessWidget {
           children: [
             Expanded(
               child: Image.asset(
-                'assets/nothing_bear.png',
+                //'assets/nothing_bear.png',
+                imageName,
                 fit: BoxFit.contain,
                 color: Colors.white.withOpacity(0.7),
                 colorBlendMode: BlendMode.modulate,
@@ -46,7 +56,7 @@ class NothingBear extends StatelessWidget {
             ),
             const SizedBox(height: 14),
             Text(
-              appLang.nothingTodo,
+              text,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
