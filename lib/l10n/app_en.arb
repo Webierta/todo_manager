@@ -3,7 +3,7 @@
     "version": "Version",
     "sortAZ": "Sort A-Z",
     "sortDone": "Sort by not Done",
-    "sortDate": "Sort by Date",
+    "sortDate": "Sort by Date",    
     "deleteAll": "Delete All",
     "newTask": "New Task",
     "repeTask" : "Repeated Task",
@@ -23,6 +23,8 @@
             }
         }
     },
+    
+    "sortPriority": "Sort by Priority",
     "checkAll": "Mark all",
     "uncheckAll": "Uncheck all",
     "deleteItems": "Delete items",
@@ -38,6 +40,7 @@
     },
 
     "nothingTodo": "Nothing To Do",
+    "horaDeEmpezar": "Time to Start",
     
     "home": "Home",
     "info": "Info",

@@ -23,6 +23,8 @@
             }
         }
     },
+
+    "sortPriority": "Ordenar por Prioridad",
     "checkAll": "Marcar Todo",
     "uncheckAll": "Desmarcar Todo",
     "deleteItems": "Eliminar ítems",
@@ -38,6 +40,7 @@
     },
 
     "nothingTodo": "Nada que hacer",
+    "horaDeEmpezar": "Hora de Empezar",
 
     "home": "Inicio",
     "info": "Info",

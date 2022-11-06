@@ -185,17 +185,17 @@ class TodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /* renameItem(Todo todo, Item item, String newName) {
+  renameItem(Todo todo, Item item, String newName) {
     var todosBox = Hive.box<Todo>('todos');
     todosBox.toMap().forEach((key, value) {
       if (value.name == todo.name) {
         Item itemToggle = todo.items.firstWhere((it) => it.name == item.name);
-        //itemToggle.name = newName;
+        itemToggle.name = newName;
       }
     });
     refreshTodosBox();
     notifyListeners();
-  } */
+  }
 
   removeItem(Todo todo, Item item) {
     var todosBox = Hive.box<Todo>('todos');

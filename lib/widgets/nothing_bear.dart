@@ -13,7 +13,7 @@ class NothingBear extends StatelessWidget {
     String text = appLang.nothingTodo;
     if (!isPageTask) {
       imageName = 'assets/empty_items.png';
-      text = 'Time to Start';
+      text = appLang.horaDeEmpezar;
     }
 
     /* return Padding(

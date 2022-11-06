@@ -7,6 +7,7 @@ import '../models/item.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
 import '../router/routes_const.dart';
+import '../theme/app_color.dart';
 import '../widgets/nothing_bear.dart';
 
 enum MenuItem { checkAll, uncheckAll, sortAZ, sortPriority, deleteAll }
@@ -20,16 +21,19 @@ class TodoPage extends StatefulWidget {
 
 class _TodoPageState extends State<TodoPage> {
   TextEditingController textFieldAddItemController = TextEditingController();
+  TextEditingController textFieldRenameItemController = TextEditingController();
   bool textFieldAddItemVisible = false;
   String? errorDuple;
   final keyAnimated = GlobalKey<AnimatedListState>();
   Item? itemSelect;
   Item? itemEdit;
+  Item? itemRename;
   ScrollController scrollController = ScrollController();
 
   @override
   void dispose() {
     textFieldAddItemController.dispose();
+    textFieldRenameItemController.dispose();
     keyAnimated.currentState?.dispose();
     scrollController.dispose();
     super.dispose();
@@ -42,6 +46,9 @@ class _TodoPageState extends State<TodoPage> {
       textFieldAddItemVisible = visible;
       errorDuple = null;
       itemSelect = null;
+      itemEdit = null;
+      textFieldRenameItemController.clear();
+      itemRename = null;
     });
   }
 
@@ -76,6 +83,7 @@ class _TodoPageState extends State<TodoPage> {
             onCanceled: () => resetTextFieldAddItem(),
             onSelected: (MenuItem item) {
               resetTextFieldAddItem();
+              //resetTextFieldRenameItem();
               if (item == MenuItem.checkAll) {
                 setState(() => context.read<TodoProvider>().checkAll(todo, true));
               } else if (item == MenuItem.uncheckAll) {
@@ -89,9 +97,9 @@ class _TodoPageState extends State<TodoPage> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
-              const PopupMenuItem<MenuItem>(value: MenuItem.sortAZ, child: Text('Sort AZ')),
-              const PopupMenuItem<MenuItem>(
-                  value: MenuItem.sortPriority, child: Text('Sort by Priority')),
+              PopupMenuItem<MenuItem>(value: MenuItem.sortAZ, child: Text(appLang.sortAZ)),
+              PopupMenuItem<MenuItem>(
+                  value: MenuItem.sortPriority, child: Text(appLang.sortPriority)),
               const PopupMenuDivider(),
               PopupMenuItem<MenuItem>(value: MenuItem.checkAll, child: Text(appLang.checkAll)),
               PopupMenuItem<MenuItem>(value: MenuItem.uncheckAll, child: Text(appLang.uncheckAll)),
@@ -147,14 +155,14 @@ class _TodoPageState extends State<TodoPage> {
                                 .chain(CurveTween(curve: Curves.ease))),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 1000),
-                          curve: Curves.easeInOut,
+                          curve: Curves.ease,
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           decoration: BoxDecoration(
                             color: itemSelect?.name == item.name
-                                ? null
+                                ? AppColor.primary50
                                 : item.done
                                     ? Colors.black12
-                                    : null,
+                                    : Colors.transparent,
                             border: const Border(
                               bottom: BorderSide(color: Colors.grey, width: 0.3),
                             ),
@@ -165,35 +173,96 @@ class _TodoPageState extends State<TodoPage> {
                             onLongPress: (() => setPriorityItem(context, todo, item)),
                             selected: itemSelect?.name == item.name,
                             //selectedTileColor: Colors.teal[50],
+                            //selectedColor: Colors.teal[100],
+                            focusColor: Colors.transparent,
                             textColor: item.done ? Colors.grey : Colors.black,
                             minLeadingWidth: 0,
                             leading: item.priority
                                 ? const Icon(Icons.priority_high, color: Colors.red)
                                 : null,
-                            title: Text(
-                              //item.priority ? '❗${item.name}' : item.name,
-                              item.name,
-                              style: TextStyle(
-                                  fontStyle: item.done ? FontStyle.italic : null,
-                                  decoration:
-                                      item.done ? TextDecoration.lineThrough : TextDecoration.none,
-                                  decorationColor: Colors.red),
-                            ),
+                            title: itemRename?.name == item.name
+                                ? TextField(
+                                    autofocus: true,
+                                    onChanged: (value) => setState(() => errorDuple = null),
+                                    controller: textFieldRenameItemController,
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      //filled: true,
+                                      //fillColor: Colors.teal[50],
+                                      labelText: '${appLang.newName} ${item.name}',
+                                      errorText: errorDuple,
+                                      suffixIcon: IconButton(
+                                        onPressed: textFieldRenameItemController.text.isEmpty
+                                            ? null
+                                            : () {
+                                                if (todo.items.any((item) =>
+                                                    item.name ==
+                                                    textFieldRenameItemController.text)) {
+                                                  setState(() => errorDuple = appLang.repeItem);
+                                                } else {
+                                                  renameItem(context, todo, item,
+                                                      textFieldRenameItemController.text);
+                                                }
+                                              },
+                                        icon: const Icon(Icons.published_with_changes),
+                                      ),
+                                    ),
+                                  )
+                                : Text(
+                                    item.name,
+                                    style: TextStyle(
+                                        fontStyle: item.done ? FontStyle.italic : null,
+                                        decoration: item.done
+                                            ? TextDecoration.lineThrough
+                                            : TextDecoration.none,
+                                        decorationColor: Colors.red),
+                                  ),
+                            subtitle: itemEdit?.name == item.name
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 8),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            if (itemRename == null) {
+                                              setState(() => itemRename = item);
+                                            } else {
+                                              setState(() => itemRename = null);
+                                            }
+                                            textFieldRenameItemController.clear();
+                                            setState(() => errorDuple = null);
+                                          },
+                                          child: const Icon(Icons.edit),
+                                        ),
+                                        ElevatedButton(
+                                          child: const Icon(Icons.delete),
+                                          onPressed: () => removeItem(context, todo, item),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : null,
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                if (itemSelect?.name == item.name &&
+                                /* if (itemSelect?.name == item.name &&
                                     itemEdit?.name == item.name) ...[
-                                  /* IconButton(
-                                    onPressed: null,
-                                    //onPressed: () => removeItem(context, todo, item),
+                                  IconButton(
+                                    onPressed: () {
+                                      if (itemRename == null) {
+                                        setState(() => itemRename = item);
+                                      } else {
+                                        setState(() => itemRename = null);
+                                      }
+                                    },
                                     icon: const Icon(Icons.edit),
-                                  ), */
+                                  ),
                                   IconButton(
                                     onPressed: () => removeItem(context, todo, item),
                                     icon: const Icon(Icons.delete),
                                   ),
-                                ],
+                                ], */
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: item.done
@@ -206,17 +275,23 @@ class _TodoPageState extends State<TodoPage> {
                                       : () {
                                           if (itemSelect == null || itemSelect?.name != item.name) {
                                             resetTextFieldAddItem();
+                                            //resetTextFieldRenameItem();
                                             setState(() {
                                               itemSelect = item;
                                               itemEdit = item;
+                                              //textFieldRenameItemController.clear();
                                             });
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .removeCurrentMaterialBanner();
-                                            setState(() {
+                                            resetTextFieldAddItem();
+
+                                            /* setState(() {
                                               itemSelect = null;
                                               itemEdit = null;
-                                            });
+                                              itemRename = null;
+                                              textFieldRenameItemController.clear();
+                                            }); */
                                           }
                                         },
                                   icon: const Icon(Icons.more_vert),
@@ -238,6 +313,47 @@ class _TodoPageState extends State<TodoPage> {
         child: textFieldAddItemVisible ? const Icon(Icons.close) : const Icon(Icons.add),
       ),
     );
+  }
+
+  /* showOptions(BuildContext context, Todo todo, Item item) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(item.name),
+              ListTile(
+                onTap: () => {},
+                leading: const Icon(Icons.edit),
+                title: const Text('Renombrar'),
+              ),
+              ListTile(
+                onTap: () => removeItem(context, todo, item),
+                leading: const Icon(Icons.delete),
+                title: const Text('Eliminar'),
+              ),
+            ],
+          );
+        });
+  } */
+
+  renameItem(BuildContext context, Todo todo, Item item, String name) {
+    context.read<TodoProvider>().renameItem(todo, item, name);
+    /* setState(() {
+      itemRename = null;
+      itemEdit = null;
+      itemSelect = null;
+    }); */
+
+    //resetTextFieldEditItem();
+    resetTextFieldAddItem();
+
+    /* setState(() {
+      textFieldEditItemController.clear();
+      itemSelect = null;
+      itemEdit = null;
+    }); */
   }
 
   addItem(BuildContext context, Todo todo, String name) {
@@ -269,7 +385,8 @@ class _TodoPageState extends State<TodoPage> {
   }
 
   toggleItem(BuildContext context, Todo todo, Item item) {
-    ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+    //ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+    resetTextFieldAddItem();
     setState(() => itemSelect = item);
     context.read<TodoProvider>().toggleItem(todo, item);
     Future.delayed(const Duration(milliseconds: 500), () {
