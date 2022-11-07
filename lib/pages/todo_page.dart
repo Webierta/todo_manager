@@ -248,8 +248,7 @@ class _TodoPageState extends State<TodoPage> {
                                                 itemEdit = item;
                                               });
                                             } else {
-                                              ScaffoldMessenger.of(context)
-                                                  .removeCurrentMaterialBanner();
+                                              //ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                                               resetTextFieldAddItem();
                                             }
                                           },
