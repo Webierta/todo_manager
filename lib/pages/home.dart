@@ -62,7 +62,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget? header(BuildContext context, List<Todo> todos) {
-    //if (!textFieldAddVisible && todoEdit == null) return null;
     if (!textFieldAddVisible) return null;
     AppLocalizations appLang = AppLocalizations.of(context)!;
     return TextField(
@@ -99,15 +98,11 @@ class _HomeState extends State<Home> {
       todos = todos.where((todo) => todo.tag == filterTag).toList();
     }
 
-    bool buttonInactive(Todo todo) {
+    /* bool buttonInactive(Todo todo) {
       if (textFieldAddVisible) return true;
       if (todoSelect == null) return false;
-      if (todoSelect?.name == todo.name) {
-        return false;
-      } else {
-        return true;
-      }
-    }
+      return todoSelect?.name != todo.name;
+    } */
 
     return Scaffold(
       drawer: const AppDrawer(),
@@ -220,14 +215,14 @@ class _HomeState extends State<Home> {
                 todo.ratioItemsDone = items.isEmpty ? 0 : itemsDone / items.length;
                 return InkWell(
                   key: UniqueKey(),
-                  onTap: buttonInactive(todo)
+                  onTap: textFieldAddVisible
                       ? null
                       : () {
                           ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
                           setState(() => todoEdit = null);
                           context.go(todoPage, extra: todo);
                         },
-                  onLongPress: buttonInactive(todo)
+                  onLongPress: textFieldAddVisible
                       ? null
                       : (() => context.read<TodoProvider>().updatePrirority(todo, !todo.priority)),
                   child: Container(
@@ -274,11 +269,12 @@ class _HomeState extends State<Home> {
                                       }
                                     },
                               icon: const Icon(Icons.more_vert),
+                              padding: const EdgeInsets.all(0),
                             ),
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: todoRename?.name == todo.name
                               ? TextField(
                                   autofocus: true,
@@ -310,7 +306,7 @@ class _HomeState extends State<Home> {
                                 ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           child: Row(
                             children: [
                               iconStatus(todo),
@@ -330,28 +326,25 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InputChip(
+                              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                              avatar: Icon(Icons.label, color: todo.tag.color),
+                              label: Text(appLang.tag(todo.tag.name)),
+                              labelPadding: const EdgeInsets.only(right: 0, left: 4),
+                            ),
+                            if (todo.date != null)
                               InputChip(
-                                //visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                avatar: Icon(Icons.label, color: todo.tag.color),
-                                label: Text(appLang.tag(todo.tag.name)),
+                                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                avatar: const Icon(Icons.today),
+                                //label: Text(DateFormat.yMd().format(todo.date!)),
+                                //label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
+                                label: Text(appLang.onDate(todo.date!)),
                                 labelPadding: const EdgeInsets.only(right: 0, left: 4),
                               ),
-                              if (todo.date != null)
-                                InputChip(
-                                  //visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                  avatar: const Icon(Icons.today),
-                                  //label: Text(DateFormat.yMd().format(todo.date!)),
-                                  //label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
-                                  label: Text(appLang.onDate(todo.date!)),
-                                  labelPadding: const EdgeInsets.only(right: 0, left: 4),
-                                ),
-                            ],
-                          ),
+                          ],
                         ),
                         if (todoEdit?.name == todo.name) ...[
                           const Divider(),

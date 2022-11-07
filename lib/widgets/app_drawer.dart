@@ -22,8 +22,65 @@ class AppDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 DrawerHeader(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: AssetImage('assets/esmeralda.jpg'),
+                    ),
+                    //color: AppColor.primaryColor,
+                  ),
                   child: Column(
-                    children: const [],
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FractionallySizedBox(
+                        widthFactor: 0.7,
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            'TO-DO MANAGER',
+                            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                                  color: const Color(0xFFFFFFFF),
+                                  fontWeight: FontWeight.w100,
+                                ),
+                          ),
+                        ),
+                      ),
+                      FractionallySizedBox(
+                        widthFactor: 0.7,
+                        child: FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            'EFFICIENTLY SIMPLE AND MINIMALISTIC',
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge
+                                ?.copyWith(color: const Color(0xFFFFFFFF)),
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        'Copyleft 2022',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall
+                            ?.copyWith(color: const Color(0xFFFFFFFF)),
+                      ),
+                      Text(
+                        'Jesús Cuerda (Webierta)',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall
+                            ?.copyWith(color: const Color(0xFFFFFFFF)),
+                      ),
+                      Text(
+                        'All Wrongs Reserved. Licencia GPLv3',
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall
+                            ?.copyWith(color: const Color(0xFFFFFFFF)),
+                      ),
+                    ],
                   ),
                 ),
                 ListTile(

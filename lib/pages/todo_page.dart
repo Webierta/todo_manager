@@ -61,15 +61,11 @@ class _TodoPageState extends State<TodoPage> {
     int itemsDone = items.where((item) => item.done == true).length;
     todo.ratioItemsDone = items.isEmpty ? 0 : itemsDone / items.length;
 
-    bool buttonInactive(Item item) {
+    /* bool buttonInactive(Item item) {
       if (textFieldAddItemVisible) return true;
       if (itemSelect == null) return false;
-      if (itemSelect?.name == item.name) {
-        return false;
-      } else {
-        return true;
-      }
-    }
+      return itemSelect?.name != item.name;
+    } */
 
     return Scaffold(
       appBar: AppBar(
@@ -161,9 +157,10 @@ class _TodoPageState extends State<TodoPage> {
                             Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0))
                                 .chain(CurveTween(curve: Curves.ease))),
                         child: InkWell(
-                          onTap:
-                              buttonInactive(item) ? null : () => toggleItem(context, todo, item),
-                          onLongPress: buttonInactive(item)
+                          onTap: textFieldAddItemVisible
+                              ? null
+                              : () => toggleItem(context, todo, item),
+                          onLongPress: textFieldAddItemVisible
                               ? null
                               : (() => setPriorityItem(context, todo, item)),
                           child: Container(
@@ -233,7 +230,7 @@ class _TodoPageState extends State<TodoPage> {
                                             ),
                                     ),
                                     IconButton(
-                                      onPressed: buttonInactive(item)
+                                      onPressed: textFieldAddItemVisible
                                           ? null
                                           : () => toggleItem(context, todo, item),
                                       icon: Icon(item.done
