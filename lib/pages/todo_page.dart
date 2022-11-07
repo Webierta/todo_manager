@@ -160,64 +160,69 @@ class _TodoPageState extends State<TodoPage> {
                         position: animation.drive(
                             Tween<Offset>(begin: const Offset(1, 0), end: const Offset(0, 0))
                                 .chain(CurveTween(curve: Curves.ease))),
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: itemSelect?.name == item.name
-                                ? AppColor.primary50
-                                : item.done
-                                    ? Colors.black12
-                                    : Colors.transparent,
-                            border: const Border(
-                              bottom: BorderSide(color: Colors.grey, width: 0.3),
+                        child: InkWell(
+                          onTap:
+                              buttonInactive(item) ? null : () => toggleItem(context, todo, item),
+                          onLongPress: buttonInactive(item)
+                              ? null
+                              : (() => setPriorityItem(context, todo, item)),
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: itemSelect?.name == item.name
+                                  ? AppColor.primary50
+                                  : item.done
+                                      ? Colors.black12
+                                      : Colors.transparent,
+                              border: const Border(
+                                bottom: BorderSide(color: Colors.grey, width: 0.3),
+                              ),
                             ),
-                          ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  if (item.priority) ...[
-                                    const Icon(Icons.priority_high, color: Colors.red)
-                                  ],
-                                  Expanded(
-                                    child: itemRename?.name == item.name
-                                        ? TextField(
-                                            autofocus: true,
-                                            onChanged: (value) => setState(() => errorDuple = null),
-                                            controller: textFieldRenameItemController,
-                                            decoration: InputDecoration(
-                                              isDense: true,
-                                              //filled: true,
-                                              //fillColor: Colors.teal[50],
-                                              labelText: '${appLang.newName} ${item.name}',
-                                              errorText: errorDuple,
-                                              suffixIcon: IconButton(
-                                                onPressed: textFieldRenameItemController
-                                                        .text.isEmpty
-                                                    ? null
-                                                    : () {
-                                                        if (todo.items.any((item) =>
-                                                            item.name ==
-                                                            textFieldRenameItemController.text)) {
-                                                          setState(
-                                                              () => errorDuple = appLang.repeItem);
-                                                        } else {
-                                                          renameItem(context, todo, item,
-                                                              textFieldRenameItemController.text);
-                                                        }
-                                                      },
-                                                icon: const Icon(Icons.published_with_changes),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Row(
+                                  children: [
+                                    Visibility(
+                                      visible: item.priority,
+                                      maintainState: true,
+                                      maintainAnimation: true,
+                                      maintainSize: true,
+                                      child: const Icon(Icons.priority_high, color: Colors.red),
+                                    ),
+                                    Expanded(
+                                      child: itemRename?.name == item.name
+                                          ? TextField(
+                                              autofocus: true,
+                                              onChanged: (value) =>
+                                                  setState(() => errorDuple = null),
+                                              controller: textFieldRenameItemController,
+                                              decoration: InputDecoration(
+                                                isDense: true,
+                                                //filled: true,
+                                                //fillColor: Colors.teal[50],
+                                                labelText: '${appLang.newName} ${item.name}',
+                                                errorText: errorDuple,
+                                                suffixIcon: IconButton(
+                                                  onPressed: textFieldRenameItemController
+                                                          .text.isEmpty
+                                                      ? null
+                                                      : () {
+                                                          if (todo.items.any((item) =>
+                                                              item.name ==
+                                                              textFieldRenameItemController.text)) {
+                                                            setState(() =>
+                                                                errorDuple = appLang.repeItem);
+                                                          } else {
+                                                            renameItem(context, todo, item,
+                                                                textFieldRenameItemController.text);
+                                                          }
+                                                        },
+                                                  icon: const Icon(Icons.published_with_changes),
+                                                ),
                                               ),
-                                            ),
-                                          )
-                                        : InkWell(
-                                            onTap: buttonInactive(item)
-                                                ? null
-                                                : () => toggleItem(context, todo, item),
-                                            onLongPress: buttonInactive(item)
-                                                ? null
-                                                : (() => setPriorityItem(context, todo, item)),
-                                            child: Text(
+                                            )
+                                          : Text(
                                               item.name,
                                               style: TextStyle(
                                                   fontStyle: item.done ? FontStyle.italic : null,
@@ -226,142 +231,43 @@ class _TodoPageState extends State<TodoPage> {
                                                       : TextDecoration.none,
                                                   decorationColor: Colors.red),
                                             ),
-                                          ),
-                                  ),
-                                  IconButton(
-                                    onPressed: buttonInactive(item)
-                                        ? null
-                                        : () => toggleItem(context, todo, item),
-                                    icon: Icon(item.done
-                                        ? Icons.check_box
-                                        : Icons.check_box_outline_blank),
-                                  ),
-                                  IconButton(
-                                    onPressed: textFieldAddItemVisible
-                                        ? null
-                                        : () {
-                                            if (itemSelect == null ||
-                                                itemSelect?.name != item.name) {
-                                              resetTextFieldAddItem();
-                                              setState(() {
-                                                itemSelect = item;
-                                                itemEdit = item;
-                                              });
-                                            } else {
-                                              //ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                                              resetTextFieldAddItem();
-                                            }
-                                          },
-                                    icon: const Icon(Icons.more_vert),
-                                  ),
-                                ],
-                              ),
-                              if (itemEdit?.name == item.name) ...[
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          if (itemRename == null) {
-                                            setState(() => itemRename = item);
-                                          } else {
-                                            setState(() => itemRename = null);
-                                          }
-                                          textFieldRenameItemController.clear();
-                                          setState(() => errorDuple = null);
-                                        },
-                                        child: const Icon(Icons.edit),
-                                      ),
-                                      ElevatedButton(
-                                        child: const Icon(Icons.delete),
-                                        onPressed: () => removeItem(context, todo, item),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-                        /* child: AnimatedContainer(
-                        duration: const Duration(milliseconds: 1000),
-                        curve: Curves.ease,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        decoration: BoxDecoration(
-                          color: itemSelect?.name == item.name
-                              ? AppColor.primary50
-                              : item.done
-                                  ? Colors.black12
-                                  : Colors.transparent,
-                          border: const Border(
-                            bottom: BorderSide(color: Colors.grey, width: 0.3),
-                          ),
-                        ),
-                        child: ListTile(
-                          enabled: !textFieldAddItemVisible,
-                          onTap: () => toggleItem(context, todo, item),
-                          onLongPress: (() => setPriorityItem(context, todo, item)),
-                          selected: itemSelect?.name == item.name,
-                          //selectedTileColor: Colors.teal[50],
-                          //selectedColor: Colors.teal[100],
-                          focusColor: Colors.transparent,
-                          textColor: item.done ? Colors.grey : Colors.black,
-                          minLeadingWidth: 0,
-                          leading: item.priority
-                              ? const Icon(Icons.priority_high, color: Colors.red)
-                              : null,
-                          title: itemRename?.name == item.name
-                              ? TextField(
-                                  autofocus: true,
-                                  onChanged: (value) => setState(() => errorDuple = null),
-                                  controller: textFieldRenameItemController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    //filled: true,
-                                    //fillColor: Colors.teal[50],
-                                    labelText: '${appLang.newName} ${item.name}',
-                                    errorText: errorDuple,
-                                    suffixIcon: IconButton(
-                                      onPressed: textFieldRenameItemController.text.isEmpty
+                                    ),
+                                    IconButton(
+                                      onPressed: buttonInactive(item)
+                                          ? null
+                                          : () => toggleItem(context, todo, item),
+                                      icon: Icon(item.done
+                                          ? Icons.check_box
+                                          : Icons.check_box_outline_blank),
+                                    ),
+                                    IconButton(
+                                      onPressed: textFieldAddItemVisible
                                           ? null
                                           : () {
-                                              if (todo.items.any((item) =>
-                                                  item.name ==
-                                                  textFieldRenameItemController.text)) {
-                                                setState(() => errorDuple = appLang.repeItem);
+                                              if (itemSelect == null ||
+                                                  itemSelect?.name != item.name) {
+                                                resetTextFieldAddItem();
+                                                setState(() {
+                                                  itemSelect = item;
+                                                  itemEdit = item;
+                                                });
                                               } else {
-                                                renameItem(context, todo, item,
-                                                    textFieldRenameItemController.text);
+                                                resetTextFieldAddItem();
                                               }
                                             },
-                                      icon: const Icon(Icons.published_with_changes),
+                                      icon: const Icon(Icons.more_vert),
                                     ),
-                                  ),
-                                )
-                              : Text(
-                                  item.name,
-                                  style: TextStyle(
-                                      fontStyle: item.done ? FontStyle.italic : null,
-                                      decoration: item.done
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none,
-                                      decorationColor: Colors.red),
+                                  ],
                                 ),
-                          subtitle: itemEdit?.name == item.name
-                              ? Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Row(
+                                if (itemEdit?.name == item.name) ...[
+                                  const Divider(),
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
                                       ElevatedButton(
                                         onPressed: () {
-                                          if (itemRename == null) {
-                                            setState(() => itemRename = item);
-                                          } else {
-                                            setState(() => itemRename = null);
-                                          }
+                                          setState(
+                                              () => itemRename = itemRename == null ? item : null);
                                           textFieldRenameItemController.clear();
                                           setState(() => errorDuple = null);
                                         },
@@ -373,41 +279,11 @@ class _TodoPageState extends State<TodoPage> {
                                       ),
                                     ],
                                   ),
-                                )
-                              : null,
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: item.done
-                                    ? const Icon(Icons.check_box)
-                                    : const Icon(Icons.check_box_outline_blank),
-                              ),
-                              IconButton(
-                                onPressed: textFieldAddItemVisible
-                                    ? null
-                                    : () {
-                                        if (itemSelect == null || itemSelect?.name != item.name) {
-                                          resetTextFieldAddItem();
-                                          //resetTextFieldRenameItem();
-                                          setState(() {
-                                            itemSelect = item;
-                                            itemEdit = item;
-                                            //textFieldRenameItemController.clear();
-                                          });
-                                        } else {
-                                          ScaffoldMessenger.of(context)
-                                              .removeCurrentMaterialBanner();
-                                          resetTextFieldAddItem();
-                                        }
-                                      },
-                                icon: const Icon(Icons.more_vert),
-                              )
-                            ],
+                                ],
+                              ],
+                            ),
                           ),
                         ),
-                      ), */
                       );
                     },
                   ),
@@ -423,45 +299,9 @@ class _TodoPageState extends State<TodoPage> {
     );
   }
 
-  /* showOptions(BuildContext context, Todo todo, Item item) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(item.name),
-              ListTile(
-                onTap: () => {},
-                leading: const Icon(Icons.edit),
-                title: const Text('Renombrar'),
-              ),
-              ListTile(
-                onTap: () => removeItem(context, todo, item),
-                leading: const Icon(Icons.delete),
-                title: const Text('Eliminar'),
-              ),
-            ],
-          );
-        });
-  } */
-
   renameItem(BuildContext context, Todo todo, Item item, String name) {
     context.read<TodoProvider>().renameItem(todo, item, name);
-    /* setState(() {
-      itemRename = null;
-      itemEdit = null;
-      itemSelect = null;
-    }); */
-
-    //resetTextFieldEditItem();
     resetTextFieldAddItem();
-
-    /* setState(() {
-      textFieldEditItemController.clear();
-      itemSelect = null;
-      itemEdit = null;
-    }); */
   }
 
   addItem(BuildContext context, Todo todo, String name) {
