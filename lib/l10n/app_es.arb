@@ -49,5 +49,30 @@
     "exit": "Salir",
     "pageNull": "Página no encontrada",
 
-    "mdInfo": "*ToDo Manager* es una aplicación simple y minimalista para gestionar tareas de forma eficiente.\n\nCada tarea puede clasificarse y filtrarse según distintos criterios:\n- **Favorito**: Tareas destacadas o urgentes. Cuando las tareas se filtran por favoritas, las nuevas tareas se marcan con esta propiedad.\n- **Etiqueta**: Temática de la tarea (por defecto: personal). Cuando las tareas se filtran por una etiqueta, entonces las nuevas tareas heredan esa etiqueta.\n- **Fecha**: Fecha límite para completar la tarea (por defecto sin fecha).\n\nLas tareas pueden editarse en cualquier momento para renombrarlas o cambiar su estado de favorito, su etiqueta o la fecha límite.\n\nLas tareas pueden ordenarse por distintos criterios:\n- Por nombre (A-Z).\n- Por estado completado.\n- Por fecha.\n- Manualmente, arratrando y soltando cada tarea.\n\nCada tarea se compone de una lista de ítems o subtareas para completar. Los ítems pendientes pueden ordenarse manualmente, aunque siempre aparecen sobre los completados.\n"
+    "mdInfo": "*ToDo Manager* es una aplicación simple y minimalista para gestionar tareas de forma eficiente.\n\nCada tarea puede clasificarse y filtrarse según distintos criterios:\n- **Favorito**: Tareas destacadas o urgentes. Cuando las tareas se filtran por favoritas, las nuevas tareas se marcan con esta propiedad.\n- **Etiqueta**: Temática de la tarea (por defecto: personal). Cuando las tareas se filtran por una etiqueta, entonces las nuevas tareas heredan esa etiqueta.\n- **Fecha**: Fecha límite para completar la tarea (por defecto sin fecha).\n\nLas tareas pueden editarse en cualquier momento para renombrarlas o cambiar su estado de favorito, su etiqueta o la fecha límite.\n\nLas tareas pueden ordenarse por distintos criterios:\n- Por nombre (A-Z).\n- Por estado completado.\n- Por fecha.\n- Manualmente, arratrando y soltando cada tarea.\n\nCada tarea se compone de una lista de ítems o subtareas para completar. Los ítems pendientes pueden ordenarse manualmente, aunque siempre aparecen sobre los completados.\n",     
+
+     "@_ABOUT_PAGE": {},
+    "about1": "## Autor y Licencia\n\n> Jesús Cuerda (Webierta)\n> Copyleft 2022\n> All Wrongs Reserved. GPLv3 License",
+    "about2": "Esta app se comparte libremente bajo las condiciones de la *GNU General Public License v.3* con la esperanza de que sea útil, pero SIN NINGUNA GARANTÍA.",
+    "about3": "Este programa es **software libre**: usted puede redistribuirlo y modificarlo bajo los términos de la Licencia Pública General GNU publicada por la Fundación para el Software Libre, versión 3 (GPLv3). La Licencia Pública General de GNU no permite incorporar este programa en programas propietarios.",
+    "about4": "Se agradece cualquier sugerencia, crítica, comentario o aviso de error: [contacto vía GitHub](https://github.com/Webierta/todo_manager/issues).",
+    "about5": "Esta App para Android está inspirada en otra aplicación del mismo autor, ToDoList (2019), proyecto totalmente abandonado en la actualidad.",
+    "about6": "Si te gusta esta aplicación, por favor considera hacer una [donación](). Gracias.",
+    "about7": "## Seguridad y Privacidad",
+    "about8": "**Aplicación gratuita y sin publicidad**. No se utiliza ni almacena ningún dato del usuario fuera de su dispositivo. La información se almacena en su dispositivo fuertemente encriptado usando AES 256 CBC con PKCS7.",
+    "about9": "**Software de código abierto** (código fuente en Github), libre de spyware, malware, virus o cualquier proceso que atente contra tu dispositivo o viole tu privacidad.",
+    "about10": "Esta aplicación no extrae ni almacena ninguna información ni requiere ningún permiso extraño, y renuncia a la publicidad y a cualquier mecanismo de seguimiento.",
+    "about11": "## Reconocimientos",    
+    "about12": "* Icono: [Webalys](https://icon-icons.com/users/tEC2Jcsb47Ns1yxQJFdn1/icon-sets/) en Icon-Icons (Free for commercial use).",  
+    "about13": "* Imágenes: [MJ Jin](https://pixabay.com/es/users/la_petite_femme-2212305/) en Pixabay (Pixabay License: Free for commercial use).",  
+    "about14": "* Imagen Drawer: Image by [rawpixel](https://www.freepik.com/author/rawpixel-com) on Freepik (Free license).",
+
+    "@_SUPPORT_PAGE": {},
+    "support1": "TO-DO MANAGER es Software libre y de Código Abierto.\n\nPor favor considera colaborar para mantener activo el desarrollo de esta App.",
+    "support2": "¿Crees que has encontrado un problema? Identificar y corregir errores hace que esta App sea mejor para todos. Informa de un error o sugiere una nueva funcionalidad en [GitHub issues](https://github.com/Webierta/todo_manager/issues).",
+    "support3": "Puedes colaborar con el desarrollo de ésta y otras aplicaciones con una pequeña aportación a mi monedero de Bitcoins o vía PayPal.",
+    "support4": "Escanea este código QR con tu aplicación de cartera:",
+    "support5": "O copia la dirección de mi monedero BTC:",
+    "support6": "Donar vía PayPal (abre el sitio web de pago de PayPal):"
+
 }

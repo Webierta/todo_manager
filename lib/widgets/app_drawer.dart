@@ -133,6 +133,7 @@ class AppDrawer extends StatelessWidget {
                   title: Text(appLang.support),
                   onTap: (() {
                     Navigator.of(context).pop();
+                    context.go(supportPage);
                   }),
                 ),
                 const Divider(),

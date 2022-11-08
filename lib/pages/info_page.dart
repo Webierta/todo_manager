@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 import '../widgets/app_drawer.dart';
+import '../widgets/header_page.dart';
 
 class InfoPage extends StatelessWidget {
   const InfoPage({super.key});
@@ -13,9 +14,12 @@ class InfoPage extends StatelessWidget {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(title: Text(appLang.info)),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Markdown(data: appLang.mdInfo),
+      body: ListView(
+        padding: const EdgeInsets.all(14),
+        children: [
+          const HeaderPage(),
+          MarkdownBody(data: appLang.mdInfo),
+        ],
       ),
     );
   }

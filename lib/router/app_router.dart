@@ -5,6 +5,7 @@ import '../models/todo.dart';
 import '../pages/about_page.dart';
 import '../pages/home.dart';
 import '../pages/info_page.dart';
+import '../pages/support_page.dart';
 import '../pages/todo_page.dart';
 import 'error_screen.dart';
 import 'routes_const.dart';
@@ -36,6 +37,12 @@ class AppRouter {
         path: aboutPage,
         builder: (BuildContext context, GoRouterState state) {
           return const AboutPage();
+        },
+      ),
+      GoRoute(
+        path: supportPage,
+        builder: (BuildContext context, GoRouterState state) {
+          return const SupportPage();
         },
       ),
     ],

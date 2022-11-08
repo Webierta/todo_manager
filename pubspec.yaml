@@ -42,6 +42,7 @@ dependencies:
   hive_generator: ^2.0.0  
   intl: ^0.17.0
   flutter_markdown: ^0.6.12
+  url_launcher: ^6.1.6
 
 dev_dependencies:
   flutter_test:

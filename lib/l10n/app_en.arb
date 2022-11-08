@@ -49,5 +49,30 @@
     "exit": "Exit",
     "pageNull": "Page Not Found",
 
-    "mdInfo": "*ToDo Manager* is a simple and minimalist application to manage tasks efficiently.\n\nEach task can be classified and filtered according to different criteria:\n- **Favorite**: Featured or urgent tasks. When tasks are filtered by favorites, new tasks are marked with this property.\n- **Label**: Task subject (default: personal). When tasks are filtered by a tag, then new tasks inherit that tag.\n- **Date**: Due date to complete the task (default no date).\n\nTasks can be edited at any time to rename or change their favorite status, tag, or due date.\n\nTasks can be sorted by different criteria:\n- By name (A-Z).\n- By completed status.\n- By date.\n- Manually by dragging and dropping each task .\n\nEach task is made up of a list of items or subtasks to complete. Pending items can be sorted manually, though they always appear above completed items.\n"
+    "mdInfo": "*ToDo Manager* is a simple and minimalist application to manage tasks efficiently.\n\nEach task can be classified and filtered according to different criteria:\n- **Favorite**: Featured or urgent tasks. When tasks are filtered by favorites, new tasks are marked with this property.\n- **Label**: Task subject (default: personal). When tasks are filtered by a tag, then new tasks inherit that tag.\n- **Date**: Due date to complete the task (default no date).\n\nTasks can be edited at any time to rename or change their favorite status, tag, or due date.\n\nTasks can be sorted by different criteria:\n- By name (A-Z).\n- By completed status.\n- By date.\n- Manually by dragging and dropping each task .\n\nEach task is made up of a list of items or subtasks to complete. Pending items can be sorted manually, though they always appear above completed items.\n",   
+
+    "@_ABOUT_PAGE": {},
+    "about1": "## Author and License\n\n> Jesús Cuerda (Webierta)\n> Copyleft 2022\n> All Wrongs Reserved. GPLv3 License",
+    "about2": "This app is freely shared under the conditions of the *GNU General Public License v. 3* in the hope that it will be useful, but WITHOUT ANY WARRANTY.",
+    "about3": "This program is **free software**: you may redistribute it and modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 3 (GPLv3).The GNU General Public License does not allow this program to be incorporated into proprietary programs.",
+    "about4": "Any suggestions, criticisms, comments or bug reports are welcome: [contact via GitHub](https://github.com/Webierta/todo_manager/issues).",
+    "about5": "This App for Android is inspired by another app by the same author, ToDoList (2019), project completely abandoned at present.",
+    "about6": "If you like this app, please consider making a [donation](). Thank you.",
+    "about7": "## Security & Privacy",
+    "about8": "**Free app and without advertising**. No user data is used or stored outside of your device. The information is stored on your device strongly encrypted using AES 256 CBC with PKCS7.",
+    "about9": "**Open source software** (source code on Github), free of spyware, malware, viruses or any process that threatens your device or violate your privacy.",
+    "about10": "This app does not extract or store any data or require any strange permissions, and disclaims advertising and any tracking mechanisms.",
+    "about11": "## Acknowledgments",
+    "about12": "* Icon: [Webalys](https://icon-icons.com/users/tEC2Jcsb47Ns1yxQJFdn1/icon-sets/) in Icon-Icons (Free for commercial use).",  
+    "about13": "* Images: [MJ Jin](https://pixabay.com/es/users/la_petite_femme-2212305/) on Pixabay (Pixabay License: Free for commercial use).",  
+    "about14": "* Image Drawer: Image by [rawpixel](https://www.freepik.com/author/rawpixel-com) on Freepik (Free license).",
+
+    "@_SUPPORT_PAGE": {},
+    "support1": "TO-DO MANAGER is Free and Open Source Software.\n\nPlease consider collaborating to keep the development of this App active.",
+    "support2": "Do you think you have found a problem? Identifying and correcting errors makes this App better for everyone. Report a bug or suggest new functionality on [GitHub issues](https://github.com/Webierta/todo_manager/issues).",
+    "support3": "You can collaborate with the development of this and other applications with a small contribution to my Bitcoin wallet or via PayPal.",
+    "support4": "Scan this QR code with your wallet application:",
+    "support5": "Or copy the BTC Wallet Address:",
+    "support6": "Donate via PayPal (opens the PayPal payment website):"
+
 }
