@@ -30,95 +30,108 @@ class SupportPage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
-        drawer: const AppDrawer(),
-        appBar: AppBar(title: Text(appLang.support)),
-        body: ListView(
-          padding: const EdgeInsets.all(14),
-          children: [
-            const HeaderPage(),
-            MarkdownBody(data: appLang.support1),
-            const SizedBox(height: 10.0),
-            MarkdownBody(
-              onTapLink: (text, href, title) => launchweb(href),
-              data: appLang.support2,
-            ),
-            const SizedBox(height: 10.0),
-            MarkdownBody(data: appLang.support3),
-            const SizedBox(height: 10.0),
-            MarkdownBody(data: appLang.support4),
-            const SizedBox(height: 10.0),
-            FractionallySizedBox(
-              widthFactor: 0.4,
-              child: Image.asset('assets/Bitcoin_QR.png'),
-            ),
-            const SizedBox(height: 10.0),
-            MarkdownBody(data: appLang.support5),
-            const SizedBox(height: 10.0),
-            FittedBox(
-              fit: BoxFit.scaleDown,
+    return Scaffold(
+      drawer: const AppDrawer(),
+      appBar: AppBar(title: Text(appLang.support)),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 24),
+        children: [
+          const HeaderPage(),
+          const SizedBox(height: 10.0),
+          MarkdownBody(data: appLang.support1),
+          const SizedBox(height: 10.0),
+          MarkdownBody(
+            onTapLink: (text, href, title) => launchweb(href),
+            data: appLang.support2,
+          ),
+          const SizedBox(height: 10.0),
+          MarkdownBody(data: appLang.support3),
+          const SizedBox(height: 10.0),
+          MarkdownBody(data: appLang.support4),
+          const SizedBox(height: 10.0),
+          /* FractionallySizedBox(
+            widthFactor: 0.4,
+            child: Image.asset('assets/Bitcoin_QR.png'),
+          ), */
+          Image.asset('assets/Bitcoin_QR.png', height: 150),
+          const SizedBox(height: 20.0),
+          MarkdownBody(data: appLang.support5),
+          const SizedBox(height: 10.0),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Container(
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                border: Border.all(color: Colors.black12, style: BorderStyle.solid),
+              ),
               child: Container(
-                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                  border: Border.all(color: Colors.black12, style: BorderStyle.solid),
+                  border: Border.all(color: const Color(0xFFFFFFFF), width: 1),
                 ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                    border: Border.all(color: const Color(0xFFFFFFFF), width: 1),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: const ShapeDecoration(
-                          color: Color(0xFFF5F5F5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(8),
-                              topLeft: Radius.circular(8),
-                              bottomRight: Radius.zero,
-                              topRight: Radius.zero,
-                            ),
-                            side: BorderSide(color: Colors.transparent),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 50,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: const ShapeDecoration(
+                        color: Color(0xFFF5F5F5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8),
+                            topLeft: Radius.circular(8),
+                            bottomRight: Radius.zero,
+                            topRight: Radius.zero,
                           ),
-                        ),
-                        child: const Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            btcAddress,
-                            style: TextStyle(color: Color(0xFF455A64)),
-                          ),
+                          side: BorderSide(color: Colors.transparent),
                         ),
                       ),
-                      SizedBox(
-                        height: 50,
-                        child: IconButton(
-                          icon: const Icon(Icons.copy),
-                          onPressed: () => clipboard(context),
+                      child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          btcAddress,
+                          style: TextStyle(color: Color(0xFF455A64)),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                      child: IconButton(
+                        icon: const Icon(Icons.copy),
+                        onPressed: () => clipboard(context),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
-            MarkdownBody(data: appLang.support6),
-            const SizedBox(height: 10.0),
-            FractionallySizedBox(
-              widthFactor: 0.3,
-              child: ElevatedButton(
+          ),
+          const SizedBox(height: 20.0),
+          MarkdownBody(data: appLang.support6),
+          const SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
                 onPressed: () => launchweb(urlPayPal),
-                child: Image.asset('assets/paypal_logo.png'),
+                child: Image.asset('assets/paypal_logo.png', width: 100),
               ),
+            ],
+          )
+          //Image.asset('assets/paypal_logo.png', height: 65),
+          /* ElevatedButton(
+            onPressed: () => launchweb(urlPayPal),
+            child: Image.asset('assets/paypal_logo.png'),
+          ), */
+          /* FractionallySizedBox(
+            widthFactor: 0.3,
+            child: ElevatedButton(
+              onPressed: () => launchweb(urlPayPal),
+              child: Image.asset('assets/paypal_logo.png'),
             ),
-          ],
-        ),
+          ), */
+        ],
       ),
     );
   }

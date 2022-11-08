@@ -28,6 +28,7 @@ class AboutPage extends StatelessWidget {
         padding: const EdgeInsets.all(14),
         children: [
           const HeaderPage(),
+          const SizedBox(height: 10.0),
           MarkdownBody(data: appLang.about1),
           const SizedBox(height: 10.0),
           MarkdownBody(data: appLang.about2),
