@@ -9,7 +9,14 @@
     "repeTask" : "Repeated Task",
     "emptyTask" : "Empty Task",
     "newName": "New name for",
-    "deleteTask": "Delete this task?",
+    
+    "deleteTask": "Delete this task?: {nameTask}",
+    "@deleteTask" : {     
+        "placeholders": {
+            "nameTask": {}
+        }
+    },
+
     "deleteAllTasks" : "Delete all Tasks?",
     "cancel": "Cancel",
     "confirm": "Confirm",   
@@ -54,6 +61,7 @@
     "importTask": "Import Task",
     "exportOk": "Task saved in",
     "exportError": "Error in the process of exporting task",
+    "exportNullTodoSelect": "First select the task you want to export",
     "importOk": "Task imported successfully",
     "importRepe": "A task with that name already exists",
     "importError": "Error in the process of importing task",
@@ -65,10 +73,10 @@
     "info3": "- **Favorite**: Featured or urgent tasks. When tasks are filtered by favorites, new tasks are marked with this property.",
     "info4": "- **Label**: Task subject (default: personal). When tasks are filtered by a tag, then new tasks inherit that tag.",
     "info5": "- **Date**: Due date to complete the task (default no date).",
-    "info6": "Tasks can be edited at any time to rename or change their tag or due date. A task is marked and unmarked as favorite or starred with a long press.",
+    "info6": "Tasks can be edited at any time to rename or change their tag or due date. A task is marked and unmarked as favorite or starred with a long press.",    
     "info7": "Tasks can be sorted by different criteria: by name, by completed status and by date. They can also be sorted manually by dragging and dropping each task to the desired position.",
-    "info8": "The active task can be exported (as a backup or to share with other users) and recovered through the import process.",
-    "info9": "Each task is made up of a list of items or subtasks to complete. Each subtask is marked and unmarked as a priority with a long press.",   
+    "info8": "The active task can be exported (as a backup or to share with other users) and recovered through the import process. Some versions of Android may deny permission to export and import on SD card.",
+    "info9": "Each task is made up of a list of items or subtasks to complete. A subtask is marked and unmarked as priority with a long press.",   
 
     "@_ABOUT_PAGE": {},
     "about1": "## Author and License\n\n> Jesús Cuerda (Webierta)\n> Copyleft 2022\n> All Wrongs Reserved. GPLv3 License",
@@ -78,7 +86,7 @@
     "about5": "This App for Android is inspired by another app by the same author, ToDoList (2019), project completely abandoned at present.",
     "about6": "If you like this app, please consider making a [donation](). Thank you.",
     "about7": "## Security & Privacy",
-    "about8": "**Free app and without advertising**. No user data is used or stored outside of your device. The information is stored on your device strongly encrypted using AES 256 CBC with PKCS7.",
+    "about8": "**Free app and without advertising**. No user data is used or extracted. All information is stored only on your device.",
     "about9": "**Open source software** (source code on Github), free of spyware, malware, viruses or any process that threatens your device or violate your privacy.",
     "about10": "This app does not extract or store any data or require any strange permissions, and disclaims advertising and any tracking mechanisms.",
     "about11": "## Acknowledgments",

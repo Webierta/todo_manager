@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../models/item.dart';
@@ -157,7 +158,6 @@ class _HomeState extends State<Home> {
           PopupMenuButton<Menu>(
             onCanceled: () => resetTextField(),
             onSelected: (Menu item) {
-              //resetTextField();
               if (item == Menu.sortAZ) {
                 context.read<TodoProvider>().sortAZ();
               } else if (item == Menu.sortDone) {
@@ -167,6 +167,10 @@ class _HomeState extends State<Home> {
               } else if (item == Menu.export) {
                 if (todoSelect != null) {
                   exportTarea(context, todoSelect!);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(appLang.exportNullTodoSelect)),
+                  );
                 }
               } else if (item == Menu.import) {
                 importTarea(context);
@@ -205,7 +209,7 @@ class _HomeState extends State<Home> {
               const PopupMenuDivider(),
               PopupMenuItem<Menu>(
                 value: Menu.export,
-                enabled: todoSelect != null,
+                //enabled: todoSelect != null,
                 child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 2),
                   horizontalTitleGap: 0,
@@ -306,10 +310,6 @@ class _HomeState extends State<Home> {
                               ),
                             ],
                             const Spacer(),
-                            /* IconButton(
-                              onPressed: () => createShareFile(context, todo),
-                              icon: const Icon(Icons.share),
-                            ), */
                             if (!filterPriority &&
                                 !textFieldAddVisible &&
                                 filterTag == null &&
@@ -334,7 +334,6 @@ class _HomeState extends State<Home> {
                                         resetTextField();
                                       }
                                     },
-                              //icon: const Icon(Icons.more_vert),
                               icon: todoSelect?.name == todo.name
                                   ? const Icon(Icons.radio_button_on)
                                   : const Icon(Icons.radio_button_off),
@@ -562,8 +561,13 @@ class _HomeState extends State<Home> {
   exportTarea(BuildContext context, Todo todo) async {
     AppLocalizations appLang = AppLocalizations.of(context)!;
     String? directory = await FilePicker.platform.getDirectoryPath();
-    if (directory != null) {
-      File backupFile = File('$directory/${todo.name}.json');
+    bool storagePermission = await requestStoragePermission();
+    if (directory != null && storagePermission) {
+      String fileName = todo.name;
+      if (fileName.length > 30) {
+        fileName = fileName.substring(0, 30);
+      }
+      File backupFile = File('$directory/$fileName.json');
       try {
         await backupFile.writeAsString(jsonEncode(todo.toJson()));
         if (!mounted) return;
@@ -587,7 +591,8 @@ class _HomeState extends State<Home> {
   importTarea(BuildContext context) async {
     AppLocalizations appLang = AppLocalizations.of(context)!;
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
+    bool storagePermission = await requestStoragePermission();
+    if (result != null && storagePermission) {
       File file = File(result.files.single.path.toString());
       if (!mounted) return;
       List<Todo> todos = context.read<TodoProvider>().todos;
@@ -619,6 +624,16 @@ class _HomeState extends State<Home> {
       );
     }
   }
+
+  Future<bool> requestStoragePermission() async {
+    if (Platform.isAndroid) {
+      PermissionStatus permissionStatus = await Permission.storage.status;
+      if (permissionStatus.isGranted) return true;
+      permissionStatus = await Permission.storage.request();
+      return permissionStatus.isGranted ? true : false;
+    }
+    return true;
+  }
 }
 
 class BannerConfirmDelete {
@@ -628,7 +643,7 @@ class BannerConfirmDelete {
 
   showBanner() {
     AppLocalizations appLang = AppLocalizations.of(context)!;
-    String content = todo != null ? appLang.deleteTask : appLang.deleteAllTasks;
+    String content = todo != null ? appLang.deleteTask(todo!.name) : appLang.deleteAllTasks;
     ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
         padding: const EdgeInsets.all(20),
