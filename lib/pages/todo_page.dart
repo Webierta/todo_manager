@@ -103,14 +103,53 @@ class _TodoPageState extends State<TodoPage> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
-              PopupMenuItem<MenuItem>(value: MenuItem.sortAZ, child: Text(appLang.sortAZ)),
               PopupMenuItem<MenuItem>(
-                  value: MenuItem.sortPriority, child: Text(appLang.sortPriority)),
+                value: MenuItem.sortAZ,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.sort_by_alpha),
+                  title: Text(appLang.sortAZ),
+                ),
+              ),
+              PopupMenuItem<MenuItem>(
+                value: MenuItem.sortPriority,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.priority_high),
+                  title: Text(appLang.sortPriority),
+                ),
+              ),
               const PopupMenuDivider(),
-              PopupMenuItem<MenuItem>(value: MenuItem.checkAll, child: Text(appLang.checkAll)),
-              PopupMenuItem<MenuItem>(value: MenuItem.uncheckAll, child: Text(appLang.uncheckAll)),
+              PopupMenuItem<MenuItem>(
+                value: MenuItem.checkAll,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.check_box_outlined),
+                  title: Text(appLang.checkAll),
+                ),
+              ),
+              PopupMenuItem<MenuItem>(
+                value: MenuItem.uncheckAll,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.check_box_outline_blank),
+                  title: Text(appLang.uncheckAll),
+                ),
+              ),
               const PopupMenuDivider(),
-              PopupMenuItem<MenuItem>(value: MenuItem.deleteAll, child: Text(appLang.deleteItems)),
+              PopupMenuItem<MenuItem>(
+                value: MenuItem.deleteAll,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.delete_forever),
+                  title: Text(appLang.deleteItems),
+                ),
+              ),
             ],
           ),
         ],
@@ -252,7 +291,10 @@ class _TodoPageState extends State<TodoPage> {
                                                 resetTextFieldAddItem();
                                               }
                                             },
-                                      icon: const Icon(Icons.more_vert),
+                                      //icon: const Icon(Icons.more_vert),
+                                      icon: itemSelect?.name == item.name
+                                          ? const Icon(Icons.radio_button_on)
+                                          : const Icon(Icons.radio_button_off),
                                     ),
                                   ],
                                 ),

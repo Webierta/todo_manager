@@ -1,3 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +16,7 @@ import '../theme/app_color.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/nothing_bear.dart';
 
-enum Menu { sortAZ, sortDone, sortDate, deleteAll }
+enum Menu { sortAZ, sortDone, sortDate, export, import, deleteAll }
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -153,23 +157,81 @@ class _HomeState extends State<Home> {
           PopupMenuButton<Menu>(
             onCanceled: () => resetTextField(),
             onSelected: (Menu item) {
-              resetTextField();
+              //resetTextField();
               if (item == Menu.sortAZ) {
                 context.read<TodoProvider>().sortAZ();
               } else if (item == Menu.sortDone) {
                 context.read<TodoProvider>().sortDone();
               } else if (item == Menu.sortDate) {
                 context.read<TodoProvider>().sortDate();
+              } else if (item == Menu.export) {
+                if (todoSelect != null) {
+                  exportTarea(context, todoSelect!);
+                }
+              } else if (item == Menu.import) {
+                importTarea(context);
               } else if (item == Menu.deleteAll) {
                 BannerConfirmDelete(context: context).showBanner();
               }
+              resetTextField();
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-              PopupMenuItem<Menu>(value: Menu.sortAZ, child: Text(appLang.sortAZ)),
-              PopupMenuItem<Menu>(value: Menu.sortDone, child: Text(appLang.sortDone)),
-              PopupMenuItem<Menu>(value: Menu.sortDate, child: Text(appLang.sortDate)),
+              PopupMenuItem<Menu>(
+                value: Menu.sortAZ,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.sort_by_alpha),
+                  title: Text(appLang.sortAZ),
+                ),
+              ),
+              PopupMenuItem<Menu>(
+                value: Menu.sortDone,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.rule),
+                  title: Text(appLang.sortDone),
+                ),
+              ),
+              PopupMenuItem<Menu>(
+                  value: Menu.sortDate,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                    horizontalTitleGap: 0,
+                    leading: const Icon(Icons.today),
+                    title: Text(appLang.sortDate),
+                  )),
               const PopupMenuDivider(),
-              PopupMenuItem<Menu>(value: Menu.deleteAll, child: Text(appLang.deleteAll)),
+              PopupMenuItem<Menu>(
+                value: Menu.export,
+                enabled: todoSelect != null,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.file_download),
+                  title: Text(appLang.exportTask),
+                ),
+              ),
+              PopupMenuItem<Menu>(
+                value: Menu.import,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.file_upload),
+                  title: Text(appLang.importTask),
+                ),
+              ),
+              const PopupMenuDivider(),
+              PopupMenuItem<Menu>(
+                value: Menu.deleteAll,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.delete_forever),
+                  title: Text(appLang.deleteAll),
+                ),
+              ),
             ],
           ),
         ],
@@ -244,6 +306,10 @@ class _HomeState extends State<Home> {
                               ),
                             ],
                             const Spacer(),
+                            /* IconButton(
+                              onPressed: () => createShareFile(context, todo),
+                              icon: const Icon(Icons.share),
+                            ), */
                             if (!filterPriority &&
                                 !textFieldAddVisible &&
                                 filterTag == null &&
@@ -268,7 +334,10 @@ class _HomeState extends State<Home> {
                                         resetTextField();
                                       }
                                     },
-                              icon: const Icon(Icons.more_vert),
+                              //icon: const Icon(Icons.more_vert),
+                              icon: todoSelect?.name == todo.name
+                                  ? const Icon(Icons.radio_button_on)
+                                  : const Icon(Icons.radio_button_off),
                               padding: const EdgeInsets.all(0),
                             ),
                           ],
@@ -488,6 +557,67 @@ class _HomeState extends State<Home> {
     );
     if (!mounted) return;
     context.read<TodoProvider>().updateDate(todo, picked);
+  }
+
+  exportTarea(BuildContext context, Todo todo) async {
+    AppLocalizations appLang = AppLocalizations.of(context)!;
+    String? directory = await FilePicker.platform.getDirectoryPath();
+    if (directory != null) {
+      File backupFile = File('$directory/${todo.name}.json');
+      try {
+        await backupFile.writeAsString(jsonEncode(todo.toJson()));
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${appLang.exportOk} ${backupFile.path}')),
+        );
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(appLang.exportError)),
+        );
+      }
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(appLang.processCancel)),
+      );
+    }
+  }
+
+  importTarea(BuildContext context) async {
+    AppLocalizations appLang = AppLocalizations.of(context)!;
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      File file = File(result.files.single.path.toString());
+      if (!mounted) return;
+      List<Todo> todos = context.read<TodoProvider>().todos;
+      try {
+        Map<String, dynamic> map = jsonDecode(await file.readAsString());
+        Todo todo = Todo.fromJson(map);
+        if (todos.any((to) => to.name == todo.name)) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(appLang.importRepe)),
+          );
+        } else {
+          if (!mounted) return;
+          context.read<TodoProvider>().add(todo);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(appLang.importOk)),
+          );
+        }
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(appLang.importError)),
+        );
+      }
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(appLang.processCancel)),
+      );
+    }
   }
 }
 

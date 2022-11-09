@@ -14,4 +14,13 @@ class Item {
   bool priority;
 
   Item({required this.name, this.done = false, this.priority = false});
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'done': done,
+        'priority': priority,
+      };
+
+  factory Item.fromJson(Map<String, dynamic> json) =>
+      Item(name: json['name'], done: json['done'], priority: json['priority']);
 }
