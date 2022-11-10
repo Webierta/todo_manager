@@ -84,6 +84,15 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
                 ListTile(
+                  leading: const Icon(Icons.home),
+                  title: Text(appLang.home),
+                  onTap: (() {
+                    Navigator.of(context).pop();
+                    context.go(homePage);
+                  }),
+                ),
+                const Divider(),
+                ListTile(
                   leading: const Icon(Icons.language),
                   title: Text(appLang.idioma),
                   trailing: DropdownButtonHideUnderline(
@@ -104,14 +113,6 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
                 const Divider(),
-                ListTile(
-                  leading: const Icon(Icons.home),
-                  title: Text(appLang.home),
-                  onTap: (() {
-                    Navigator.of(context).pop();
-                    context.go(homePage);
-                  }),
-                ),
                 ListTile(
                   leading: const Icon(Icons.info_outline),
                   title: Text(appLang.info),

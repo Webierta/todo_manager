@@ -88,8 +88,6 @@ class _TodoPageState extends State<TodoPage> {
           PopupMenuButton<MenuItem>(
             onCanceled: () => resetTextFieldAddItem(),
             onSelected: (MenuItem item) {
-              resetTextFieldAddItem();
-              //resetTextFieldRenameItem();
               if (item == MenuItem.checkAll) {
                 setState(() => context.read<TodoProvider>().checkAll(todo, true));
               } else if (item == MenuItem.uncheckAll) {
@@ -101,6 +99,7 @@ class _TodoPageState extends State<TodoPage> {
               } else if (item == MenuItem.deleteAll) {
                 deleteAll(context, todo);
               }
+              resetTextFieldAddItem();
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
               PopupMenuItem<MenuItem>(
@@ -201,7 +200,17 @@ class _TodoPageState extends State<TodoPage> {
                               : () => toggleItem(context, todo, item),
                           onLongPress: textFieldAddItemVisible
                               ? null
-                              : (() => setPriorityItem(context, todo, item)),
+                              : () {
+                                  if (itemSelect == null || itemSelect?.name != item.name) {
+                                    resetTextFieldAddItem();
+                                    setState(() {
+                                      itemSelect = item;
+                                      itemEdit = item;
+                                    });
+                                  } else {
+                                    resetTextFieldAddItem();
+                                  }
+                                },
                           child: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
@@ -234,7 +243,7 @@ class _TodoPageState extends State<TodoPage> {
                                                   setState(() => errorDuple = null),
                                               controller: textFieldRenameItemController,
                                               decoration: InputDecoration(
-                                                isDense: true,
+                                                //isDense: true,
                                                 //filled: true,
                                                 //fillColor: Colors.teal[50],
                                                 labelText: '${appLang.newName} ${item.name}',
@@ -268,6 +277,12 @@ class _TodoPageState extends State<TodoPage> {
                                                   decorationColor: Colors.red),
                                             ),
                                     ),
+                                    if (itemEdit?.name == item.name) ...[
+                                      IconButton(
+                                        onPressed: () => resetTextFieldAddItem(),
+                                        icon: const Icon(Icons.expand_less),
+                                      ),
+                                    ],
                                     IconButton(
                                       onPressed: textFieldAddItemVisible
                                           ? null
@@ -276,26 +291,6 @@ class _TodoPageState extends State<TodoPage> {
                                           ? Icons.check_box
                                           : Icons.check_box_outline_blank),
                                     ),
-                                    IconButton(
-                                      onPressed: textFieldAddItemVisible
-                                          ? null
-                                          : () {
-                                              if (itemSelect == null ||
-                                                  itemSelect?.name != item.name) {
-                                                resetTextFieldAddItem();
-                                                setState(() {
-                                                  itemSelect = item;
-                                                  itemEdit = item;
-                                                });
-                                              } else {
-                                                resetTextFieldAddItem();
-                                              }
-                                            },
-                                      //icon: const Icon(Icons.more_vert),
-                                      icon: itemSelect?.name == item.name
-                                          ? const Icon(Icons.radio_button_on)
-                                          : const Icon(Icons.radio_button_off),
-                                    ),
                                   ],
                                 ),
                                 if (itemEdit?.name == item.name) ...[
@@ -303,6 +298,10 @@ class _TodoPageState extends State<TodoPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                     children: [
+                                      ElevatedButton(
+                                        onPressed: () => setPriorityItem(context, todo, item),
+                                        child: const Icon(Icons.priority_high),
+                                      ),
                                       ElevatedButton(
                                         onPressed: () {
                                           setState(
@@ -313,8 +312,8 @@ class _TodoPageState extends State<TodoPage> {
                                         child: const Icon(Icons.edit),
                                       ),
                                       ElevatedButton(
-                                        child: const Icon(Icons.delete),
                                         onPressed: () => removeItem(context, todo, item),
+                                        child: const Icon(Icons.delete),
                                       ),
                                     ],
                                   ),

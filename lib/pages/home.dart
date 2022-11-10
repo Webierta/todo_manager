@@ -290,7 +290,17 @@ class _HomeState extends State<Home> {
                         },
                   onLongPress: textFieldAddVisible
                       ? null
-                      : (() => context.read<TodoProvider>().updatePrirority(todo, !todo.priority)),
+                      : () {
+                          if (todoSelect == null || todoSelect?.name != todo.name) {
+                            resetTextField();
+                            setState(() {
+                              todoSelect = todo;
+                              todoEdit = todo;
+                            });
+                          } else {
+                            resetTextField();
+                          }
+                        },
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -301,80 +311,66 @@ class _HomeState extends State<Home> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Row(
-                          children: [
-                            if (todo.priority) ...[
-                              const Padding(
-                                padding: EdgeInsets.only(left: 8),
-                                child: Icon(Icons.star, color: Colors.amber),
+                        Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: todoRename?.name == todo.name
+                                    ? TextField(
+                                        autofocus: true,
+                                        onChanged: (value) => setState(() => errorDuple = null),
+                                        controller: textFieldEditController,
+                                        decoration: InputDecoration(
+                                          labelText: '${appLang.newName} ${todo.name}',
+                                          errorText: errorDuple,
+                                          suffixIcon: IconButton(
+                                            onPressed: textFieldEditController.text.isEmpty
+                                                ? null
+                                                : () {
+                                                    if (todos.any((todo) =>
+                                                        todo.name ==
+                                                        textFieldEditController.text)) {
+                                                      setState(() => errorDuple = appLang.repeTask);
+                                                    } else {
+                                                      renameTodo(context, todo,
+                                                          textFieldEditController.text);
+                                                    }
+                                                  },
+                                            icon: const Icon(Icons.published_with_changes),
+                                          ),
+                                        ),
+                                      )
+                                    : Text(
+                                        todo.name,
+                                        style: Theme.of(context).typography.white.headlineSmall,
+                                      ),
                               ),
-                            ],
-                            const Spacer(),
-                            if (!filterPriority &&
-                                !textFieldAddVisible &&
-                                filterTag == null &&
-                                todoSelect == null) ...[
-                              ReorderableDragStartListener(
-                                index: index,
-                                enabled: !filterPriority && !textFieldAddVisible,
-                                child: const Icon(Icons.unfold_more),
-                              )
-                            ],
-                            IconButton(
-                              onPressed: textFieldAddVisible
-                                  ? null
-                                  : () {
-                                      if (todoSelect == null || todoSelect?.name != todo.name) {
-                                        resetTextField();
-                                        setState(() {
-                                          todoSelect = todo;
-                                          todoEdit = todo;
-                                        });
-                                      } else {
-                                        resetTextField();
-                                      }
-                                    },
-                              icon: todoSelect?.name == todo.name
-                                  ? const Icon(Icons.radio_button_on)
-                                  : const Icon(Icons.radio_button_off),
-                              padding: const EdgeInsets.all(0),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: todoRename?.name == todo.name
-                              ? TextField(
-                                  autofocus: true,
-                                  onChanged: (value) => setState(() => errorDuple = null),
-                                  controller: textFieldEditController,
-                                  decoration: InputDecoration(
-                                    isDense: true,
-                                    labelText: '${appLang.newName} ${todo.name}',
-                                    errorText: errorDuple,
-                                    suffixIcon: IconButton(
-                                      onPressed: textFieldEditController.text.isEmpty
-                                          ? null
-                                          : () {
-                                              if (todos.any((todo) =>
-                                                  todo.name == textFieldEditController.text)) {
-                                                setState(() => errorDuple = appLang.repeTask);
-                                              } else {
-                                                renameTodo(
-                                                    context, todo, textFieldEditController.text);
-                                              }
-                                            },
-                                      icon: const Icon(Icons.published_with_changes),
-                                    ),
-                                  ),
-                                )
-                              : Text(
-                                  todo.name,
-                                  style: Theme.of(context).typography.white.headlineSmall,
+                              if (todo.priority) ...[
+                                const Icon(Icons.star, color: Colors.amber),
+                              ],
+                              if (todoEdit?.name == todo.name) ...[
+                                IconButton(
+                                  onPressed: () => resetTextField(),
+                                  padding: const EdgeInsets.all(0),
+                                  icon: const Icon(Icons.expand_less),
                                 ),
+                              ],
+                              if (!filterPriority &&
+                                  !textFieldAddVisible &&
+                                  filterTag == null &&
+                                  todoSelect == null) ...[
+                                ReorderableDragStartListener(
+                                  index: index,
+                                  enabled: !filterPriority && !textFieldAddVisible,
+                                  child: const Icon(Icons.unfold_more),
+                                )
+                              ],
+                            ],
+                          ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.all(6),
                           child: Row(
                             children: [
                               iconStatus(todo),
@@ -394,31 +390,42 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            InputChip(
-                              visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                              avatar: Icon(Icons.label, color: todo.tag.color),
-                              label: Text(appLang.tag(todo.tag.name)),
-                              labelPadding: const EdgeInsets.only(right: 0, left: 4),
-                            ),
-                            if (todo.date != null)
+                        Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                               InputChip(
                                 visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                avatar: const Icon(Icons.today),
-                                //label: Text(DateFormat.yMd().format(todo.date!)),
-                                //label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
-                                label: Text(appLang.onDate(todo.date!)),
+                                avatar: Icon(Icons.label, color: todo.tag.color),
+                                label: Text(appLang.tag(todo.tag.name)),
                                 labelPadding: const EdgeInsets.only(right: 0, left: 4),
                               ),
-                          ],
+                              if (todo.date != null)
+                                InputChip(
+                                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                  avatar: const Icon(Icons.today),
+                                  //label: Text(DateFormat.yMd().format(todo.date!)),
+                                  //label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
+                                  label: Text(appLang.onDate(todo.date!)),
+                                  labelPadding: const EdgeInsets.only(right: 0, left: 4),
+                                ),
+                            ],
+                          ),
                         ),
                         if (todoEdit?.name == todo.name) ...[
                           const Divider(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Wrap(
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            alignment: WrapAlignment.spaceBetween,
+                            runSpacing: 10,
                             children: [
+                              ElevatedButton(
+                                onPressed: () => context
+                                    .read<TodoProvider>()
+                                    .updatePrirority(todo, !todo.priority),
+                                child: const Icon(Icons.star),
+                              ),
                               ElevatedButton(
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
@@ -435,7 +442,7 @@ class _HomeState extends State<Home> {
                                   //onCanceled: () => resetTextField(),
                                   onSelected: (Tag tag) {
                                     context.read<TodoProvider>().updateTag(todo, tag);
-                                    resetTextField();
+                                    //resetTextField();
                                   },
                                   itemBuilder: (BuildContext context) {
                                     List<Tag> tags = [...Tag.values];
@@ -460,7 +467,7 @@ class _HomeState extends State<Home> {
                               ElevatedButton(
                                 onPressed: () async {
                                   await selectDate(context, todo);
-                                  resetTextField();
+                                  //resetTextField();
                                 },
                                 child: const Icon(Icons.today),
                               ),

@@ -73,10 +73,10 @@
     "info3": "- **Favorite**: Featured or urgent tasks. When tasks are filtered by favorites, new tasks are marked with this property.",
     "info4": "- **Label**: Task subject (default: personal). When tasks are filtered by a tag, then new tasks inherit that tag.",
     "info5": "- **Date**: Due date to complete the task (default no date).",
-    "info6": "Tasks can be edited at any time to rename or change their tag or due date. A task is marked and unmarked as favorite or starred with a long press.",    
+    "info6": "A **long press** on a task display **editing options**, to mark it as featured, rename it, change its label, set a due date, or delete the task.",    
     "info7": "Tasks can be sorted by different criteria: by name, by completed status and by date. They can also be sorted manually by dragging and dropping each task to the desired position.",
     "info8": "The active task can be exported (as a backup or to share with other users) and recovered through the import process. Some versions of Android may deny permission to export and import on SD card.",
-    "info9": "Each task is made up of a list of items or subtasks to complete. A subtask is marked and unmarked as priority with a long press.",   
+    "info9": "Each task is made up of a list of items or subtasks to complete. A **long press** on a subtask brings up the **editing options**.",   
 
     "@_ABOUT_PAGE": {},
     "about1": "## Author and License\n\n> Jesús Cuerda (Webierta)\n> Copyleft 2022\n> All Wrongs Reserved. GPLv3 License",
