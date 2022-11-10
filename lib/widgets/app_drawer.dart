@@ -84,6 +84,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
                 ListTile(
+                  horizontalTitleGap: 0,
                   leading: const Icon(Icons.home),
                   title: Text(appLang.home),
                   onTap: (() {
@@ -93,6 +94,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  horizontalTitleGap: 0,
                   leading: const Icon(Icons.language),
                   title: Text(appLang.idioma),
                   trailing: DropdownButtonHideUnderline(
@@ -104,7 +106,8 @@ class AppDrawer extends StatelessWidget {
                       items: LanguageData.langs
                           .map((lang) => DropdownMenuItem<String>(
                                 value: lang.languageCode,
-                                child: Text('${lang.flag}  ${lang.name}'),
+                                child: Text('${lang.flag}  ${lang.languageCode}'),
+                                // ${lang.name.substring(0, 2)}
                               ))
                           .toList(),
                       focusColor: Colors.transparent,
@@ -114,6 +117,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  horizontalTitleGap: 0,
                   leading: const Icon(Icons.info_outline),
                   title: Text(appLang.info),
                   onTap: (() {
@@ -122,6 +126,7 @@ class AppDrawer extends StatelessWidget {
                   }),
                 ),
                 ListTile(
+                  horizontalTitleGap: 0,
                   leading: const Icon(Icons.code),
                   title: Text(appLang.about),
                   onTap: (() {
@@ -130,6 +135,7 @@ class AppDrawer extends StatelessWidget {
                   }),
                 ),
                 ListTile(
+                  horizontalTitleGap: 0,
                   leading: const Icon(Icons.local_cafe_outlined),
                   title: Text(appLang.support),
                   onTap: (() {
@@ -139,6 +145,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 const Divider(),
                 ListTile(
+                  horizontalTitleGap: 0,
                   leading: const Icon(Icons.exit_to_app),
                   title: Text(appLang.exit),
                   onTap: () async {

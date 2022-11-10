@@ -8,7 +8,7 @@
     "newTask": "New Task",
     "repeTask" : "Repeated Task",
     "emptyTask" : "Empty Task",
-    "newName": "New name for",
+    "newName": "New name",
     
     "deleteTask": "Delete this task?: {nameTask}",
     "@deleteTask" : {     

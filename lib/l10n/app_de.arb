@@ -8,7 +8,7 @@
     "newTask": "Neue Aufgabe",
     "repeTask" : "Wiederholte Aufgabe",
     "emptyTask" : "Leere Aufgabe",
-    "newName": "Neuer Name für",
+    "newName": "Neuer Name",
     
     "deleteTask": "Diese Aufgabe abschaffen?: {nameTask}",
     "@deleteTask" : {     

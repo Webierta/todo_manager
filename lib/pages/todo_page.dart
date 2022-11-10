@@ -246,7 +246,7 @@ class _TodoPageState extends State<TodoPage> {
                                                 //isDense: true,
                                                 //filled: true,
                                                 //fillColor: Colors.teal[50],
-                                                labelText: '${appLang.newName} ${item.name}',
+                                                labelText: appLang.newName,
                                                 errorText: errorDuple,
                                                 suffixIcon: IconButton(
                                                   onPressed: textFieldRenameItemController
@@ -294,28 +294,56 @@ class _TodoPageState extends State<TodoPage> {
                                   ],
                                 ),
                                 if (itemEdit?.name == item.name) ...[
-                                  const Divider(),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () => setPriorityItem(context, todo, item),
-                                        child: const Icon(Icons.priority_high),
+                                  Material(
+                                    elevation: 2.0,
+                                    shadowColor: Colors.grey,
+                                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 3),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          MaterialButton(
+                                            onPressed: () => setPriorityItem(context, todo, item),
+                                            shape: const CircleBorder(),
+                                            minWidth: 0,
+                                            padding: const EdgeInsets.all(5),
+                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                            child: const Icon(
+                                              Icons.priority_high,
+                                              color: AppColor.primaryColor,
+                                            ),
+                                          ),
+                                          MaterialButton(
+                                            onPressed: () {
+                                              setState(() =>
+                                                  itemRename = itemRename == null ? item : null);
+                                              textFieldRenameItemController.clear();
+                                              setState(() => errorDuple = null);
+                                            },
+                                            shape: const CircleBorder(),
+                                            minWidth: 0,
+                                            padding: const EdgeInsets.all(5),
+                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                            child: const Icon(
+                                              Icons.edit,
+                                              color: AppColor.primaryColor,
+                                            ),
+                                          ),
+                                          MaterialButton(
+                                            onPressed: () => removeItem(context, todo, item),
+                                            shape: const CircleBorder(),
+                                            minWidth: 0,
+                                            padding: const EdgeInsets.all(5),
+                                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                            child: const Icon(
+                                              Icons.delete,
+                                              color: AppColor.primaryColor,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          setState(
-                                              () => itemRename = itemRename == null ? item : null);
-                                          textFieldRenameItemController.clear();
-                                          setState(() => errorDuple = null);
-                                        },
-                                        child: const Icon(Icons.edit),
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () => removeItem(context, todo, item),
-                                        child: const Icon(Icons.delete),
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ],

@@ -322,7 +322,7 @@ class _HomeState extends State<Home> {
                                         onChanged: (value) => setState(() => errorDuple = null),
                                         controller: textFieldEditController,
                                         decoration: InputDecoration(
-                                          labelText: '${appLang.newName} ${todo.name}',
+                                          labelText: appLang.newName,
                                           errorText: errorDuple,
                                           suffixIcon: IconButton(
                                             onPressed: textFieldEditController.text.isEmpty
@@ -414,72 +414,113 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         if (todoEdit?.name == todo.name) ...[
-                          const Divider(),
-                          Wrap(
-                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            alignment: WrapAlignment.spaceBetween,
-                            runSpacing: 10,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () => context
-                                    .read<TodoProvider>()
-                                    .updatePrirority(todo, !todo.priority),
-                                child: const Icon(Icons.star),
+                          Material(
+                            elevation: 2.0,
+                            shadowColor: Colors.grey,
+                            borderRadius: const BorderRadius.all(Radius.circular(8)),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 3),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  MaterialButton(
+                                    onPressed: () => context
+                                        .read<TodoProvider>()
+                                        .updatePrirority(todo, !todo.priority),
+                                    shape: const CircleBorder(),
+                                    minWidth: 0,
+                                    padding: const EdgeInsets.all(5),
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: const Icon(
+                                      Icons.star,
+                                      color: AppColor.primaryColor,
+                                    ),
+                                  ),
+                                  MaterialButton(
+                                    onPressed: () {
+                                      ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+                                      setState(() => todoRename = todoRename == null ? todo : null);
+                                      textFieldEditController.clear();
+                                      setState(() => errorDuple = null);
+                                    },
+                                    shape: const CircleBorder(),
+                                    minWidth: 0,
+                                    padding: const EdgeInsets.all(5),
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: AppColor.primaryColor,
+                                    ),
+                                  ),
+                                  MaterialButton(
+                                    onPressed: () {},
+                                    shape: const CircleBorder(),
+                                    minWidth: 0,
+                                    padding: const EdgeInsets.all(5),
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: PopupMenuButton<Tag>(
+                                      child: const Icon(
+                                        Icons.label_outline,
+                                        color: AppColor.primaryColor,
+                                      ),
+                                      //onCanceled: () => resetTextField(),
+                                      onSelected: (Tag tag) {
+                                        context.read<TodoProvider>().updateTag(todo, tag);
+                                        //resetTextField();
+                                      },
+                                      itemBuilder: (BuildContext context) {
+                                        List<Tag> tags = [...Tag.values];
+                                        tags.sort(((a, b) =>
+                                            appLang.tag(a.name).compareTo(appLang.tag(b.name))));
+                                        return tags
+                                            .map((tag) => PopupMenuItem<Tag>(
+                                                  value: tag,
+                                                  child: Row(children: [
+                                                    Icon(
+                                                      Icons.label,
+                                                      color: AppColor
+                                                          .tagColors[Tag.values.indexOf(tag)],
+                                                    ),
+                                                    Text(appLang.tag(tag.name))
+                                                  ]),
+                                                ))
+                                            .toList();
+                                      },
+                                    ),
+                                  ),
+                                  MaterialButton(
+                                    onPressed: () async {
+                                      await selectDate(context, todo);
+                                      //resetTextField();
+                                    },
+                                    shape: const CircleBorder(),
+                                    minWidth: 0,
+                                    padding: const EdgeInsets.all(5),
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: const Icon(
+                                      Icons.today,
+                                      color: AppColor.primaryColor,
+                                    ),
+                                  ),
+                                  MaterialButton(
+                                    onPressed: () async {
+                                      resetTextField();
+                                      BannerConfirmDelete(context: context, todo: todo)
+                                          .showBanner();
+                                      setState(() => todoSelect = todo);
+                                    },
+                                    shape: const CircleBorder(),
+                                    minWidth: 0,
+                                    padding: const EdgeInsets.all(5),
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: AppColor.primaryColor,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                                  setState(() => todoRename = todoRename == null ? todo : null);
-                                  textFieldEditController.clear();
-                                  setState(() => errorDuple = null);
-                                },
-                                child: const Icon(Icons.edit),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {},
-                                child: PopupMenuButton<Tag>(
-                                  child: const Icon(Icons.label_outline),
-                                  //onCanceled: () => resetTextField(),
-                                  onSelected: (Tag tag) {
-                                    context.read<TodoProvider>().updateTag(todo, tag);
-                                    //resetTextField();
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    List<Tag> tags = [...Tag.values];
-                                    tags.sort(((a, b) =>
-                                        appLang.tag(a.name).compareTo(appLang.tag(b.name))));
-                                    return tags
-                                        .map((tag) => PopupMenuItem<Tag>(
-                                              value: tag,
-                                              child: Row(children: [
-                                                Icon(
-                                                  Icons.label,
-                                                  color:
-                                                      AppColor.tagColors[Tag.values.indexOf(tag)],
-                                                ),
-                                                Text(appLang.tag(tag.name))
-                                              ]),
-                                            ))
-                                        .toList();
-                                  },
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await selectDate(context, todo);
-                                  //resetTextField();
-                                },
-                                child: const Icon(Icons.today),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  resetTextField();
-                                  BannerConfirmDelete(context: context, todo: todo).showBanner();
-                                  setState(() => todoSelect = todo);
-                                },
-                                child: const Icon(Icons.delete),
-                              ),
-                            ],
+                            ),
                           ),
                         ],
                       ],
