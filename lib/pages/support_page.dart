@@ -26,7 +26,7 @@ class SupportPage extends StatelessWidget {
 
     clipboard(BuildContext context) {
       Clipboard.setData(const ClipboardData(text: btcAddress));
-      var snackBar = const SnackBar(content: Text('BTC Address copied to Clipboard'));
+      var snackBar = SnackBar(content: Text(appLang.copiedClipboard));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
 

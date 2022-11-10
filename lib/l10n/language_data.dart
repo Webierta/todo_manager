@@ -18,9 +18,9 @@ class LanguageData {
 
   static List<LanguageData> _languageList() {
     return <LanguageData>[
+      LanguageData(_countryCodeToFlag('de'), 'Deutsche', 'de'),
       LanguageData(_countryCodeToFlag('gb'), 'English', 'en'),
       LanguageData(_countryCodeToFlag('es'), 'Español', 'es'),
-      //LanguageData(_countryCodeToFlag('de'), 'Deutsche', 'de'),
     ];
   }
 

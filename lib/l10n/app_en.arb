@@ -1,7 +1,7 @@
 {   
     "idioma": "Language",
     "version": "Version",
-    "sortAZ": "Sort A-Z",
+    "sortAZ": "Sort by Name",
     "sortDone": "Sort by not Done",
     "sortDate": "Sort by Date",    
     "deleteAll": "Delete All",
@@ -92,7 +92,7 @@
     "about11": "## Acknowledgments",
     "about12": "* Icon: [Webalys](https://icon-icons.com/users/tEC2Jcsb47Ns1yxQJFdn1/icon-sets/) in Icon-Icons (Free for commercial use).",  
     "about13": "* Images: [MJ Jin](https://pixabay.com/es/users/la_petite_femme-2212305/) on Pixabay (Pixabay License: Free for commercial use).",  
-    "about14": "* Image Drawer: Image by [rawpixel](https://www.freepik.com/author/rawpixel-com) on Freepik (Free license).",
+    "about14": "* Drawer Image: Image by [rawpixel](https://www.freepik.com/author/rawpixel-com) on Freepik (Free license).",
 
     "@_SUPPORT_PAGE": {},
     "support1": "TO-DO MANAGER is Free and Open Source Software.\n\nPlease consider collaborating to keep the development of this App active.",
@@ -100,6 +100,7 @@
     "support3": "You can collaborate with the development of this and other applications with a small contribution to my Bitcoin wallet or via PayPal.",
     "support4": "Scan this QR code with your wallet application:",
     "support5": "Or copy the BTC Wallet Address:",
-    "support6": "Donate via PayPal (opens the PayPal payment website):"
+    "support6": "Donate via PayPal (opens the PayPal payment website):",
+    "copiedClipboard": "BTC Address copied to Clipboard"
 
 }

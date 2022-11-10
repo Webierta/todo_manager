@@ -1,0 +1,106 @@
+{   
+    "idioma": "Idiom",
+    "version": "Version",
+    "sortAZ": "Nach Name sortieren",
+    "sortDone": "Sortieren nach Pending",
+    "sortDate": "Sortieren nach Datum",    
+    "deleteAll": "Alle löschen",
+    "newTask": "Neue Aufgabe",
+    "repeTask" : "Wiederholte Aufgabe",
+    "emptyTask" : "Leere Aufgabe",
+    "newName": "Neuer Name für",
+    
+    "deleteTask": "Diese Aufgabe abschaffen?: {nameTask}",
+    "@deleteTask" : {     
+        "placeholders": {
+            "nameTask": {}
+        }
+    },
+
+    "deleteAllTasks" : "Alle Aufgaben abschaffen?",
+    "cancel": "Abbrechen",
+    "confirm": "Akzeptieren",   
+
+    "onDate": "{date}",
+    "@onDate": {
+        "placeholders": {
+            "date": {
+                "type": "DateTime",
+                "format": "yMMMd"
+            }
+        }
+    },
+    
+    "sortPriority": "Sortieren nach Priorität",
+    "checkAll": "Alle markieren",
+    "uncheckAll": "Alle abwählen",
+    "deleteItems": "Elemente löschen",
+    "repeItem": "Wiederholtes Element",
+    "newItem": "Neues Element",
+    "deleteAllItems": "Alle Elemente entfernen?",
+
+    "tag": "{name, select, personal{persönlich} work{arbeit} shopping{einkaufen} idea{idee} project{projekt} meeting{besprechung} event{veranstaltung} anniversary{jahrestag} family{familie} friends{freunde} social{sozial} house{haus} community{gemeinschaft} business{geschäft} party{party} holidays{urlaub} finance{finanzen} health{gesundheit} sport{sport} nature{natur} pet{haustier} other{persönlich}}",
+    "@tag": {   
+    "placeholders": {
+        "name": {}
+        }
+    },
+
+    "nothingTodo": "Nichts zu tun",
+    "horaDeEmpezar": "Zeit für den Start",
+    
+    "home": "Home",
+    "info": "Info",
+    "about": "Über",
+    "support": "Unterstützung",
+    "exit": "Ausfahrt",
+    "pageNull": "Seite nicht gefunden",
+
+    "@_EXPORT_IMPORT": {},
+    "exportTask": "Aufgabe exportieren",
+    "importTask": "Aufgabe importieren",
+    "exportOk": "Aufgabe gespeichert in",
+    "exportError": "Fehler beim Exportieren der Aufgabe",
+    "exportNullTodoSelect": "Wählen Sie zunächst die Aufgabe aus, die Sie exportieren möchten",
+    "importOk": "Aufgabe erfolgreich importiert",
+    "importRepe": "Eine Aufgabe mit diesem Namen existiert bereits",
+    "importError": "Fehler beim Importieren einer Aufgabe",
+    "processCancel": "Prozess abgebrochen",      
+
+    "@_INFO_PAGE": {},
+    "info1": "*ToDo Manager* ist eine einfache und minimalistische Anwendung zur effizienten Verwaltung von Aufgaben.",
+    "info2": "Jede Aufgabe kann nach verschiedenen Kriterien klassifiziert und gefiltert werden:",
+    "info3": "- **Favorit**: Bevorzugte oder dringende Aufgaben. Wenn Aufgaben nach Favoriten gefiltert werden, werden neue Aufgaben mit dieser Eigenschaft markiert.",
+    "info4": "- **Etikett**: Betreff der Aufgabe (Standard: persönlich). Wenn Aufgaben nach einem Tag gefiltert werden, erben neue Aufgaben dieses Tag.",
+    "info5": "- **Datum**: Fälligkeitsdatum für die Erledigung der Aufgabe (standardmäßig kein Datum).",
+    "info6": "Durch **langes Drücken** auf eine Aufgabe werden **Bearbeitungsoptionen** angezeigt, mit denen Sie die Aufgabe als vorgemerkt markieren, umbenennen, ihre Bezeichnung ändern, ein Fälligkeitsdatum festlegen oder die Aufgabe löschen können.",    
+    "info7": "Die Aufgaben können nach verschiedenen Kriterien sortiert werden: nach Namen, nach Erledigungsstatus und nach Datum. Sie können auch manuell sortiert werden, indem Sie jede Aufgabe per Drag & Drop an die gewünschte Position ziehen.",
+    "info8": "Die aktive Aufgabe kann exportiert werden (als Backup oder zur Freigabe für andere Benutzer) und durch den Importprozess wiederhergestellt werden. Einige Android-Versionen können die Erlaubnis zum Exportieren und Importieren auf SD-Karte verweigern.",
+    "info9": "Jede Aufgabe besteht aus einer Liste von zu erledigenden Punkten oder Unteraufgaben. Durch **langes Drücken** auf eine Teilaufgabe werden die **Bearbeitungsoptionen** aufgerufen.",   
+
+    "@_ABOUT_PAGE": {},
+    "about1": "## Autor und Lizenz\n\n> Jesús Cuerda (Webierta)\n> Copyleft 2022\n> All Wrongs Reserved. GPLv3 License",
+    "about2": "Diese App wird unter den Bedingungen der *GNU General Public License v. 3* frei verteilt, in der Hoffnung, dass sie nützlich ist, aber OHNE JEDE GARANTIE.",
+    "about3": "Dieses Programm ist **freie Software**: Sie dürfen es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation, Version 3 (GPLv3), veröffentlicht, weitergeben und verändern.",
+    "about4": "Jegliche Vorschläge, Kritik, Kommentare oder Fehlerberichte sind willkommen: [contact via GitHub](https://github.com/Webierta/todo_manager/issues).",
+    "about5": "Diese App für Android ist inspiriert von einer anderen App desselben Autors, ToDoList (2019), ein Projekt, das derzeit komplett eingestellt ist.",
+    "about6": "Wenn Ihnen diese Anwendung gefällt, ziehen Sie bitte eine [Spende]() in Betracht. Ich danke Ihnen.",
+    "about7": "## Sicherheit und Datenschutz",
+    "about8": "**Kostenlose App und ohne Werbung**. Es werden keine Benutzerdaten verwendet oder extrahiert. Alle Informationen werden nur auf Ihrem Gerät gespeichert.",
+    "about9": "**Open-Source-Software** (Quellcode auf Github), frei von Spyware, Malware, Viren oder anderen Prozessen, die Ihr Gerät bedrohen oder Ihre Privatsphäre verletzen.",
+    "about10": "Diese App extrahiert oder speichert keine Daten und benötigt keine fremden Berechtigungen. Sie verzichtet auf Werbung und Tracking-Mechanismen.",
+    "about11": "## Danksagungen",
+    "about12": "* Icon: [Webalys](https://icon-icons.com/users/tEC2Jcsb47Ns1yxQJFdn1/icon-sets/) in Icon-Icons (Free for commercial use).",  
+    "about13": "* Bilder: [MJ Jin](https://pixabay.com/es/users/la_petite_femme-2212305/) on Pixabay (Pixabay License: Free for commercial use).",  
+    "about14": "* Schublade Bild: Image by [rawpixel](https://www.freepik.com/author/rawpixel-com) on Freepik (Free license).",
+
+    "@_SUPPORT_PAGE": {},
+    "support1": "TO-DO MANAGER ist freie und quelloffene Software.\n\nBitte denken Sie darüber nach, mitzuhelfen, die Entwicklung dieser App aktiv zu halten.",
+    "support2": "Glauben Sie, Sie haben ein Problem gefunden? Durch das Erkennen und Beheben von Fehlern wird diese App für alle besser. Melden Sie einen Fehler oder schlagen Sie neue Funktionen vor auf [GitHub issues](https://github.com/Webierta/todo_manager/issues).",
+    "support3": "Sie können bei der Entwicklung dieser und anderer Anwendungen mit einer kleinen Spende an meine Bitcoin-Brieftasche oder über PayPal mitwirken.",
+    "support4": "Scannen Sie diesen QR-Code mit Ihrer Brieftaschenanwendung:",
+    "support5": "Oder kopieren Sie die BTC-Wallet-Adresse:",
+    "support6": "Spenden Sie über PayPal (öffnet die PayPal-Zahlungswebsite):",
+    "copiedClipboard": "BTC-Adresse in die Zwischenablage kopiert"
+
+}
