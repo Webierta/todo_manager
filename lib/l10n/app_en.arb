@@ -56,6 +56,9 @@
     "exit": "Exit",
     "pageNull": "Page Not Found",
 
+    "@_TODO_PAGE": {},
+    "taskCompleted": "Task completed!",
+
     "@_EXPORT_IMPORT": {},
     "exportTask": "Export Task",
     "importTask": "Import Task",

@@ -56,6 +56,9 @@
     "exit": "Salir",
     "pageNull": "Página no encontrada",
 
+    "@_TODO_PAGE": {},
+    "taskCompleted": "¡Tarea completada!",
+
     "@_EXPORT_IMPORT": {},
     "exportTask": "Exportar Tarea",
     "importTask": "Importar Tarea",

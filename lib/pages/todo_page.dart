@@ -398,7 +398,7 @@ class _TodoPageState extends State<TodoPage> {
     //keyAnimated.currentState?.insertItem(indice, duration: const Duration(milliseconds: 500));
   }
 
-  toggleItem(BuildContext context, Todo todo, Item item) {
+  toggleItem(BuildContext context, Todo todo, Item item) async {
     //ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
     resetTextFieldAddItem();
     setState(() => itemSelect = item);
@@ -407,7 +407,34 @@ class _TodoPageState extends State<TodoPage> {
       todo.items.sort((a, b) => a.done.toString().compareTo(b.done.toString()));
       context.read<TodoProvider>().sortItems(todo);
     });
-    Future.delayed(const Duration(milliseconds: 1000), (() => setState(() => itemSelect = null)));
+    //Future.delayed(const Duration(milliseconds: 1000), (() => setState(() => itemSelect = null)));
+    Future.delayed(const Duration(milliseconds: 1000), (() {
+      setState(() => itemSelect = null);
+      if (todo.ratioItemsDone == 1) {
+        showDialogCompleted(context);
+      }
+    }));
+  }
+
+  showDialogCompleted(BuildContext context) {
+    AppLocalizations appLang = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showMaterialBanner(
+      MaterialBanner(
+        content: Text(
+          appLang.taskCompleted,
+          style: Theme.of(context).typography.white.headlineSmall,
+        ),
+        leading: Image.asset('assets/ic_launcher.png'),
+        backgroundColor: AppColor.primary50,
+        forceActionsBelow: true,
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => ScaffoldMessenger.of(context).removeCurrentMaterialBanner(),
+            child: const Text('Cerrar'),
+          ),
+        ],
+      ),
+    );
   }
 
   setPriorityItem(BuildContext context, Todo todo, Item item) {
