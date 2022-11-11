@@ -159,10 +159,13 @@ class _HomeState extends State<Home> {
             onCanceled: () => resetTextField(),
             onSelected: (Menu item) {
               if (item == Menu.sortAZ) {
+                resetTextField();
                 context.read<TodoProvider>().sortAZ();
               } else if (item == Menu.sortDone) {
+                resetTextField();
                 context.read<TodoProvider>().sortDone();
               } else if (item == Menu.sortDate) {
+                resetTextField();
                 context.read<TodoProvider>().sortDate();
               } else if (item == Menu.export) {
                 if (todoSelect != null) {
@@ -172,12 +175,14 @@ class _HomeState extends State<Home> {
                     SnackBar(content: Text(appLang.exportNullTodoSelect)),
                   );
                 }
+                resetTextField();
               } else if (item == Menu.import) {
+                resetTextField();
                 importTarea(context);
               } else if (item == Menu.deleteAll) {
+                resetTextField();
                 BannerConfirmDelete(context: context).showBanner();
               }
-              resetTextField();
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
               PopupMenuItem<Menu>(
@@ -247,7 +252,7 @@ class _HomeState extends State<Home> {
               scrollController: scrollController,
               padding: const EdgeInsets.only(bottom: 80),
               header: header(context, todos),
-              footer: todos.length > 10
+              /* footer: todos.length > 10
                   ? IconButton(
                       onPressed: () {
                         if (scrollController.hasClients) {
@@ -260,7 +265,7 @@ class _HomeState extends State<Home> {
                       },
                       icon: const Icon(Icons.arrow_upward),
                     )
-                  : null,
+                  : null, */
               buildDefaultDragHandles: false,
               itemCount: todos.length,
               onReorder: (oldIndex, newIndex) {
@@ -363,7 +368,7 @@ class _HomeState extends State<Home> {
                                 ReorderableDragStartListener(
                                   index: index,
                                   enabled: !filterPriority && !textFieldAddVisible,
-                                  child: const Icon(Icons.unfold_more),
+                                  child: const Icon(Icons.unfold_more), // unfold_more
                                 )
                               ],
                             ],

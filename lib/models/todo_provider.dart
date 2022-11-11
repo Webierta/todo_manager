@@ -275,6 +275,16 @@ class TodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  sortItemsOnReorder(Todo todo) {
+    var todosBox = Hive.box<Todo>('todos');
+    todosBox.toMap().forEach((key, value) {
+      if (value.name == todo.name) {
+        todosBox.put(key, todo);
+      }
+    });
+    sortItems(todo);
+  }
+
   sortItemsAZ(Todo todo) {
     var todosBox = Hive.box<Todo>('todos');
     todo.items.sort((a, b) => a.name.compareTo(b.name));
