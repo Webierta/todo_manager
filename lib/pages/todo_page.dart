@@ -4,13 +4,16 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../models/item.dart';
+import '../models/menus.dart' as menu;
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
 import '../router/routes_const.dart';
 import '../theme/app_color.dart';
 import '../widgets/nothing_bear.dart';
+import '../widgets/pop_menu.dart';
+import '../widgets/proxy_decorator.dart';
 
-enum MenuItem { checkAll, uncheckAll, sortAZ, sortPriority, deleteAll }
+//enum MenuItem { checkAll, uncheckAll, sortAZ, sortPriority, deleteAll }
 
 class TodoPage extends StatefulWidget {
   final Todo todo;
@@ -109,69 +112,49 @@ class _TodoPageState extends State<TodoPage> {
           InputChip(
               labelPadding: const EdgeInsets.symmetric(horizontal: 0),
               label: Text(todo.displayRatioPercentage())),
-          PopupMenuButton<MenuItem>(
+          PopupMenuButton<menu.MenuItem>(
             onCanceled: () => resetTextFieldAddItem(),
-            onSelected: (MenuItem item) {
+            onSelected: (menu.MenuItem item) {
               resetTextFieldAddItem();
-              if (item == MenuItem.checkAll) {
+              if (item == menu.MenuItem.checkAll) {
                 setState(() => context.read<TodoProvider>().checkAll(todo, true));
-              } else if (item == MenuItem.uncheckAll) {
+              } else if (item == menu.MenuItem.uncheckAll) {
                 setState(() => context.read<TodoProvider>().checkAll(todo, false));
-              } else if (item == MenuItem.sortAZ) {
+              } else if (item == menu.MenuItem.sortAZ) {
                 setState(() => context.read<TodoProvider>().sortItemsAZ(todo));
-              } else if (item == MenuItem.sortPriority) {
+              } else if (item == menu.MenuItem.sortPriority) {
                 setState(() => context.read<TodoProvider>().sortItemsPriority(todo));
-              } else if (item == MenuItem.deleteAll) {
+              } else if (item == menu.MenuItem.deleteAll) {
                 deleteAll(context, todo);
               }
             },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuItem>>[
-              PopupMenuItem<MenuItem>(
-                value: MenuItem.sortAZ,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.sort_by_alpha),
-                  title: Text(appLang.sortAZ),
-                ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<menu.MenuItem>>[
+              PopMenu.buildItem(
+                value: menu.MenuItem.sortAZ,
+                iconData: Icons.sort_by_alpha,
+                text: appLang.sortAZ,
               ),
-              PopupMenuItem<MenuItem>(
-                value: MenuItem.sortPriority,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.priority_high),
-                  title: Text(appLang.sortPriority),
-                ),
+              PopMenu.buildItem(
+                value: menu.MenuItem.sortPriority,
+                iconData: Icons.priority_high,
+                text: appLang.sortPriority,
               ),
               const PopupMenuDivider(),
-              PopupMenuItem<MenuItem>(
-                value: MenuItem.checkAll,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.check_box_outlined),
-                  title: Text(appLang.checkAll),
-                ),
+              PopMenu.buildItem(
+                value: menu.MenuItem.checkAll,
+                iconData: Icons.check_box_outlined,
+                text: appLang.checkAll,
               ),
-              PopupMenuItem<MenuItem>(
-                value: MenuItem.uncheckAll,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.check_box_outline_blank),
-                  title: Text(appLang.uncheckAll),
-                ),
+              PopMenu.buildItem(
+                value: menu.MenuItem.uncheckAll,
+                iconData: Icons.check_box_outline_blank,
+                text: appLang.uncheckAll,
               ),
               const PopupMenuDivider(),
-              PopupMenuItem<MenuItem>(
-                value: MenuItem.deleteAll,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.delete_forever),
-                  title: Text(appLang.deleteItems),
-                ),
+              PopMenu.buildItem(
+                value: menu.MenuItem.deleteAll,
+                iconData: Icons.delete_forever,
+                text: appLang.deleteItems,
               ),
             ],
           ),
@@ -197,14 +180,7 @@ class _TodoPageState extends State<TodoPage> {
                 });
                 context.read<TodoProvider>().sortItemsOnReorder(todo);
               },
-              proxyDecorator: (Widget child, int index, Animation<double> animation) {
-                return Material(
-                  child: Container(
-                    decoration: const BoxDecoration(color: AppColor.primary50),
-                    child: child,
-                  ),
-                );
-              },
+              proxyDecorator: ProxyDecorator.builder,
               itemBuilder: (context, int index) {
                 if (items.isEmpty) return const Text('');
                 var item = items[index];

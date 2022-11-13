@@ -1,6 +1,11 @@
 {   
-    "idioma": "Idioma",
-    "version": "Versión",
+    "@_GLOBAL": {},
+    "newName": "Nuevo nombre",
+    "cancel": "Cancelar",
+    "confirm": "Aceptar",
+    "pageNull": "Página no encontrada",
+
+    "@_HOME_PAGE": {},
     "sortAZ": "Ordenar por Nombre",
     "sortDone": "Ordenar por Pendiente",
     "sortDate": "Ordenar por Fecha",
@@ -8,19 +13,13 @@
     "newTask": "Nueva Tarea",
     "repeTask" : "Tarea Repetida",
     "emptyTask" : "Tarea Vacía",
-    "newName": "Nuevo nombre",
-
     "deleteTask": "¿Eliminar esta tarea?: {nameTask}",    
     "@deleteTask" : {     
         "placeholders": {
             "nameTask": {}
         }
     },
-
     "deleteAllTasks" : "¿Eliminar todas las tareas?",
-    "cancel": "Cancelar",
-    "confirm": "Aceptar",
-
     "onDate": "{date}",
     "@onDate": { 
         "placeholders": {
@@ -30,7 +29,15 @@
             }
         }
     },
-
+    "tag": "{name, select, personal{personal} work{trabajo} shopping{compras} idea{idea} project{proyecto} meeting{reunión} event{evento} anniversary{aniversario} family{familia} friends{amigos} social{social} house{casa} community{comunidad} business{negocio} party{fiesta} holidays{vacaciones} finance{finanzas} health{salud} sport{deporte} nature{naturaleza} pet{mascota} other{personal}}",
+    "@tag": {   
+    "placeholders": {
+        "name": {}
+        }
+    },
+    "nothingTodo": "Nada que hacer",
+    
+    "@_TODO_PAGE": {},
     "sortPriority": "Ordenar por Prioridad",
     "checkAll": "Marcar Todo",
     "uncheckAll": "Desmarcar Todo",
@@ -38,26 +45,17 @@
     "repeItem": "Ítem Repetido",
     "newItem": "Nuevo Ítem",
     "deleteAllItems": "¿Eliminar todos los ítems?",
-   
-    "tag": "{name, select, personal{personal} work{trabajo} shopping{compras} idea{idea} project{proyecto} meeting{reunión} event{evento} anniversary{aniversario} family{familia} friends{amigos} social{social} house{casa} community{comunidad} business{negocio} party{fiesta} holidays{vacaciones} finance{finanzas} health{salud} sport{deporte} nature{naturaleza} pet{mascota} other{personal}}",
-    "@tag": {   
-    "placeholders": {
-        "name": {}
-        }
-    },
-
-    "nothingTodo": "Nada que hacer",
     "horaDeEmpezar": "Hora de Empezar",
+    "taskCompleted": "¡Tarea completada!",
 
+    "@_DRAWER": {},
+    "idioma": "Idioma",
+    "version": "Versión",
     "home": "Inicio",
     "info": "Info",
     "about": "Acerca de",
     "support": "Colaborar",
-    "exit": "Salir",
-    "pageNull": "Página no encontrada",
-
-    "@_TODO_PAGE": {},
-    "taskCompleted": "¡Tarea completada!",
+    "exit": "Salir",    
 
     "@_EXPORT_IMPORT": {},
     "exportTask": "Exportar Tarea",

@@ -1,6 +1,11 @@
 {   
-    "idioma": "Idiom",
-    "version": "Version",
+    "@_GLOBAL": {},
+    "newName": "Neuer Name",
+    "cancel": "Abbrechen",
+    "confirm": "Akzeptieren",
+    "pageNull": "Seite nicht gefunden",
+
+    "@_HOME_PAGE": {},
     "sortAZ": "Nach Name sortieren",
     "sortDone": "Sortieren nach Pending",
     "sortDate": "Sortieren nach Datum",    
@@ -8,19 +13,13 @@
     "newTask": "Neue Aufgabe",
     "repeTask" : "Wiederholte Aufgabe",
     "emptyTask" : "Leere Aufgabe",
-    "newName": "Neuer Name",
-    
     "deleteTask": "Diese Aufgabe abschaffen?: {nameTask}",
     "@deleteTask" : {     
         "placeholders": {
             "nameTask": {}
         }
     },
-
     "deleteAllTasks" : "Alle Aufgaben abschaffen?",
-    "cancel": "Abbrechen",
-    "confirm": "Akzeptieren",   
-
     "onDate": "{date}",
     "@onDate": {
         "placeholders": {
@@ -30,7 +29,15 @@
             }
         }
     },
-    
+    "tag": "{name, select, personal{persönlich} work{arbeit} shopping{einkaufen} idea{idee} project{projekt} meeting{besprechung} event{veranstaltung} anniversary{jahrestag} family{familie} friends{freunde} social{sozial} house{haus} community{gemeinschaft} business{geschäft} party{party} holidays{urlaub} finance{finanzen} health{gesundheit} sport{sport} nature{natur} pet{haustier} other{persönlich}}",
+    "@tag": {   
+    "placeholders": {
+        "name": {}
+        }
+    },
+    "nothingTodo": "Nichts zu tun",
+
+    "@_TODO_PAGE": {},
     "sortPriority": "Sortieren nach Priorität",
     "checkAll": "Alle markieren",
     "uncheckAll": "Alle abwählen",
@@ -38,26 +45,17 @@
     "repeItem": "Wiederholtes Element",
     "newItem": "Neues Element",
     "deleteAllItems": "Alle Elemente entfernen?",
-
-    "tag": "{name, select, personal{persönlich} work{arbeit} shopping{einkaufen} idea{idee} project{projekt} meeting{besprechung} event{veranstaltung} anniversary{jahrestag} family{familie} friends{freunde} social{sozial} house{haus} community{gemeinschaft} business{geschäft} party{party} holidays{urlaub} finance{finanzen} health{gesundheit} sport{sport} nature{natur} pet{haustier} other{persönlich}}",
-    "@tag": {   
-    "placeholders": {
-        "name": {}
-        }
-    },
-
-    "nothingTodo": "Nichts zu tun",
     "horaDeEmpezar": "Zeit für den Start",
-    
+    "taskCompleted": "Aufgabe erfüllt!",
+
+    "@_DRAWER": {},
+    "idioma": "Idiom",
+    "version": "Version",  
     "home": "Home",
     "info": "Info",
     "about": "Über",
     "support": "Unterstützung",
     "exit": "Ausfahrt",
-    "pageNull": "Seite nicht gefunden",
-
-    "@_TODO_PAGE": {},
-    "taskCompleted": "Aufgabe erfüllt!",
 
     "@_EXPORT_IMPORT": {},
     "exportTask": "Aufgabe exportieren",

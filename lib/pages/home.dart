@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../models/item.dart';
+import '../models/menus.dart' show Menu;
 import '../models/tag.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
@@ -16,8 +17,8 @@ import '../router/routes_const.dart';
 import '../theme/app_color.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/nothing_bear.dart';
-
-enum Menu { sortAZ, sortDone, sortDate, export, import, deleteAll }
+import '../widgets/pop_menu.dart';
+import '../widgets/proxy_decorator.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -185,61 +186,37 @@ class _HomeState extends State<Home> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-              PopupMenuItem<Menu>(
+              PopMenu.buildItem(
                 value: Menu.sortAZ,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.sort_by_alpha),
-                  title: Text(appLang.sortAZ),
-                ),
+                iconData: Icons.sort_by_alpha,
+                text: appLang.sortAZ,
               ),
-              PopupMenuItem<Menu>(
+              PopMenu.buildItem(
                 value: Menu.sortDone,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.rule),
-                  title: Text(appLang.sortDone),
-                ),
+                iconData: Icons.rule,
+                text: appLang.sortDone,
               ),
-              PopupMenuItem<Menu>(
-                  value: Menu.sortDate,
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                    horizontalTitleGap: 0,
-                    leading: const Icon(Icons.today),
-                    title: Text(appLang.sortDate),
-                  )),
+              PopMenu.buildItem(
+                value: Menu.sortDate,
+                iconData: Icons.today,
+                text: appLang.sortDate,
+              ),
               const PopupMenuDivider(),
-              PopupMenuItem<Menu>(
+              PopMenu.buildItem(
                 value: Menu.export,
-                //enabled: todoSelect != null,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.file_download),
-                  title: Text(appLang.exportTask),
-                ),
+                iconData: Icons.file_download,
+                text: appLang.exportTask,
               ),
-              PopupMenuItem<Menu>(
+              PopMenu.buildItem(
                 value: Menu.import,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.file_upload),
-                  title: Text(appLang.importTask),
-                ),
+                iconData: Icons.file_upload,
+                text: appLang.importTask,
               ),
               const PopupMenuDivider(),
-              PopupMenuItem<Menu>(
+              PopMenu.buildItem(
                 value: Menu.deleteAll,
-                child: ListTile(
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 2),
-                  horizontalTitleGap: 0,
-                  leading: const Icon(Icons.delete_forever),
-                  title: Text(appLang.deleteAll),
-                ),
+                iconData: Icons.delete_forever,
+                text: appLang.deleteAll,
               ),
             ],
           ),
@@ -265,14 +242,7 @@ class _HomeState extends State<Home> {
                 });
                 context.read<TodoProvider>().sortOnReorder(todos);
               },
-              proxyDecorator: (Widget child, int index, Animation<double> animation) {
-                return Material(
-                  child: Container(
-                    decoration: const BoxDecoration(color: AppColor.primary50),
-                    child: child,
-                  ),
-                );
-              },
+              proxyDecorator: ProxyDecorator.builder,
               itemBuilder: (BuildContext context, int index) {
                 var todo = todos[index];
                 List<Item> items = todo.items;
