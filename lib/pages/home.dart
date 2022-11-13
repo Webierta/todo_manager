@@ -252,20 +252,6 @@ class _HomeState extends State<Home> {
               scrollController: scrollController,
               padding: const EdgeInsets.only(bottom: 80),
               header: header(context, todos),
-              /* footer: todos.length > 10
-                  ? IconButton(
-                      onPressed: () {
-                        if (scrollController.hasClients) {
-                          scrollController.animateTo(
-                            scrollController.initialScrollOffset,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.ease,
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.arrow_upward),
-                    )
-                  : null, */
               buildDefaultDragHandles: false,
               itemCount: todos.length,
               onReorder: (oldIndex, newIndex) {
@@ -278,6 +264,14 @@ class _HomeState extends State<Home> {
                   todos.insert(newIndex, todoMove);
                 });
                 context.read<TodoProvider>().sortOnReorder(todos);
+              },
+              proxyDecorator: (Widget child, int index, Animation<double> animation) {
+                return Material(
+                  child: Container(
+                    decoration: const BoxDecoration(color: AppColor.primary50),
+                    child: child,
+                  ),
+                );
               },
               itemBuilder: (BuildContext context, int index) {
                 var todo = todos[index];
@@ -367,15 +361,14 @@ class _HomeState extends State<Home> {
                                   todoSelect == null) ...[
                                 ReorderableDragStartListener(
                                   index: index,
-                                  enabled: !filterPriority && !textFieldAddVisible,
-                                  child: const Icon(Icons.unfold_more), // unfold_more
+                                  child: const Icon(Icons.unfold_more),
                                 )
                               ],
                             ],
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
                           child: Row(
                             children: [
                               iconStatus(todo),
@@ -419,111 +412,115 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                         if (todoEdit?.name == todo.name) ...[
-                          Material(
-                            elevation: 2.0,
-                            shadowColor: Colors.grey,
-                            borderRadius: const BorderRadius.all(Radius.circular(8)),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 3),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  MaterialButton(
-                                    onPressed: () => context
-                                        .read<TodoProvider>()
-                                        .updatePrirority(todo, !todo.priority),
-                                    shape: const CircleBorder(),
-                                    minWidth: 0,
-                                    padding: const EdgeInsets.all(5),
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    child: const Icon(
-                                      Icons.star,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () {
-                                      ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-                                      setState(() => todoRename = todoRename == null ? todo : null);
-                                      textFieldEditController.clear();
-                                      setState(() => errorDuple = null);
-                                    },
-                                    shape: const CircleBorder(),
-                                    minWidth: 0,
-                                    padding: const EdgeInsets.all(5),
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () {},
-                                    shape: const CircleBorder(),
-                                    minWidth: 0,
-                                    padding: const EdgeInsets.all(5),
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    child: PopupMenuButton<Tag>(
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Material(
+                              elevation: 2.0,
+                              shadowColor: Colors.grey,
+                              borderRadius: const BorderRadius.all(Radius.circular(8)),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(vertical: 3),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    MaterialButton(
+                                      onPressed: () => context
+                                          .read<TodoProvider>()
+                                          .updatePrirority(todo, !todo.priority),
+                                      shape: const CircleBorder(),
+                                      minWidth: 0,
+                                      padding: const EdgeInsets.all(5),
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       child: const Icon(
-                                        Icons.label_outline,
+                                        Icons.star,
                                         color: AppColor.primaryColor,
                                       ),
-                                      //onCanceled: () => resetTextField(),
-                                      onSelected: (Tag tag) {
-                                        context.read<TodoProvider>().updateTag(todo, tag);
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
+                                        setState(
+                                            () => todoRename = todoRename == null ? todo : null);
+                                        textFieldEditController.clear();
+                                        setState(() => errorDuple = null);
+                                      },
+                                      shape: const CircleBorder(),
+                                      minWidth: 0,
+                                      padding: const EdgeInsets.all(5),
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: AppColor.primaryColor,
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () {},
+                                      shape: const CircleBorder(),
+                                      minWidth: 0,
+                                      padding: const EdgeInsets.all(5),
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      child: PopupMenuButton<Tag>(
+                                        child: const Icon(
+                                          Icons.label_outline,
+                                          color: AppColor.primaryColor,
+                                        ),
+                                        //onCanceled: () => resetTextField(),
+                                        onSelected: (Tag tag) {
+                                          context.read<TodoProvider>().updateTag(todo, tag);
+                                          //resetTextField();
+                                        },
+                                        itemBuilder: (BuildContext context) {
+                                          List<Tag> tags = [...Tag.values];
+                                          tags.sort(((a, b) =>
+                                              appLang.tag(a.name).compareTo(appLang.tag(b.name))));
+                                          return tags
+                                              .map((tag) => PopupMenuItem<Tag>(
+                                                    value: tag,
+                                                    child: Row(children: [
+                                                      Icon(
+                                                        Icons.label,
+                                                        color: AppColor
+                                                            .tagColors[Tag.values.indexOf(tag)],
+                                                      ),
+                                                      Text(appLang.tag(tag.name))
+                                                    ]),
+                                                  ))
+                                              .toList();
+                                        },
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () async {
+                                        await selectDate(context, todo);
                                         //resetTextField();
                                       },
-                                      itemBuilder: (BuildContext context) {
-                                        List<Tag> tags = [...Tag.values];
-                                        tags.sort(((a, b) =>
-                                            appLang.tag(a.name).compareTo(appLang.tag(b.name))));
-                                        return tags
-                                            .map((tag) => PopupMenuItem<Tag>(
-                                                  value: tag,
-                                                  child: Row(children: [
-                                                    Icon(
-                                                      Icons.label,
-                                                      color: AppColor
-                                                          .tagColors[Tag.values.indexOf(tag)],
-                                                    ),
-                                                    Text(appLang.tag(tag.name))
-                                                  ]),
-                                                ))
-                                            .toList();
+                                      shape: const CircleBorder(),
+                                      minWidth: 0,
+                                      padding: const EdgeInsets.all(5),
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      child: const Icon(
+                                        Icons.today,
+                                        color: AppColor.primaryColor,
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () async {
+                                        resetTextField();
+                                        BannerConfirmDelete(context: context, todo: todo)
+                                            .showBanner();
+                                        setState(() => todoSelect = todo);
                                       },
+                                      shape: const CircleBorder(),
+                                      minWidth: 0,
+                                      padding: const EdgeInsets.all(5),
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      child: const Icon(
+                                        Icons.delete,
+                                        color: AppColor.primaryColor,
+                                      ),
                                     ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () async {
-                                      await selectDate(context, todo);
-                                      //resetTextField();
-                                    },
-                                    shape: const CircleBorder(),
-                                    minWidth: 0,
-                                    padding: const EdgeInsets.all(5),
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    child: const Icon(
-                                      Icons.today,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () async {
-                                      resetTextField();
-                                      BannerConfirmDelete(context: context, todo: todo)
-                                          .showBanner();
-                                      setState(() => todoSelect = todo);
-                                    },
-                                    shape: const CircleBorder(),
-                                    minWidth: 0,
-                                    padding: const EdgeInsets.all(5),
-                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                    child: const Icon(
-                                      Icons.delete,
-                                      color: AppColor.primaryColor,
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ),
