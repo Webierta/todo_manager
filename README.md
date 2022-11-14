@@ -10,5 +10,4 @@ Tasks can be sorted, ranked, and filtered based on different criteria: favorite 
 
 The application also allows you to export and import tasks as a backup or to share with other users.
 
-![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_1.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_2.png?raw=true)
-
+![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_1.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_2.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_3.png?raw=true)
