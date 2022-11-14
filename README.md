@@ -1,2 +1,14 @@
 # To-Do Manager
-Simple and minimalist To-Do Manager
+
+![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/icon.png?raw=true)
+
+## Simple and minimalist To-Do Manager
+
+ToDo Manager is a simple and minimalist application to manage tasks efficiently.
+
+Tasks can be sorted, ranked, and filtered based on different criteria: favorite or featured, tag, and due date.
+
+The application also allows you to export and import tasks as a backup or to share with other users.
+
+![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_1.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_2.png?raw=true)
+
