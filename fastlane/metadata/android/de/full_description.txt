@@ -1,0 +1,5 @@
+ToDo Manager ist eine einfache und minimalistische Anwendung, um Aufgaben effizient zu verwalten.
+
+Aufgaben können basierend auf verschiedenen Kriterien sortiert, eingestuft und gefiltert werden: Favorit oder Featured, Tag und Fälligkeitsdatum.
+
+Die Anwendung ermöglicht es Ihnen auch, Aufgaben als Backup zu exportieren und zu importieren oder mit anderen Benutzern zu teilen.

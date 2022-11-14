@@ -152,7 +152,7 @@ class _HomeState extends State<Home> {
             ),
           ] else ...[
             IconButton(
-              onPressed: () => setState(() => filterTag = null),
+              onPressed: () => resetTextField(),
               icon: const Icon(Icons.label_off_outlined),
             ),
           ],

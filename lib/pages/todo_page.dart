@@ -110,8 +110,9 @@ class _TodoPageState extends State<TodoPage> {
             label: Text('$itemsDone/${items.length}'),
           ),
           InputChip(
-              labelPadding: const EdgeInsets.symmetric(horizontal: 0),
-              label: Text(todo.displayRatioPercentage())),
+            labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+            label: Text(todo.displayRatioPercentage()),
+          ),
           PopupMenuButton<menu.MenuItem>(
             onCanceled: () => resetTextFieldAddItem(),
             onSelected: (menu.MenuItem item) {
@@ -429,7 +430,11 @@ class _TodoPageState extends State<TodoPage> {
     ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
         content: Text(appLang.taskCompleted),
-        contentTextStyle: Theme.of(context).typography.white.headlineSmall,
+        contentTextStyle: Theme.of(context)
+            .typography
+            .white
+            .headlineSmall
+            ?.copyWith(color: AppColor.primaryColor),
         leading: Image.asset('assets/completed.png'), // ic_launcher.png
         backgroundColor: AppColor.primary50,
         forceActionsBelow: true,
