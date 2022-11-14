@@ -1,6 +1,6 @@
 # To-Do Manager
 
-![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/icon.png?raw=true)
+<img src="https://raw.githubusercontent.com/Webierta/todo_manager/main/fastlane/metadata/android/en/images/icon.png" width="100">
 
 ## Simple and minimalist To-Do Manager
 
