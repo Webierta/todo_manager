@@ -9,7 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import '../models/item.dart';
-import '../models/menus.dart' show Menu;
+import '../models/menus.dart';
 import '../models/tag.dart';
 import '../models/todo.dart';
 import '../models/todo_provider.dart';
@@ -115,7 +115,8 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: filterTag == null ? const Text('To-Do') : Text(filterTag!.name),
         actions: [
-          InputChip(
+          Chip(
+            visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
             labelPadding: const EdgeInsets.symmetric(horizontal: 0),
             label: Text('${countRatioItemsDone(todos)}/${todos.length}'),
           ),
@@ -156,19 +157,19 @@ class _HomeState extends State<Home> {
               icon: const Icon(Icons.label_off_outlined),
             ),
           ],
-          PopupMenuButton<Menu>(
+          PopupMenuButton<MenuTodo>(
             onCanceled: () => resetTextField(),
-            onSelected: (Menu item) {
-              if (item == Menu.sortAZ) {
+            onSelected: (MenuTodo item) {
+              if (item == MenuTodo.sortAZ) {
                 resetTextField();
                 context.read<TodoProvider>().sortAZ();
-              } else if (item == Menu.sortDone) {
+              } else if (item == MenuTodo.sortDone) {
                 resetTextField();
                 context.read<TodoProvider>().sortDone();
-              } else if (item == Menu.sortDate) {
+              } else if (item == MenuTodo.sortDate) {
                 resetTextField();
                 context.read<TodoProvider>().sortDate();
-              } else if (item == Menu.export) {
+              } else if (item == MenuTodo.export) {
                 if (todoSelect != null) {
                   exportTarea(context, todoSelect!);
                 } else {
@@ -177,47 +178,24 @@ class _HomeState extends State<Home> {
                   );
                 }
                 resetTextField();
-              } else if (item == Menu.import) {
+              } else if (item == MenuTodo.import) {
                 resetTextField();
                 importTarea(context);
-              } else if (item == Menu.deleteAll) {
+              } else if (item == MenuTodo.deleteAll) {
                 resetTextField();
-                BannerConfirmDelete(context: context).showBanner();
+                //BannerConfirmDelete(context: context).showBanner();
+                showBannerConfirmDelete(context);
               }
             },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-              PopMenu.buildItem(
-                value: Menu.sortAZ,
-                iconData: Icons.sort_by_alpha,
-                text: appLang.sortAZ,
-              ),
-              PopMenu.buildItem(
-                value: Menu.sortDone,
-                iconData: Icons.rule,
-                text: appLang.sortDone,
-              ),
-              PopMenu.buildItem(
-                value: Menu.sortDate,
-                iconData: Icons.today,
-                text: appLang.sortDate,
-              ),
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<MenuTodo>>[
+              PopMenu.buildItem(context: context, value: MenuTodo.sortAZ),
+              PopMenu.buildItem(context: context, value: MenuTodo.sortDone),
+              PopMenu.buildItem(context: context, value: MenuTodo.sortDate),
               const PopupMenuDivider(),
-              PopMenu.buildItem(
-                value: Menu.export,
-                iconData: Icons.file_download,
-                text: appLang.exportTask,
-              ),
-              PopMenu.buildItem(
-                value: Menu.import,
-                iconData: Icons.file_upload,
-                text: appLang.importTask,
-              ),
+              PopMenu.buildItem(context: context, value: MenuTodo.export),
+              PopMenu.buildItem(context: context, value: MenuTodo.import),
               const PopupMenuDivider(),
-              PopMenu.buildItem(
-                value: Menu.deleteAll,
-                iconData: Icons.delete_forever,
-                text: appLang.deleteAll,
-              ),
+              PopMenu.buildItem(context: context, value: MenuTodo.deleteAll),
             ],
           ),
         ],
@@ -273,8 +251,7 @@ class _HomeState extends State<Home> {
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color:
-                          todoSelect?.name == todo.name ? AppColor.primary50 : Colors.transparent,
+                      color: todoSelect?.name == todo.name ? AppColor.primary50 : null,
                       border: const Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
                     ),
                     child: Column(
@@ -312,7 +289,15 @@ class _HomeState extends State<Home> {
                                       )
                                     : Text(
                                         todo.name,
-                                        style: Theme.of(context).typography.white.headlineSmall,
+                                        style: Theme.of(context)
+                                            .typography
+                                            .white
+                                            .headlineSmall
+                                            ?.copyWith(
+                                                color: todoEdit?.name == todo.name ||
+                                                        todoSelect?.name == todo.name
+                                                    ? Colors.black
+                                                    : null),
                                       ),
                               ),
                               if (todo.priority) ...[
@@ -322,7 +307,10 @@ class _HomeState extends State<Home> {
                                 IconButton(
                                   onPressed: () => resetTextField(),
                                   padding: const EdgeInsets.all(0),
-                                  icon: const Icon(Icons.expand_less),
+                                  icon: const Icon(
+                                    Icons.expand_less,
+                                    color: AppColor.primaryColor,
+                                  ),
                                 ),
                               ],
                               if (!filterPriority &&
@@ -344,16 +332,37 @@ class _HomeState extends State<Home> {
                               iconStatus(todo),
                               const SizedBox(width: 4),
                               if (items.isNotEmpty) ...[
-                                Text('$itemsDone/${items.length}'),
+                                Text(
+                                  '$itemsDone/${items.length}',
+                                  style: TextStyle(
+                                    color:
+                                        todoEdit?.name == todo.name || todoSelect?.name == todo.name
+                                            ? Colors.black
+                                            : null,
+                                  ),
+                                ),
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8),
                                     child: LinearProgressIndicator(value: itemsDone / items.length),
                                   ),
                                 ),
-                                Text(todo.displayRatioPercentage()),
+                                Text(
+                                  todo.displayRatioPercentage(),
+                                  style: TextStyle(
+                                    color:
+                                        todoEdit?.name == todo.name || todoSelect?.name == todo.name
+                                            ? Colors.black
+                                            : null,
+                                  ),
+                                ),
                               ] else ...[
-                                Text(appLang.emptyTask)
+                                Text(
+                                  appLang.emptyTask,
+                                  style: TextStyle(
+                                    color: todoEdit?.name == todo.name ? Colors.black : null,
+                                  ),
+                                )
                               ],
                             ],
                           ),
@@ -363,20 +372,22 @@ class _HomeState extends State<Home> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              InputChip(
+                              Chip(
                                 visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                                 avatar: Icon(Icons.label, color: todo.tag.color),
                                 label: Text(appLang.tag(todo.tag.name)),
-                                labelPadding: const EdgeInsets.only(right: 0, left: 4),
+                                labelPadding: const EdgeInsets.only(right: 4, left: 0),
+                                //labelPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                //padding: const EdgeInsets.symmetric(horizontal: 0),
                               ),
                               if (todo.date != null)
-                                InputChip(
+                                Chip(
                                   visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
                                   avatar: const Icon(Icons.today),
                                   //label: Text(DateFormat.yMd().format(todo.date!)),
                                   //label: Text(DateFormat('dd/MM/yy').format(todo.date!)),
                                   label: Text(appLang.onDate(todo.date!)),
-                                  labelPadding: const EdgeInsets.only(right: 0, left: 4),
+                                  labelPadding: const EdgeInsets.only(right: 4, left: 0),
                                 ),
                             ],
                           ),
@@ -386,6 +397,7 @@ class _HomeState extends State<Home> {
                             padding: const EdgeInsets.all(8.0),
                             child: Material(
                               elevation: 2.0,
+                              color: AppColor.primaryColor,
                               shadowColor: Colors.grey,
                               borderRadius: const BorderRadius.all(Radius.circular(8)),
                               child: Container(
@@ -403,7 +415,7 @@ class _HomeState extends State<Home> {
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       child: const Icon(
                                         Icons.star,
-                                        color: AppColor.primaryColor,
+                                        color: Colors.white,
                                       ),
                                     ),
                                     MaterialButton(
@@ -420,7 +432,7 @@ class _HomeState extends State<Home> {
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                       child: const Icon(
                                         Icons.edit,
-                                        color: AppColor.primaryColor,
+                                        color: Colors.white,
                                       ),
                                     ),
                                     MaterialButton(
@@ -432,7 +444,7 @@ class _HomeState extends State<Home> {
                                       child: PopupMenuButton<Tag>(
                                         child: const Icon(
                                           Icons.label_outline,
-                                          color: AppColor.primaryColor,
+                                          color: Colors.white,
                                         ),
                                         //onCanceled: () => resetTextField(),
                                         onSelected: (Tag tag) {
@@ -468,26 +480,20 @@ class _HomeState extends State<Home> {
                                       minWidth: 0,
                                       padding: const EdgeInsets.all(5),
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      child: const Icon(
-                                        Icons.today,
-                                        color: AppColor.primaryColor,
-                                      ),
+                                      child: const Icon(Icons.today, color: Colors.white),
                                     ),
                                     MaterialButton(
                                       onPressed: () async {
-                                        resetTextField();
-                                        BannerConfirmDelete(context: context, todo: todo)
-                                            .showBanner();
-                                        setState(() => todoSelect = todo);
+                                        //resetTextField();
+                                        //BannerConfirmDelete(context: context, todo: todo).showBanner();
+                                        showBannerConfirmDelete(context, todo: todo);
+                                        //setState(() => todoSelect = todo);
                                       },
                                       shape: const CircleBorder(),
                                       minWidth: 0,
                                       padding: const EdgeInsets.all(5),
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: AppColor.primaryColor,
-                                      ),
+                                      child: const Icon(Icons.delete, color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -532,15 +538,16 @@ class _HomeState extends State<Home> {
   }
 
   Icon iconStatus(Todo todo) {
-    if (todo.items.isEmpty) return const Icon(Icons.hide_source);
+    Color? color =
+        todoEdit?.name == todo.name || todoSelect?.name == todo.name ? Colors.black : null;
+    if (todo.items.isEmpty) return Icon(Icons.hide_source, color: color);
     //if (todo.ratioItemsDone == 0) return const Icon(Icons.hide_source);
-    if (todo.ratioItemsDone == 1) return const Icon(Icons.task_alt);
-    return const Icon(Icons.rule);
+    if (todo.ratioItemsDone == 1) return Icon(Icons.task_alt, color: color);
+    return Icon(Icons.rule, color: color);
   }
 
   addTodo(BuildContext context, String input, int length) async {
     ScaffoldMessenger.of(context).removeCurrentMaterialBanner();
-
     if (length != 0) {
       if (scrollController.hasClients) {
         await scrollController.animateTo(
@@ -654,9 +661,40 @@ class _HomeState extends State<Home> {
     }
     return true;
   }
+
+  showBannerConfirmDelete(BuildContext context, {Todo? todo}) {
+    AppLocalizations appLang = AppLocalizations.of(context)!;
+    String content = todo != null ? appLang.deleteTask(todo.name) : appLang.deleteAllTasks;
+    ScaffoldMessenger.of(context).showMaterialBanner(
+      MaterialBanner(
+        padding: const EdgeInsets.all(20),
+        content: Text(content),
+        leading: const Icon(Icons.delete_forever),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              //ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+              resetTextField();
+            },
+            child: Text(appLang.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+              todo != null
+                  ? context.read<TodoProvider>().remove(todo)
+                  : context.read<TodoProvider>().removeAll();
+              context.go('/');
+            },
+            child: Text(appLang.confirm),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class BannerConfirmDelete {
+/* class BannerConfirmDelete {
   final BuildContext context;
   final Todo? todo;
   const BannerConfirmDelete({required this.context, this.todo});
@@ -690,4 +728,4 @@ class BannerConfirmDelete {
       ),
     );
   }
-}
+} */

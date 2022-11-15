@@ -34,11 +34,6 @@ class Todo {
   }
 
   Map<String, dynamic> toJson() {
-    /* var itemsToJson = [];
-    for (var item in items) {
-      var itemToJson = item.toJson();
-      itemsToJson.add(itemToJson);
-    } */
     List<Map<String, dynamic>> itemsToJson = items.map((it) => it.toJson()).toList();
     if (date != null) {
       return {
@@ -61,18 +56,8 @@ class Todo {
   factory Todo.fromJson(Map<String, dynamic> json) {
     Todo todo = Todo(name: json['name'], priority: json['priority']);
 
-    /* var itemsFromJson = json['items'].toList();
-    for (var item in itemsFromJson) {
-      Item x = jsonDecode(item.toJson());
-      todo.items.add(x);
-    } */
-    //todo.items = json['items'].toList();
+    json['items'].forEach((it) => todo.items.add(Item.fromJson(it)));
 
-    json['items'].forEach((it) {
-      todo.items.add(Item.fromJson(it));
-    });
-
-    //todo.tag = Tag.values.where((tag) => tag.name == json['tag']).toList().first;
     todo.tag = Tag.values.firstWhere((t) => t.name == json['tag'], orElse: (() => Tag.personal));
     if (json['date'] != null) {
       todo.date = DateTime.parse(json['date']);

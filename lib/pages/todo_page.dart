@@ -13,8 +13,6 @@ import '../widgets/nothing_bear.dart';
 import '../widgets/pop_menu.dart';
 import '../widgets/proxy_decorator.dart';
 
-//enum MenuItem { checkAll, uncheckAll, sortAZ, sortPriority, deleteAll }
-
 class TodoPage extends StatefulWidget {
   final Todo todo;
   const TodoPage({super.key, required this.todo});
@@ -105,11 +103,14 @@ class _TodoPageState extends State<TodoPage> {
         ),
         title: Text(todo.name),
         actions: [
-          InputChip(
+          Chip(
+            visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
             labelPadding: const EdgeInsets.symmetric(horizontal: 0),
             label: Text('$itemsDone/${items.length}'),
           ),
-          InputChip(
+          const SizedBox(width: 4),
+          Chip(
+            visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
             labelPadding: const EdgeInsets.symmetric(horizontal: 0),
             label: Text(todo.displayRatioPercentage()),
           ),
@@ -130,33 +131,13 @@ class _TodoPageState extends State<TodoPage> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<menu.MenuItem>>[
-              PopMenu.buildItem(
-                value: menu.MenuItem.sortAZ,
-                iconData: Icons.sort_by_alpha,
-                text: appLang.sortAZ,
-              ),
-              PopMenu.buildItem(
-                value: menu.MenuItem.sortPriority,
-                iconData: Icons.priority_high,
-                text: appLang.sortPriority,
-              ),
+              PopMenu.buildItem(context: context, value: menu.MenuItem.sortAZ),
+              PopMenu.buildItem(context: context, value: menu.MenuItem.sortPriority),
               const PopupMenuDivider(),
-              PopMenu.buildItem(
-                value: menu.MenuItem.checkAll,
-                iconData: Icons.check_box_outlined,
-                text: appLang.checkAll,
-              ),
-              PopMenu.buildItem(
-                value: menu.MenuItem.uncheckAll,
-                iconData: Icons.check_box_outline_blank,
-                text: appLang.uncheckAll,
-              ),
+              PopMenu.buildItem(context: context, value: menu.MenuItem.checkAll),
+              PopMenu.buildItem(context: context, value: menu.MenuItem.uncheckAll),
               const PopupMenuDivider(),
-              PopMenu.buildItem(
-                value: menu.MenuItem.deleteAll,
-                iconData: Icons.delete_forever,
-                text: appLang.deleteItems,
-              ),
+              PopMenu.buildItem(context: context, value: menu.MenuItem.deleteAll),
             ],
           ),
         ],
@@ -208,11 +189,9 @@ class _TodoPageState extends State<TodoPage> {
                       color: itemSelect?.name == item.name
                           ? AppColor.primary50
                           : item.done
-                              ? Colors.black12
-                              : Colors.transparent,
-                      border: const Border(
-                        bottom: BorderSide(color: Colors.grey, width: 0.3),
-                      ),
+                              ? Colors.grey[400] // black12
+                              : null,
+                      border: const Border(bottom: BorderSide(color: Colors.grey, width: 0.3)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -256,11 +235,14 @@ class _TodoPageState extends State<TodoPage> {
                                     : Text(
                                         item.name,
                                         style: TextStyle(
-                                            fontStyle: item.done ? FontStyle.italic : null,
-                                            decoration: item.done
-                                                ? TextDecoration.lineThrough
-                                                : TextDecoration.none,
-                                            decorationColor: Colors.red),
+                                          fontSize: 18,
+                                          fontStyle: item.done ? FontStyle.italic : null,
+                                          color: itemEdit?.name == item.name ? Colors.black : null,
+                                          decoration: item.done
+                                              ? TextDecoration.lineThrough
+                                              : TextDecoration.none,
+                                          decorationColor: Colors.red,
+                                        ),
                                       ),
                               ),
                             ),
@@ -270,13 +252,13 @@ class _TodoPageState extends State<TodoPage> {
                                   : () => toggleItem(context, todo, item),
                               icon: Icon(
                                 item.done ? Icons.check_box : Icons.check_box_outline_blank,
+                                color: itemEdit?.name == item.name ? Colors.black : null,
                               ),
                             ),
                             if (itemEdit?.name == item.name) ...[
                               IconButton(
                                 onPressed: () => resetTextFieldAddItem(),
-                                //padding: const EdgeInsets.all(0),
-                                icon: const Icon(Icons.expand_less),
+                                icon: const Icon(Icons.expand_less, color: Colors.black),
                               ),
                             ],
                             if (itemEdit?.name != item.name) ...[
@@ -288,7 +270,7 @@ class _TodoPageState extends State<TodoPage> {
                                   child: Icon(
                                     Icons.unfold_more,
                                     color: itemEdit == null && !textFieldAddItemVisible
-                                        ? Colors.black
+                                        ? null
                                         : Colors.grey,
                                   ),
                                 ), // unfold_more
@@ -301,6 +283,7 @@ class _TodoPageState extends State<TodoPage> {
                             padding: const EdgeInsets.all(8.0),
                             child: Material(
                               elevation: 2.0,
+                              color: AppColor.primaryColor,
                               shadowColor: Colors.grey,
                               borderRadius: const BorderRadius.all(Radius.circular(8)),
                               child: Container(
@@ -314,10 +297,7 @@ class _TodoPageState extends State<TodoPage> {
                                       minWidth: 0,
                                       padding: const EdgeInsets.all(5),
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      child: const Icon(
-                                        Icons.priority_high,
-                                        color: AppColor.primaryColor,
-                                      ),
+                                      child: const Icon(Icons.priority_high, color: Colors.white),
                                     ),
                                     MaterialButton(
                                       onPressed: () {
@@ -330,10 +310,7 @@ class _TodoPageState extends State<TodoPage> {
                                       minWidth: 0,
                                       padding: const EdgeInsets.all(5),
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      child: const Icon(
-                                        Icons.edit,
-                                        color: AppColor.primaryColor,
-                                      ),
+                                      child: const Icon(Icons.edit, color: Colors.white),
                                     ),
                                     MaterialButton(
                                       onPressed: () => removeItem(context, todo, item),
@@ -341,10 +318,7 @@ class _TodoPageState extends State<TodoPage> {
                                       minWidth: 0,
                                       padding: const EdgeInsets.all(5),
                                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: AppColor.primaryColor,
-                                      ),
+                                      child: const Icon(Icons.delete, color: Colors.white),
                                     ),
                                   ],
                                 ),

@@ -7,14 +7,14 @@ class AppLocale extends ChangeNotifier {
   Locale get locale => _locale;
 
   initLocale() {
-    String? languageCode = Hive.box<String>('localeBox').get('languageCode', defaultValue: 'en');
+    String? languageCode = Hive.box('settings').get('languageCode', defaultValue: 'en');
     _locale = Locale(languageCode ?? 'en');
     notifyListeners();
   }
 
   void changeLocale(Locale newLocale) {
     _locale = newLocale;
-    Hive.box<String>('localeBox').put('languageCode', newLocale.languageCode);
+    Hive.box('settings').put('languageCode', newLocale.languageCode);
     notifyListeners();
   }
 }

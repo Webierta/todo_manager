@@ -12,6 +12,7 @@ import 'models/tag.dart';
 import 'models/todo.dart';
 import 'models/todo_provider.dart';
 import 'router/app_router.dart';
+import 'theme/app_brightness.dart';
 import 'theme/app_theme.dart';
 
 void main() async {
@@ -23,13 +24,14 @@ void main() async {
     ..registerAdapter(ItemAdapter())
     ..registerAdapter(TagAdapter());
   await Hive.openBox<Todo>('todos');
-  await Hive.openBox<String>('localeBox');
-  //await Hive.deleteFromDisk();
+  //await Hive.openBox<String>('localeBox');
+  await Hive.openBox('settings');
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => TodoProvider()),
         ChangeNotifierProvider(create: (_) => AppLocale()),
+        ChangeNotifierProvider(create: (_) => AppBrightness()),
       ],
       child: const ToDoManager(),
     ),
@@ -47,6 +49,7 @@ class _ToDoManagerState extends State<ToDoManager> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<AppLocale>(context, listen: false).initLocale();
+      Provider.of<AppBrightness>(context, listen: false).initBrightness();
     });
     super.initState();
   }
@@ -67,7 +70,7 @@ class _ToDoManagerState extends State<ToDoManager> {
         }
         return supportedLocales.first;
       },
-      theme: AppTheme.lightTheme,
+      theme: context.watch<AppBrightness>().darkTheme ? AppTheme.darkTheme : AppTheme.lightTheme,
       routerConfig: AppRouter.router,
     );
   }

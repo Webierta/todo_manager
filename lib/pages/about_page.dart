@@ -29,7 +29,13 @@ class AboutPage extends StatelessWidget {
         children: [
           const HeaderPage(),
           const SizedBox(height: 10.0),
-          MarkdownBody(data: appLang.about1),
+          MarkdownBody(
+            data: appLang.about1,
+            styleSheet: MarkdownStyleSheet(
+              blockquoteDecoration: const BoxDecoration(color: Colors.teal),
+              p: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
           const SizedBox(height: 10.0),
           MarkdownBody(data: appLang.about2),
           const SizedBox(height: 10.0),
@@ -57,18 +63,6 @@ class AboutPage extends StatelessWidget {
           const Divider(height: 40),
           MarkdownBody(data: appLang.about11),
           const SizedBox(height: 10.0),
-          /* MarkdownBody(
-            onTapLink: (text, href, title) => launchweb(href),
-            data: appLang.about12,
-          ),
-          MarkdownBody(
-            onTapLink: (text, href, title) => launchweb(href),
-            data: appLang.about13,
-          ),
-          MarkdownBody(
-            onTapLink: (text, href, title) => launchweb(href),
-            data: appLang.about14,
-          ), */
           MarkdownBody(
             onTapLink: (text, href, title) => launchweb(href),
             data:

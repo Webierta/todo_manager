@@ -16,28 +16,6 @@ class NothingBear extends StatelessWidget {
       text = appLang.horaDeEmpezar;
     }
 
-    /* return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 14),
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage('assets/nothing_bear.png'),
-            fit: BoxFit.contain,
-            colorFilter: ColorFilter.mode(
-              Colors.white.withOpacity(0.7),
-              BlendMode.modulate,
-            ),
-          ),
-        ),
-        child: Center(
-          child: Text(
-            appLang.nothingTodo,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.teal),
-          ),
-        ),
-      ),
-    ); */
     return SizedBox.expand(
       child: FractionallySizedBox(
         heightFactor: 0.8,
@@ -47,7 +25,6 @@ class NothingBear extends StatelessWidget {
           children: [
             Expanded(
               child: Image.asset(
-                //'assets/nothing_bear.png',
                 imageName,
                 fit: BoxFit.contain,
                 color: Colors.white.withOpacity(0.7),

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../l10n/app_locale.dart';
 import '../l10n/language_data.dart';
 import '../router/routes_const.dart';
+import '../theme/app_brightness.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -113,6 +114,17 @@ class AppDrawer extends StatelessWidget {
                       focusColor: Colors.transparent,
                       underline: null,
                     ),
+                  ),
+                ),
+                ListTile(
+                  horizontalTitleGap: 0,
+                  leading: const Icon(Icons.dark_mode),
+                  title: Text(appLang.darkTheme),
+                  trailing: Switch(
+                    value: context.watch<AppBrightness>().darkTheme,
+                    onChanged: (bool value) {
+                      context.read<AppBrightness>().setBrightness(value);
+                    },
                   ),
                 ),
                 const Divider(),

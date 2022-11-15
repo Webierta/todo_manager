@@ -50,6 +50,7 @@
 
     "@_DRAWER": {},
     "idioma": "Language",
+    "darkTheme": "Dark Theme",
     "version": "Version",       
     "home": "Home",
     "info": "Info",

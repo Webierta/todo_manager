@@ -14,11 +14,15 @@ class ProxyDecorator {
         return Material(
           elevation: elevation,
           color: AppColor.primary50,
+          textStyle: const TextStyle(color: Colors.black),
           shadowColor: AppColor.primaryColor,
           child: child,
         );
       },
-      child: child,
+      child: IconTheme(
+        data: const IconThemeData(color: Colors.black),
+        child: child,
+      ),
     );
   }
 }

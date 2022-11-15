@@ -49,10 +49,6 @@ class SupportPage extends StatelessWidget {
           const SizedBox(height: 10.0),
           MarkdownBody(data: appLang.support4),
           const SizedBox(height: 10.0),
-          /* FractionallySizedBox(
-            widthFactor: 0.4,
-            child: Image.asset('assets/Bitcoin_QR.png'),
-          ), */
           Image.asset('assets/Bitcoin_QR.png', height: 150),
           const SizedBox(height: 20.0),
           MarkdownBody(data: appLang.support5),
@@ -114,23 +110,14 @@ class SupportPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
+                style: const ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll<Color>(Color(0xFFE0F2F1)),
+                ),
                 onPressed: () => launchweb(urlPayPal),
                 child: Image.asset('assets/paypal_logo.png', width: 100),
               ),
             ],
-          )
-          //Image.asset('assets/paypal_logo.png', height: 65),
-          /* ElevatedButton(
-            onPressed: () => launchweb(urlPayPal),
-            child: Image.asset('assets/paypal_logo.png'),
-          ), */
-          /* FractionallySizedBox(
-            widthFactor: 0.3,
-            child: ElevatedButton(
-              onPressed: () => launchweb(urlPayPal),
-              child: Image.asset('assets/paypal_logo.png'),
-            ),
-          ), */
+          ),
         ],
       ),
     );
