@@ -71,7 +71,7 @@ class _TodoPageState extends State<TodoPage> {
                     addItem(context, todo, textFieldAddItemController.text);
                   }
                 },
-          icon: const Icon(Icons.add),
+          icon: const Icon(Icons.add_circle),
         ),
       ),
     );
@@ -409,7 +409,11 @@ class _TodoPageState extends State<TodoPage> {
             .white
             .headlineSmall
             ?.copyWith(color: AppColor.primaryColor),
-        leading: Image.asset('assets/completed.png'), // ic_launcher.png
+        leading: const Icon(
+          Icons.check_circle_outline,
+          size: 42,
+          color: AppColor.primaryColor,
+        ),
         backgroundColor: AppColor.primary50,
         forceActionsBelow: true,
         actions: <Widget>[

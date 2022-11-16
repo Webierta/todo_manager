@@ -7,7 +7,7 @@
 
     "@_HOME_PAGE": {},
     "sortAZ": "Ordenar por Nombre",
-    "sortDone": "Ordenar por Pendiente",
+    "sortDone": "Ordenar por Pendiente",    
     "sortDate": "Ordenar por Fecha",
     "deleteAll": "Eliminar Todo",
     "newTask": "Nueva Tarea",
@@ -90,8 +90,7 @@
     "about7": "## Seguridad y Privacidad",
     "about8": "**Aplicación gratuita y sin publicidad**. No se utiliza ni extrae ningún dato del usuario. Toda la información se almacena únicamente en su dispositivo.",
     "about9": "**Software de código abierto** (código fuente en Github), libre de spyware, malware, virus o cualquier proceso que atente contra tu dispositivo o viole tu privacidad.",
-    "about10": "Esta aplicación no extrae ni almacena ninguna información ni requiere ningún permiso extraño, y renuncia a la publicidad y a cualquier mecanismo de seguimiento.",
-    "about11": "## Reconocimientos",    
+    "about10": "Esta aplicación no extrae ni almacena ninguna información ni requiere ningún permiso extraño, y renuncia a la publicidad y a cualquier mecanismo de seguimiento.",       
 
     "@_SUPPORT_PAGE": {},
     "support1": "TO-DO MANAGER es Software libre y de Código Abierto.\n\nPor favor considera colaborar para mantener activo el desarrollo de esta App.",

@@ -60,32 +60,6 @@ class AboutPage extends StatelessWidget {
           MarkdownBody(data: appLang.about9),
           const SizedBox(height: 10.0),
           MarkdownBody(data: appLang.about10),
-          const Divider(height: 40),
-          MarkdownBody(data: appLang.about11),
-          const SizedBox(height: 10.0),
-          MarkdownBody(
-            onTapLink: (text, href, title) => launchweb(href),
-            data:
-                '* Icon: [Webalys](https://icon-icons.com/users/tEC2Jcsb47Ns1yxQJFdn1/icon-sets/) '
-                'in Icon-Icons (Free for commercial use).',
-          ),
-          MarkdownBody(
-            onTapLink: (text, href, title) => launchweb(href),
-            data: '* Background images: '
-                '[MJ Jin](https://pixabay.com/es/users/la_petite_femme-2212305/) '
-                'on Pixabay (Pixabay License: Free for commercial use).',
-          ),
-          MarkdownBody(
-            onTapLink: (text, href, title) => launchweb(href),
-            data: '* Drawer Image: Image by '
-                '[rawpixel](https://www.freepik.com/author/rawpixel-com) on Freepik (Free license).',
-          ),
-          MarkdownBody(
-            onTapLink: (text, href, title) => launchweb(href),
-            data: '* Check in foursquare icon by Pixel Buddha - '
-                '[Flaticon](https://www.flaticon.es/autores/pixel-buddha) (Free for personal or '
-                'commercial use with attribution).',
-          ),
         ],
       ),
     );

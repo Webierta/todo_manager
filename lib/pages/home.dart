@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
                     addTodo(context, textFieldAddController.text, todos.length);
                   }
                 },
-          icon: const Icon(Icons.add),
+          icon: const Icon(Icons.add_circle),
         ),
       ),
     );
@@ -153,7 +153,10 @@ class _HomeState extends State<Home> {
             ),
           ] else ...[
             IconButton(
-              onPressed: () => resetTextField(),
+              onPressed: () {
+                resetTextField();
+                setState(() => filterTag = null);
+              },
               icon: const Icon(Icons.label_off_outlined),
             ),
           ],
@@ -668,8 +671,18 @@ class _HomeState extends State<Home> {
     ScaffoldMessenger.of(context).showMaterialBanner(
       MaterialBanner(
         padding: const EdgeInsets.all(20),
+        backgroundColor: AppColor.primary50,
         content: Text(content),
-        leading: const Icon(Icons.delete_forever),
+        contentTextStyle: const TextStyle(color: AppColor.primaryColor, fontSize: 16),
+        leading: const CircleAvatar(
+          backgroundColor: AppColor.primaryColor,
+          radius: 24,
+          child: Icon(
+            Icons.delete_forever,
+            color: Colors.white,
+            size: 42,
+          ),
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
@@ -693,39 +706,3 @@ class _HomeState extends State<Home> {
     );
   }
 }
-
-/* class BannerConfirmDelete {
-  final BuildContext context;
-  final Todo? todo;
-  const BannerConfirmDelete({required this.context, this.todo});
-
-  showBanner() {
-    AppLocalizations appLang = AppLocalizations.of(context)!;
-    String content = todo != null ? appLang.deleteTask(todo!.name) : appLang.deleteAllTasks;
-    ScaffoldMessenger.of(context).showMaterialBanner(
-      MaterialBanner(
-        padding: const EdgeInsets.all(20),
-        content: Text(content),
-        leading: const Icon(Icons.delete_forever),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-            },
-            child: Text(appLang.cancel),
-          ),
-          TextButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-              todo != null
-                  ? context.read<TodoProvider>().remove(todo!)
-                  : context.read<TodoProvider>().removeAll();
-              context.go('/');
-            },
-            child: Text(appLang.confirm),
-          ),
-        ],
-      ),
-    );
-  }
-} */

@@ -16,15 +16,17 @@ class AppTheme {
   static ThemeData? darkTheme = ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
-    primaryColor: AppColor.primaryColor,
+    //primaryColor: AppColor.primaryColor,
+    primaryColor: Colors.white,
     primarySwatch: AppColor.primarySwatch,
     inputDecorationTheme: const InputDecorationTheme(
       filled: true,
-      fillColor: AppColor.primary50,
+      fillColor: AppColor.primary900,
+      labelStyle: TextStyle(color: Colors.white),
     ),
-    listTileTheme: const ListTileThemeData(
-      selectedTileColor: AppColor.primary50,
-    ),
+    /* listTileTheme: const ListTileThemeData(
+      selectedTileColor: AppColor.primary900,
+    ), */
     chipTheme: const ChipThemeData(
       padding: EdgeInsets.symmetric(horizontal: 4),
       //backgroundColor: Colors.black12,
@@ -53,9 +55,9 @@ class AppTheme {
       filled: true,
       fillColor: AppColor.primary50,
     ),
-    listTileTheme: const ListTileThemeData(
+    /* listTileTheme: const ListTileThemeData(
       selectedTileColor: AppColor.primary50,
-    ),
+    ), */
     chipTheme: const ChipThemeData(
       padding: EdgeInsets.symmetric(horizontal: 4),
       backgroundColor: Colors.white54,

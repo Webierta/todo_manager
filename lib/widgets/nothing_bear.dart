@@ -9,32 +9,28 @@ class NothingBear extends StatelessWidget {
   Widget build(BuildContext context) {
     AppLocalizations appLang = AppLocalizations.of(context)!;
 
-    String imageName = 'assets/nothing_bear.png';
+    String imageName = 'assets/nothing.png';
     String text = appLang.nothingTodo;
     if (!isPageTask) {
-      imageName = 'assets/empty_items.png';
+      imageName = 'assets/nothing2.png';
       text = appLang.horaDeEmpezar;
     }
 
     return SizedBox.expand(
       child: FractionallySizedBox(
-        heightFactor: 0.8,
-        alignment: Alignment.center,
+        heightFactor: 0.75,
+        widthFactor: 0.8,
+        alignment: Alignment.topCenter,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: Image.asset(
                 imageName,
                 fit: BoxFit.contain,
-                color: Colors.white.withOpacity(0.7),
-                colorBlendMode: BlendMode.modulate,
               ),
             ),
-            const SizedBox(height: 14),
             Text(
               text,
-              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.headlineSmall,
             ),
           ],

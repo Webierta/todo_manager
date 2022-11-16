@@ -7,7 +7,7 @@
 
     "@_HOME_PAGE": {},
     "sortAZ": "Sort by Name",
-    "sortDone": "Sort by not Done",
+    "sortDone": "Sort by not Done",    
     "sortDate": "Sort by Date",    
     "deleteAll": "Delete All",
     "newTask": "New Task",
@@ -90,8 +90,7 @@
     "about7": "## Security & Privacy",
     "about8": "**Free app and without advertising**. No user data is used or extracted. All information is stored only on your device.",
     "about9": "**Open source software** (source code on Github), free of spyware, malware, viruses or any process that threatens your device or violate your privacy.",
-    "about10": "This app does not extract or store any data or require any strange permissions, and disclaims advertising and any tracking mechanisms.",
-    "about11": "## Acknowledgments",    
+    "about10": "This app does not extract or store any data or require any strange permissions, and disclaims advertising and any tracking mechanisms.",   
 
     "@_SUPPORT_PAGE": {},
     "support1": "TO-DO MANAGER is Free and Open Source Software.\n\nPlease consider collaborating to keep the development of this App active.",
