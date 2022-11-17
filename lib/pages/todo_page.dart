@@ -237,7 +237,10 @@ class _TodoPageState extends State<TodoPage> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontStyle: item.done ? FontStyle.italic : null,
-                                          color: itemEdit?.name == item.name ? Colors.black : null,
+                                          color: itemEdit?.name == item.name ||
+                                                  itemSelect?.name == item.name
+                                              ? Colors.black
+                                              : null,
                                           decoration: item.done
                                               ? TextDecoration.lineThrough
                                               : TextDecoration.none,
@@ -252,7 +255,9 @@ class _TodoPageState extends State<TodoPage> {
                                   : () => toggleItem(context, todo, item),
                               icon: Icon(
                                 item.done ? Icons.check_box : Icons.check_box_outline_blank,
-                                color: itemEdit?.name == item.name ? Colors.black : null,
+                                color: itemEdit?.name == item.name || itemSelect?.name == item.name
+                                    ? Colors.black
+                                    : null,
                               ),
                             ),
                             if (itemEdit?.name == item.name) ...[
