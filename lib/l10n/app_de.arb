@@ -47,6 +47,7 @@
     "deleteAllItems": "Alle Elemente entfernen?",
     "horaDeEmpezar": "Zeit für den Start",
     "taskCompleted": "Aufgabe erfüllt!",
+    "close": "Schließen",
 
     "@_DRAWER": {},
     "idioma": "Idiom",

@@ -424,7 +424,7 @@ class _TodoPageState extends State<TodoPage> {
         actions: <Widget>[
           TextButton(
             onPressed: () => ScaffoldMessenger.of(context).removeCurrentMaterialBanner(),
-            child: const Text('Cerrar'),
+            child: Text(appLang.close),
           ),
         ],
       ),

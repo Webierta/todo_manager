@@ -47,6 +47,7 @@
     "deleteAllItems": "Delete all items?",
     "horaDeEmpezar": "Time to Start", 
     "taskCompleted": "Task completed!",
+    "close": "Close",
 
     "@_DRAWER": {},
     "idioma": "Language",

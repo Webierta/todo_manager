@@ -1,6 +1,6 @@
 # To-Do Manager
 
-<img src="https://raw.githubusercontent.com/Webierta/todo_manager/main/fastlane/metadata/android/en/images/icon.png" width="100">
+<img src="https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en-US/images/icon.png?raw=true" width="100">
 
 ## Simple and minimalist To-Do Manager
 
@@ -10,4 +10,4 @@ Tasks can be sorted, ranked, and filtered based on different criteria: favorite 
 
 The application also allows you to export and import tasks as a backup or to share with other users.
 
-![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_1.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_2.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en/images/phoneScreenshots/screenshot_3.png?raw=true)
+![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot_1.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot_2.png?raw=true) ![Screenshot](https://github.com/Webierta/todo_manager/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/screenshot_3.png?raw=true)

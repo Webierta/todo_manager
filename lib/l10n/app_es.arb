@@ -47,6 +47,7 @@
     "deleteAllItems": "¿Eliminar todos los ítems?",
     "horaDeEmpezar": "Hora de Empezar",
     "taskCompleted": "¡Tarea completada!",
+    "close": "Cerrar",
 
     "@_DRAWER": {},
     "idioma": "Idioma",
