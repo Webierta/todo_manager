@@ -14,7 +14,7 @@ class HeaderPage extends StatelessWidget {
           style: Theme.of(context).typography.white.headlineSmall,
         ),
         Image.asset('assets/ic_launcher.png'),
-        Text('${appLang.version} 2.0.0', style: Theme.of(context).textTheme.labelLarge),
+        Text('${appLang.version} 2.0.1', style: Theme.of(context).textTheme.labelLarge),
         const SizedBox(height: 10),
       ],
     );

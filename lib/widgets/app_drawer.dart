@@ -172,7 +172,7 @@ class AppDrawer extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
-              '${appLang.version} 1.0.0',
+              '${appLang.version} 2.0.1',
               style: Theme.of(context).textTheme.labelSmall,
             ),
           ),
