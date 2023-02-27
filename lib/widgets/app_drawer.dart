@@ -39,7 +39,10 @@ class AppDrawer extends StatelessWidget {
                           fit: BoxFit.fitWidth,
                           child: Text(
                             'TO-DO MANAGER',
-                            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
                                   color: const Color(0xFFFFFFFF),
                                   fontWeight: FontWeight.w100,
                                 ),
@@ -107,7 +110,8 @@ class AppDrawer extends StatelessWidget {
                       items: LanguageData.langs
                           .map((lang) => DropdownMenuItem<String>(
                                 value: lang.languageCode,
-                                child: Text('${lang.flag}  ${lang.languageCode}'),
+                                child:
+                                    Text('${lang.flag}  ${lang.languageCode}'),
                                 // ${lang.name.substring(0, 2)}
                               ))
                           .toList(),
@@ -172,7 +176,7 @@ class AppDrawer extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
-              '${appLang.version} 2.0.1',
+              '${appLang.version} 2.0.2',
               style: Theme.of(context).textTheme.labelSmall,
             ),
           ),
